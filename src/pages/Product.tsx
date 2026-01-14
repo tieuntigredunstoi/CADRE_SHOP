@@ -280,55 +280,91 @@ const Product = () => {
                 ))}
               </div>
 
-              {/* Countdown Timer */}
+              {/* Countdown Timer - Modern */}
               <motion.div 
-                className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-2xl p-4 border border-primary/20"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
+                className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-foreground to-foreground/90 p-5"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8 }}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+                {/* Animated background glow */}
+                <motion.div 
+                  className="absolute -top-10 -right-10 w-32 h-32 bg-primary/30 rounded-full blur-3xl"
+                  animate={{ 
+                    scale: [1, 1.3, 1],
+                    opacity: [0.3, 0.5, 0.3]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                />
+                
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-3">
                     <motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
+                      className="w-2 h-2 rounded-full bg-red-500"
+                      animate={{ opacity: [1, 0.3, 1] }}
                       transition={{ duration: 1, repeat: Infinity }}
-                    >
-                      <Clock className="h-5 w-5 text-primary" />
-                    </motion.div>
-                    <span className="text-sm font-medium text-foreground">Offre expire dans :</span>
+                    />
+                    <span className="text-xs font-medium text-background/70 uppercase tracking-wider">Offre limitée</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <motion.div 
-                      className="bg-primary text-primary-foreground px-2 py-1 rounded-lg text-sm font-bold min-w-[36px] text-center"
-                      key={timeLeft.hours}
-                      initial={{ scale: 1.2 }}
-                      animate={{ scale: 1 }}
-                    >
-                      {String(timeLeft.hours).padStart(2, '0')}
-                    </motion.div>
-                    <span className="text-primary font-bold">:</span>
-                    <motion.div 
-                      className="bg-primary text-primary-foreground px-2 py-1 rounded-lg text-sm font-bold min-w-[36px] text-center"
-                      key={timeLeft.minutes}
-                      initial={{ scale: 1.2 }}
-                      animate={{ scale: 1 }}
-                    >
-                      {String(timeLeft.minutes).padStart(2, '0')}
-                    </motion.div>
-                    <span className="text-primary font-bold">:</span>
-                    <motion.div 
-                      className="bg-primary text-primary-foreground px-2 py-1 rounded-lg text-sm font-bold min-w-[36px] text-center"
-                      key={timeLeft.seconds}
-                      initial={{ scale: 1.2 }}
-                      animate={{ scale: 1 }}
-                    >
-                      {String(timeLeft.seconds).padStart(2, '0')}
-                    </motion.div>
+                  
+                  <div className="flex items-center justify-center gap-3">
+                    {/* Hours */}
+                    <div className="text-center">
+                      <motion.div 
+                        className="bg-background/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-background/10"
+                        key={timeLeft.hours}
+                        initial={{ rotateX: -90 }}
+                        animate={{ rotateX: 0 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      >
+                        <span className="text-3xl font-bold text-background tabular-nums">
+                          {String(timeLeft.hours).padStart(2, '0')}
+                        </span>
+                      </motion.div>
+                      <span className="text-[10px] text-background/50 uppercase mt-1 block">Heures</span>
+                    </div>
+                    
+                    <span className="text-2xl font-light text-background/40 -mt-4">:</span>
+                    
+                    {/* Minutes */}
+                    <div className="text-center">
+                      <motion.div 
+                        className="bg-background/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-background/10"
+                        key={timeLeft.minutes}
+                        initial={{ rotateX: -90 }}
+                        animate={{ rotateX: 0 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      >
+                        <span className="text-3xl font-bold text-background tabular-nums">
+                          {String(timeLeft.minutes).padStart(2, '0')}
+                        </span>
+                      </motion.div>
+                      <span className="text-[10px] text-background/50 uppercase mt-1 block">Minutes</span>
+                    </div>
+                    
+                    <span className="text-2xl font-light text-background/40 -mt-4">:</span>
+                    
+                    {/* Seconds */}
+                    <div className="text-center">
+                      <motion.div 
+                        className="bg-primary/80 backdrop-blur-sm rounded-xl px-4 py-3 border border-primary/50"
+                        key={timeLeft.seconds}
+                        initial={{ rotateX: -90 }}
+                        animate={{ rotateX: 0 }}
+                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      >
+                        <span className="text-3xl font-bold text-primary-foreground tabular-nums">
+                          {String(timeLeft.seconds).padStart(2, '0')}
+                        </span>
+                      </motion.div>
+                      <span className="text-[10px] text-background/50 uppercase mt-1 block">Secondes</span>
+                    </div>
                   </div>
+                  
+                  <p className="text-center text-sm text-background/80 mt-4">
+                    <span className="text-primary font-semibold">-50%</span> + Livraison offerte
+                  </p>
                 </div>
-                <p className="text-xs text-muted-foreground mt-2 text-center">
-                  🔥 <strong>50% de réduction</strong> — Livraison GRATUITE incluse
-                </p>
               </motion.div>
 
               {/* Bundle Selection */}
