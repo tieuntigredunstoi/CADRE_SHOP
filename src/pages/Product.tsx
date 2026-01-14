@@ -1,27 +1,20 @@
 import { useState, useEffect } from "react";
 import { 
   Star, 
-  Minus, 
-  Plus, 
   ShoppingBag, 
   Check, 
   Truck, 
   Shield, 
   RefreshCw,
   Clock,
-  MapPin,
   ChevronLeft,
   ZoomIn,
   X,
   Award,
-  CreditCard,
-  Package,
-  AlertCircle,
-  Sparkles,
-  Heart
+  Zap,
+  Package
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Accordion,
   AccordionContent,
@@ -39,54 +32,23 @@ import productMain from "@/assets/product-lashes.jpg";
 import productDetail1 from "@/assets/product-detail-1.jpg";
 import productDetail2 from "@/assets/product-detail-2.jpg";
 import productDetail3 from "@/assets/product-detail-3.jpg";
-import review1 from "@/assets/review-1.jpg";
-import review2 from "@/assets/review-2.jpg";
-import review3 from "@/assets/review-3.jpg";
 
 const productImages = [productMain, productDetail1, productDetail2, productDetail3];
 
-const reviews = [
-  {
-    id: 1,
-    name: "Marie L.",
-    rating: 5,
-    date: "Il y a 2 jours",
-    text: "Absolument incroyable ! Application super facile et le résultat est vraiment naturel. Je les réutilise depuis 3 semaines !",
-    image: review1,
-    verified: true,
-  },
-  {
-    id: 2,
-    name: "Sophie D.",
-    rating: 5,
-    date: "Il y a 1 semaine",
-    text: "Meilleurs faux cils que j'ai jamais essayé. Tenue parfaite, même à la salle de sport. Je recommande à 100% !",
-    image: review2,
-    verified: true,
-  },
-  {
-    id: 3,
-    name: "Emma B.",
-    rating: 4,
-    date: "Il y a 2 semaines",
-    text: "Très satisfaite ! Un peu de pratique nécessaire pour la première application, mais ensuite c'est un jeu d'enfant.",
-    image: review3,
-    verified: true,
-  },
+const offers = [
+  { id: 1, units: 1, price: 19.99, originalPrice: null, label: null, savings: null },
+  { id: 2, units: 2, price: 36.00, originalPrice: 39.98, label: "Plus populaire", savings: 4.00 },
+  { id: 3, units: 3, price: 48.00, originalPrice: 59.97, label: null, savings: 12.00 },
 ];
-
-const featuredIn = ["ELLE", "Vogue", "Marie Claire", "Cosmopolitan"];
 
 const Product = () => {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
   const [isZoomed, setIsZoomed] = useState(false);
   const [showStickyBar, setShowStickyBar] = useState(false);
-  const [bundleSelected, setBundleSelected] = useState(false);
-  const [stockCount] = useState(23);
+  const [selectedOffer, setSelectedOffer] = useState(1);
   const [countdown, setCountdown] = useState({ hours: 2, minutes: 47, seconds: 33 });
 
-  // Countdown timer for FOMO
+  // Countdown timer
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown(prev => {
@@ -112,11 +74,7 @@ const Product = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const basePrice = 19.99;
-  const bundlePrice = 34.99;
-  const originalBundlePrice = 39.98;
-  const currentPrice = bundleSelected ? bundlePrice : basePrice;
-  const savings = bundleSelected ? (originalBundlePrice - bundlePrice).toFixed(2) : 0;
+  const currentOffer = offers.find(o => o.id === selectedOffer) || offers[0];
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -125,21 +83,44 @@ const Product = () => {
 
       {/* Breadcrumb */}
       <div className="max-w-7xl mx-auto w-full px-6 py-4">
-        <a href="/" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <a href="/" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ChevronLeft className="h-4 w-4" />
-          Retour à la boutique
+          Retour à l'accueil
         </a>
+      </div>
+
+      {/* Countdown Banner */}
+      <div className="mx-6 mb-8">
+        <div className="max-w-7xl mx-auto bg-primary rounded-2xl py-4 px-6">
+          <div className="flex items-center justify-center gap-4 text-primary-foreground">
+            <Clock className="h-5 w-5" />
+            <span className="font-medium">OFFRE LIMITÉE — Livraison gratuite</span>
+            <div className="flex items-center gap-1">
+              <span className="bg-primary-foreground/20 px-3 py-1 rounded-lg font-bold">
+                {String(countdown.hours).padStart(2, '0')}h
+              </span>
+              <span className="font-bold">:</span>
+              <span className="bg-primary-foreground/20 px-3 py-1 rounded-lg font-bold">
+                {String(countdown.minutes).padStart(2, '0')}m
+              </span>
+              <span className="font-bold">:</span>
+              <span className="bg-primary-foreground/20 px-3 py-1 rounded-lg font-bold">
+                {String(countdown.seconds).padStart(2, '0')}s
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <main className="flex-1">
         {/* Product Section */}
-        <section className="max-w-7xl mx-auto px-6 pb-4">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+        <section className="max-w-7xl mx-auto px-6 pb-12">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
             {/* Image Gallery */}
             <div className="space-y-4">
-              {/* Main Image with Zoom */}
+              {/* Main Image */}
               <div 
-                className="relative aspect-square bg-card rounded-2xl overflow-hidden cursor-zoom-in group"
+                className="relative aspect-square bg-card rounded-3xl overflow-hidden cursor-zoom-in group border border-border"
                 onClick={() => setIsZoomed(true)}
               >
                 <img
@@ -147,12 +128,9 @@ const Product = () => {
                   alt="LASH GLOW - Faux cils individuels"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <button className="absolute bottom-4 right-4 bg-card/90 backdrop-blur-sm p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                <button className="absolute top-4 right-4 bg-card/80 backdrop-blur-sm p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                   <ZoomIn className="h-5 w-5 text-foreground" />
                 </button>
-                <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">
-                  Best-seller
-                </Badge>
               </div>
 
               {/* Thumbnails */}
@@ -161,9 +139,9 @@ const Product = () => {
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                    className={`aspect-square rounded-xl overflow-hidden border-2 transition-all ${
                       selectedImage === index 
-                        ? "border-primary" 
+                        ? "border-primary ring-2 ring-primary/20" 
                         : "border-transparent hover:border-border"
                     }`}
                   >
@@ -175,453 +153,210 @@ const Product = () => {
 
             {/* Product Info */}
             <div className="space-y-6">
-              {/* FOMO: Stock Alert */}
-              <div className="flex items-center gap-2 text-sm">
-                <span className="flex items-center gap-1.5 text-destructive font-medium">
-                  <AlertCircle className="h-4 w-4" />
-                  Plus que {stockCount} en stock !
+              {/* Collection Label & Rating */}
+              <div className="flex items-center gap-4">
+                <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+                  COLLECTION PREMIUM
                 </span>
-                <span className="text-muted-foreground">
-                  • {Math.floor(Math.random() * 50) + 30} personnes consultent ce produit
-                </span>
-              </div>
-
-              <div>
-                <p className="section-label mb-2">LASH GLOW</p>
-                <h1 className="text-3xl md:text-4xl font-display font-normal text-foreground mb-2">
-                  Faux cils individuels professionnels
-                </h1>
-                
-                {/* Rating */}
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
+                  <div className="flex">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} className="h-4 w-4 fill-brand-gold text-brand-gold" />
                     ))}
                   </div>
-                  <span className="text-sm text-muted-foreground">4.9/5 (847 avis)</span>
+                  <span className="text-sm text-muted-foreground">(847 avis)</span>
                 </div>
               </div>
 
-              {/* Price with Discount */}
-              <div className="space-y-2">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-3xl font-bold text-foreground">{currentPrice.toFixed(2)} €</span>
-                  {bundleSelected && (
-                    <>
-                      <span className="text-lg line-through text-muted-foreground">
-                        {originalBundlePrice.toFixed(2)} €
-                      </span>
-                      <Badge variant="secondary" className="bg-green-100 text-green-700">
-                        ÉCONOMISEZ {savings} €
-                      </Badge>
-                    </>
-                  )}
-                </div>
-                
-                {/* Countdown Timer */}
-                <div className="flex items-center gap-2 text-sm text-primary">
-                  <Clock className="h-4 w-4" />
-                  <span className="font-medium">
-                    Offre expire dans {String(countdown.hours).padStart(2, '0')}:
-                    {String(countdown.minutes).padStart(2, '0')}:
-                    {String(countdown.seconds).padStart(2, '0')}
-                  </span>
-                </div>
-              </div>
+              {/* Title */}
+              <h1 className="text-3xl md:text-4xl font-display font-normal text-foreground leading-tight">
+                LASH GLOW - Faux cils individuels
+              </h1>
 
-              {/* Short Description */}
-              <p className="text-muted-foreground">
-                Des cils parfaits en 5 minutes. Qualité salon à la maison.
+              {/* Description */}
+              <p className="text-muted-foreground leading-relaxed">
+                Faux cils individuels LASH GLOW de qualité professionnelle. Faciles à appliquer, légers et naturels. Disponibles en différentes longueurs (10mm, 12mm, 14mm) pour un regard sur-mesure.
               </p>
 
-              {/* Key Benefits */}
-              <ul className="space-y-2">
-                {[
-                  "✨ Application ultra-simple en 5 minutes",
-                  "💎 Qualité professionnelle salon",
-                  "♻️ Réutilisables jusqu'à 10 fois",
-                  "🎯 Résultat naturel garanti",
-                  "📦 Kit complet avec accessoires"
-                ].map((benefit, i) => (
-                  <li key={i} className="text-sm text-foreground">{benefit}</li>
-                ))}
-              </ul>
+              {/* Stock Alert */}
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                <span className="text-sm font-medium text-foreground">Stock limité</span>
+                <span className="text-sm text-primary font-medium">— Forte demande</span>
+              </div>
 
-              {/* Bundle & Save */}
+              {/* Key Benefits Grid */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-center gap-3">
+                  <Zap className="h-5 w-5 text-primary flex-shrink-0" />
+                  <span className="text-sm text-foreground">Résultats visibles dès la 1ère utilisation</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Award className="h-5 w-5 text-primary flex-shrink-0" />
+                  <span className="text-sm text-foreground">Design primé internationalement</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Shield className="h-5 w-5 text-primary flex-shrink-0" />
+                  <span className="text-sm text-foreground">Garantie 2 ans incluse</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Truck className="h-5 w-5 text-primary flex-shrink-0" />
+                  <span className="text-sm text-foreground">Livraison gratuite en France</span>
+                </div>
+              </div>
+
+              {/* Offers Selection */}
               <div className="space-y-3">
-                <p className="font-medium text-foreground">Choisissez votre offre :</p>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={() => setBundleSelected(false)}
-                    className={`p-4 rounded-xl border-2 text-left transition-all ${
-                      !bundleSelected 
-                        ? "border-primary bg-secondary" 
-                        : "border-border hover:border-muted-foreground"
-                    }`}
-                  >
-                    <p className="font-medium text-foreground">1x Kit</p>
-                    <p className="text-lg font-bold text-foreground">19,99 €</p>
-                  </button>
-                  <button
-                    onClick={() => setBundleSelected(true)}
-                    className={`p-4 rounded-xl border-2 text-left transition-all relative ${
-                      bundleSelected 
-                        ? "border-primary bg-secondary" 
-                        : "border-border hover:border-muted-foreground"
-                    }`}
-                  >
-                    <Badge className="absolute -top-2 -right-2 bg-primary text-primary-foreground">
-                      -12%
-                    </Badge>
-                    <p className="font-medium text-foreground">2x Kits</p>
-                    <p className="text-lg font-bold text-foreground">34,99 €</p>
-                    <p className="text-xs text-muted-foreground line-through">39,98 €</p>
-                  </button>
+                <p className="font-medium text-foreground">Choisissez votre offre</p>
+                <div className="space-y-3">
+                  {offers.map((offer) => (
+                    <button
+                      key={offer.id}
+                      onClick={() => setSelectedOffer(offer.id)}
+                      className={`w-full p-4 rounded-xl border-2 text-left transition-all relative flex items-center justify-between ${
+                        selectedOffer === offer.id 
+                          ? "border-primary bg-primary/5" 
+                          : "border-border hover:border-muted-foreground bg-card"
+                      }`}
+                    >
+                      {offer.label && (
+                        <Badge className="absolute -top-2.5 left-4 bg-primary text-primary-foreground text-xs">
+                          {offer.label}
+                        </Badge>
+                      )}
+                      <div className="flex items-center gap-3">
+                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                          selectedOffer === offer.id ? "border-primary" : "border-muted-foreground"
+                        }`}>
+                          {selectedOffer === offer.id && (
+                            <div className="w-3 h-3 rounded-full bg-primary" />
+                          )}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium text-foreground">
+                            {offer.units} unité{offer.units > 1 ? 's' : ''}
+                          </span>
+                          {offer.savings && (
+                            <span className="text-sm text-primary font-medium">
+                              Économisez {offer.savings.toFixed(2)} €
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xl font-bold text-foreground">{offer.price.toFixed(2)} €</span>
+                        {offer.originalPrice && (
+                          <span className="text-sm text-muted-foreground line-through ml-2">
+                            {offer.originalPrice.toFixed(2)} €
+                          </span>
+                        )}
+                      </div>
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              {/* Quantity Selector */}
-              <div className="flex items-center gap-4">
-                <span className="font-medium text-foreground">Quantité :</span>
-                <div className="flex items-center gap-3 bg-secondary rounded-full px-4 py-2">
-                  <button 
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="text-foreground hover:text-primary transition-colors"
-                  >
-                    <Minus className="h-4 w-4" />
-                  </button>
-                  <span className="w-8 text-center font-medium">{quantity}</span>
-                  <button 
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="text-foreground hover:text-primary transition-colors"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Add to Cart - Large & Prominent */}
-              <Button size="lg" className="w-full rounded-full py-6 text-lg group">
+              {/* Add to Cart */}
+              <Button size="lg" className="w-full rounded-full py-7 text-lg font-medium">
                 <ShoppingBag className="mr-2 h-5 w-5" />
-                Ajouter au panier — {(currentPrice * quantity).toFixed(2)} €
+                Ajouter au panier — {currentOffer.price.toFixed(2)} €
               </Button>
 
               {/* Trust Badges */}
-              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-border">
-                <div className="text-center">
-                  <Truck className="h-5 w-5 mx-auto mb-1 text-primary" />
-                  <p className="text-xs text-muted-foreground">Livraison gratuite</p>
+              <div className="flex items-center justify-center gap-6 py-4">
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Shield className="h-4 w-4" />
+                  <span>Paiement sécurisé</span>
                 </div>
-                <div className="text-center">
-                  <Shield className="h-5 w-5 mx-auto mb-1 text-primary" />
-                  <p className="text-xs text-muted-foreground">Paiement sécurisé</p>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <RefreshCw className="h-4 w-4" />
+                  <span>Satisfait ou remboursé</span>
                 </div>
-                <div className="text-center">
-                  <RefreshCw className="h-5 w-5 mx-auto mb-1 text-primary" />
-                  <p className="text-xs text-muted-foreground">Satisfait ou remboursé</p>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Package className="h-4 w-4" />
+                  <span>Expédition 24h</span>
+                </div>
+              </div>
+
+              {/* Payment Methods */}
+              <div className="flex items-center justify-center gap-3 py-2">
+                <span className="text-sm text-muted-foreground">Paiements acceptés :</span>
+                <div className="flex gap-2">
+                  {['VISA', 'MC', 'AMEX', 'PayPal'].map((method) => (
+                    <div key={method} className="px-2 py-1 bg-card border border-border rounded text-xs font-medium text-foreground">
+                      {method}
+                    </div>
+                  ))}
                 </div>
               </div>
 
               {/* Delivery Estimate */}
-              <div className="bg-secondary rounded-xl p-4">
-                <div className="flex items-start gap-3">
-                  <MapPin className="h-5 w-5 text-primary mt-0.5" />
-                  <div>
-                    <p className="font-medium text-foreground">Livraison estimée</p>
-                    <p className="text-sm text-muted-foreground">
-                      Commandez maintenant, recevez le <strong>16-18 janvier</strong>
-                    </p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Expédition sous 24h • Suivi en temps réel
-                    </p>
-                  </div>
+              <div className="bg-secondary/50 border border-border rounded-xl p-4">
+                <div className="flex items-center gap-2 text-sm">
+                  <Truck className="h-4 w-4 text-primary" />
+                  <span className="text-foreground">
+                    Livraison estimée : <strong>18-20 Janvier</strong>
+                  </span>
                 </div>
+                <p className="text-xs text-muted-foreground mt-1 ml-6">
+                  Commandez avant 14h pour une expédition aujourd'hui
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Video Tutorial Section - Right after product info */}
+        {/* Video Tutorial Section */}
         <ProductVideoSection />
-
-        {/* Product Details Tabs */}
-        <section className="bg-secondary py-16 px-6">
-          <div className="max-w-4xl mx-auto">
-            <Tabs defaultValue="description" className="w-full">
-              <TabsList className="w-full justify-start gap-1 bg-transparent border-b border-border rounded-none p-0 h-auto">
-                <TabsTrigger 
-                  value="description" 
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm font-medium text-muted-foreground data-[state=active]:text-primary"
-                >
-                  Description
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="delivery"
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm font-medium text-muted-foreground data-[state=active]:text-primary"
-                >
-                  Livraison
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="payment"
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm font-medium text-muted-foreground data-[state=active]:text-primary"
-                >
-                  Paiement
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="warranty"
-                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm font-medium text-muted-foreground data-[state=active]:text-primary"
-                >
-                  Garantie
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="description" className="pt-8 animate-in fade-in-0 duration-300">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-2xl font-display font-semibold text-foreground mb-3">Le kit complet LASH GLOW</h3>
-                      <p className="text-muted-foreground leading-relaxed">
-                        Découvrez la solution ultime pour des cils parfaits à domicile. Notre kit comprend tout ce dont vous avez besoin pour une application professionnelle.
-                      </p>
-                    </div>
-                    <div className="space-y-3">
-                      {[
-                        "3 paires de faux cils individuels (différentes longueurs)",
-                        "Colle hypoallergénique longue tenue",
-                        "Pince applicatrice de précision",
-                        "Guide d'application illustré",
-                        "Étui de rangement réutilisable"
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-center gap-3 group">
-                          <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
-                            <Check className="h-3.5 w-3.5 text-primary" />
-                          </div>
-                          <span className="text-foreground">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="bg-gradient-to-br from-secondary to-secondary/50 rounded-2xl p-6 space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Sparkles className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-foreground">Résultat professionnel</p>
-                        <p className="text-sm text-muted-foreground">À la maison, en quelques minutes</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Heart className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-foreground">Hypoallergénique</p>
-                        <p className="text-sm text-muted-foreground">Testé dermatologiquement</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Clock className="h-5 w-5 text-primary" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-foreground">Tenue 24h+</p>
-                        <p className="text-sm text-muted-foreground">Résistant à l'eau et à la transpiration</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="delivery" className="pt-8 animate-in fade-in-0 duration-300">
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <Truck className="h-6 w-6 text-primary" />
-                    </div>
-                    <h4 className="font-semibold text-foreground text-lg mb-2">Livraison Express</h4>
-                    <p className="text-muted-foreground text-sm mb-3">Expédition sous 24h, réception en 2-3 jours ouvrés</p>
-                    <span className="inline-flex items-center gap-1 text-primary font-medium text-sm">
-                      Gratuite <Check className="h-4 w-4" />
-                    </span>
-                  </div>
-                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <RefreshCw className="h-6 w-6 text-primary" />
-                    </div>
-                    <h4 className="font-semibold text-foreground text-lg mb-2">Retours Faciles</h4>
-                    <p className="text-muted-foreground text-sm mb-3">Retournez le produit non utilisé pour un remboursement complet</p>
-                    <span className="inline-flex items-center gap-1 text-primary font-medium text-sm">
-                      30 jours <Check className="h-4 w-4" />
-                    </span>
-                  </div>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="payment" className="pt-8 animate-in fade-in-0 duration-300">
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <CreditCard className="h-6 w-6 text-primary" />
-                    </div>
-                    <h4 className="font-semibold text-foreground text-lg mb-2">Paiements Acceptés</h4>
-                    <p className="text-muted-foreground text-sm mb-4">Visa, Mastercard, American Express, PayPal, Apple Pay</p>
-                    <div className="flex gap-2">
-                      <div className="w-10 h-6 bg-background rounded border border-border flex items-center justify-center">
-                        <span className="text-[10px] font-bold text-foreground">VISA</span>
-                      </div>
-                      <div className="w-10 h-6 bg-background rounded border border-border flex items-center justify-center">
-                        <span className="text-[10px] font-bold text-foreground">MC</span>
-                      </div>
-                      <div className="w-10 h-6 bg-background rounded border border-border flex items-center justify-center">
-                        <span className="text-[10px] font-bold text-foreground">AMEX</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <Shield className="h-6 w-6 text-primary" />
-                    </div>
-                    <h4 className="font-semibold text-foreground text-lg mb-2">Paiement Sécurisé</h4>
-                    <p className="text-muted-foreground text-sm mb-3">Vos données sont protégées par un cryptage SSL de niveau bancaire</p>
-                    <span className="inline-flex items-center gap-1 text-primary font-medium text-sm">
-                      100% Sécurisé <Check className="h-4 w-4" />
-                    </span>
-                  </div>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="warranty" className="pt-8 animate-in fade-in-0 duration-300">
-                <div className="grid sm:grid-cols-2 gap-6">
-                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <Award className="h-6 w-6 text-primary" />
-                    </div>
-                    <h4 className="font-semibold text-foreground text-lg mb-2">Satisfait ou Remboursé</h4>
-                    <p className="text-muted-foreground text-sm mb-3">Si vous n'êtes pas satisfaite, nous vous remboursons intégralement sans questions</p>
-                    <span className="inline-flex items-center gap-1 text-primary font-medium text-sm">
-                      Garantie 100% <Check className="h-4 w-4" />
-                    </span>
-                  </div>
-                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
-                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                      <Package className="h-6 w-6 text-primary" />
-                    </div>
-                    <h4 className="font-semibold text-foreground text-lg mb-2">Qualité Premium</h4>
-                    <p className="text-muted-foreground text-sm mb-3">Produits testés dermatologiquement, hypoallergéniques et approuvés</p>
-                    <span className="inline-flex items-center gap-1 text-primary font-medium text-sm">
-                      Certifié <Check className="h-4 w-4" />
-                    </span>
-                  </div>
-                </div>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </section>
-
-        {/* Featured In */}
-        <section className="py-12 px-6 bg-background">
-          <div className="max-w-4xl mx-auto text-center">
-            <p className="text-sm text-muted-foreground uppercase tracking-wider mb-6">Vu dans</p>
-            <div className="flex items-center justify-center gap-8 md:gap-16 flex-wrap">
-              {featuredIn.map((media) => (
-                <span key={media} className="text-xl md:text-2xl font-display font-medium text-muted-foreground/50">
-                  {media}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Customer Reviews */}
-        <section className="py-16 px-6 bg-secondary">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <p className="section-label mb-2">TÉMOIGNAGES</p>
-              <h2 className="section-title">Ce que nos clientes disent</h2>
-              <div className="flex items-center justify-center gap-2 mt-4">
-                <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 fill-brand-gold text-brand-gold" />
-                  ))}
-                </div>
-                <span className="text-muted-foreground">4.9/5 basé sur 847 avis</span>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {reviews.map((review) => (
-                <div key={review.id} className="bg-card rounded-2xl p-6 shadow-sm">
-                  <div className="flex items-start gap-4 mb-4">
-                    <img
-                      src={review.image}
-                      alt={review.name}
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium text-foreground">{review.name}</p>
-                        {review.verified && (
-                          <Badge variant="secondary" className="text-xs">
-                            <Check className="h-3 w-3 mr-1" />
-                            Vérifié
-                          </Badge>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="flex">
-                          {[...Array(review.rating)].map((_, i) => (
-                            <Star key={i} className="h-3 w-3 fill-brand-gold text-brand-gold" />
-                          ))}
-                        </div>
-                        <span className="text-xs text-muted-foreground">{review.date}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="text-muted-foreground text-sm">{review.text}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* FAQ Section */}
         <section className="py-16 px-6 bg-background">
           <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-12">
-              <p className="section-label mb-2">FAQ</p>
-              <h2 className="section-title">Questions fréquentes</h2>
+            <div className="text-center mb-10">
+              <h2 className="text-2xl md:text-3xl font-display font-normal text-foreground">
+                Questions fréquentes
+              </h2>
+              <p className="text-muted-foreground mt-2">
+                Tout ce que vous devez savoir sur nos faux cils
+              </p>
             </div>
 
-            <Accordion type="single" collapsible className="space-y-4">
+            <Accordion type="single" collapsible className="space-y-3">
               {[
                 {
-                  question: "Combien de temps dure l'application ?",
-                  answer: "L'application prend environ 5 minutes une fois que vous maîtrisez la technique. Pour les débutantes, comptez 10-15 minutes pour les premières applications."
+                  question: "Comment appliquer les faux cils LASH GLOW ?",
+                  answer: "L'application est très simple : nettoyez vos cils naturels, appliquez une fine couche de colle, attendez 30 secondes puis positionnez les cils à l'aide de la pince fournie. Un guide illustré complet est inclus dans chaque kit."
                 },
                 {
-                  question: "Les cils sont-ils réutilisables ?",
-                  answer: "Oui ! Avec un bon entretien, nos faux cils peuvent être réutilisés jusqu'à 10 fois. Nettoyez-les délicatement après chaque utilisation et rangez-les dans leur étui."
+                  question: "Combien de temps tiennent les faux cils ?",
+                  answer: "Avec notre colle longue tenue, les faux cils restent en place jusqu'à 24 heures. Ils résistent à l'eau et à la transpiration."
                 },
                 {
-                  question: "La colle est-elle hypoallergénique ?",
+                  question: "Les faux cils sont-ils réutilisables ?",
+                  answer: "Oui ! Avec un bon entretien, nos faux cils peuvent être réutilisés jusqu'à 10 fois. Nettoyez-les délicatement après chaque utilisation."
+                },
+                {
+                  question: "Sont-ils adaptés aux yeux sensibles ?",
                   answer: "Absolument. Notre colle est formulée sans latex, testée dermatologiquement et convient aux yeux sensibles et aux porteuses de lentilles."
                 },
                 {
-                  question: "Comment retirer les faux cils ?",
-                  answer: "Utilisez un démaquillant à base d'huile ou notre solution dissolvante. Les cils se retirent facilement sans tirer ni endommager vos cils naturels."
+                  question: "Quelle est la politique de retour ?",
+                  answer: "Nous offrons une garantie satisfait ou remboursé de 30 jours. Si vous n'êtes pas satisfaite, retournez le produit pour un remboursement complet."
                 },
                 {
-                  question: "Puis-je porter mes cils à la piscine ou au sport ?",
-                  answer: "Oui ! Notre colle résiste à l'eau et à la transpiration. Vous pouvez nager, faire du sport et même pleurer (de joie !) sans perdre vos cils."
+                  question: "Quels sont les délais de livraison ?",
+                  answer: "Expédition sous 24h, livraison en 2-3 jours ouvrés en France métropolitaine. Livraison gratuite sans minimum d'achat."
                 },
               ].map((faq, index) => (
-                <AccordionItem key={index} value={`item-${index}`} className="bg-card rounded-xl px-6">
-                  <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline">
+                <AccordionItem 
+                  key={index} 
+                  value={`item-${index}`} 
+                  className="bg-card border border-border rounded-xl px-6 data-[state=open]:bg-secondary/30"
+                >
+                  <AccordionTrigger className="text-left font-medium text-foreground hover:no-underline py-5">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
+                  <AccordionContent className="text-muted-foreground pb-5">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -645,7 +380,7 @@ const Product = () => {
               />
               <div>
                 <p className="font-medium text-foreground text-sm">LASH GLOW - Faux cils</p>
-                <p className="text-primary font-bold">{currentPrice.toFixed(2)} €</p>
+                <p className="text-primary font-bold">{currentOffer.price.toFixed(2)} €</p>
               </div>
             </div>
             <Button size="lg" className="rounded-full">
