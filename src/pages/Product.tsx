@@ -115,7 +115,7 @@ const Product = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-background overflow-x-hidden">
       <AnnouncementBar />
       <Header />
 
@@ -646,23 +646,23 @@ const Product = () => {
 
       {/* Mobile Sticky Add to Cart */}
       <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.1)] py-4 px-4 z-50 md:hidden safe-area-bottom">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 min-w-0 flex-1">
             <img 
               src={currentModel.image} 
               alt={currentModel.name}
-              className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+              className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
             />
-            <div>
-              <p className="font-medium text-foreground text-sm line-clamp-1">{currentModel.name}</p>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-primary font-bold">9,99 €</span>
-                <span className="text-xs text-muted-foreground line-through">20€</span>
+            <div className="min-w-0">
+              <p className="font-medium text-foreground text-xs truncate">{currentModel.name}</p>
+              <div className="flex items-baseline gap-1">
+                <span className="text-primary font-bold text-sm">9,99 €</span>
+                <span className="text-[10px] text-muted-foreground line-through">20€</span>
               </div>
             </div>
           </div>
           <Button 
-            className="rounded-xl px-5 py-3 h-auto font-semibold flex-shrink-0"
+            className="rounded-xl px-4 py-2.5 h-auto text-sm font-semibold flex-shrink-0"
             onClick={() => navigate(`/customize?model=${currentModel.id}`)}
           >
             Personnaliser
