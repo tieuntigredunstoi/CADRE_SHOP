@@ -61,10 +61,12 @@ const Hero = () => {
             </div>
 
             {/* CTA Button */}
-            <Button size="lg" className="rounded-full px-8 group">
-              Découvrir — 19,99€
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            <a href="/product">
+              <Button size="lg" className="rounded-full px-8 group">
+                Découvrir — 19,99€
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </a>
           </div>
         </div>
       </div>
