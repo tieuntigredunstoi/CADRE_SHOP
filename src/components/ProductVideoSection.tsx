@@ -2,7 +2,7 @@ import VideoPlayer from "./VideoPlayer";
 
 const ProductVideoSection = () => {
   return (
-    <section className="py-16 px-6 bg-background">
+    <section className="py-8 md:py-12 px-6 bg-background">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
