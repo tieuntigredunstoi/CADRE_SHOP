@@ -14,9 +14,9 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { label: "Notre Histoire", href: "/#story" },
-    { label: "Contact", href: "/#contact" },
-    { label: "Suivi", href: "/#tracking" },
+    { label: "Notre Histoire", href: "/about" },
+    { label: "Contact", href: "/contact" },
+    { label: "Suivi", href: "/tracking" },
   ];
 
   return (
@@ -34,13 +34,13 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <a 
+            <Link 
               key={link.label}
-              href={link.href} 
+              to={link.href} 
               className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
         </nav>
 
@@ -76,14 +76,14 @@ const Header = () => {
               </div>
               <nav className="flex flex-col gap-4">
                 {navLinks.map((link) => (
-                  <a 
+                  <Link 
                     key={link.label}
-                    href={link.href}
+                    to={link.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className="text-lg font-medium text-foreground hover:text-primary transition-colors py-2"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 ))}
                 <Button 
                   className="mt-4 rounded-full"
