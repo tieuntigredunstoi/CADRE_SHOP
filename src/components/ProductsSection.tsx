@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import productLashes from "@/assets/product-lashes.jpg";
 import productBundle from "@/assets/product-bundle.jpg";
@@ -6,6 +7,7 @@ import productBundle from "@/assets/product-bundle.jpg";
 const products = [
   {
     id: 1,
+    slug: "lash-glow-faux-cils-individuels",
     image: productLashes,
     title: "LASH GLOW - Faux cils individuels",
     price: "19,99 €",
@@ -13,6 +15,7 @@ const products = [
   },
   {
     id: 2,
+    slug: "lash-glow-bundle-de-2",
     image: productBundle,
     title: "LASH GLOW - Bundle de 2",
     price: "39,99 €",
@@ -30,12 +33,12 @@ const ProductsSection = () => {
             <p className="section-label mb-2">NOS BEST-SELLERS</p>
             <h2 className="section-title">Produits phares</h2>
           </div>
-          <a 
-            href="#" 
+          <Link 
+            to="/product"
             className="mt-4 md:mt-0 text-primary font-medium flex items-center gap-1 hover:gap-2 transition-all"
           >
             Voir tout <ArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
         </div>
 
         {/* Products Grid */}
@@ -43,6 +46,7 @@ const ProductsSection = () => {
           {products.map((product) => (
             <ProductCard
               key={product.id}
+              slug={product.slug}
               image={product.image}
               title={product.title}
               price={product.price}
@@ -53,12 +57,12 @@ const ProductsSection = () => {
 
         {/* View All Button (Mobile) */}
         <div className="mt-8 text-center md:hidden">
-          <a 
-            href="#" 
+          <Link 
+            to="/product"
             className="inline-flex items-center gap-2 text-primary font-medium"
           >
             Voir tous les produits <ArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

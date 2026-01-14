@@ -1,5 +1,6 @@
 import { Award, Clock, RefreshCw, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import FeatureCard from "./FeatureCard";
 
 const features = [
@@ -26,6 +27,8 @@ const features = [
 ];
 
 const FeaturesSection = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="bg-secondary py-16 md:py-24 px-6 md:px-12">
       <div className="max-w-7xl mx-auto">
@@ -49,7 +52,11 @@ const FeaturesSection = () => {
 
         {/* CTA */}
         <div className="text-center">
-          <Button size="lg" className="rounded-full px-8">
+          <Button 
+            size="lg" 
+            className="rounded-full px-8"
+            onClick={() => navigate("/product")}
+          >
             Essayer maintenant
           </Button>
         </div>
