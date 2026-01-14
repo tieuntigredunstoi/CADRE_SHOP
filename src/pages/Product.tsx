@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Star, ShoppingBag, Check, Truck, Shield, RefreshCw, Clock, ChevronLeft, ChevronRight, ZoomIn, X, Minus, Plus, Calendar, RotateCcw } from "lucide-react";
+import { Star, ShoppingBag, Check, Truck, Shield, RefreshCw, Clock, ChevronLeft, ChevronRight, ZoomIn, X, Minus, Plus, Calendar, RotateCcw, Pipette, ClipboardList, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -296,48 +296,45 @@ const Product = () => {
                 </div>
               </div>
 
-              {/* Accordion Sections */}
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="application" className="border-gray-200">
-                  <AccordionTrigger className="text-sm font-medium py-4">
-                    <div className="flex items-center gap-2">
-                      <span>💄</span>
-                      <span>Application et utilisation</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground pb-4">
+              {/* Info Sections - Always visible */}
+              <div className="space-y-4">
+                {/* Application et utilisation */}
+                <div className="border-b border-gray-200 pb-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Pipette className="h-5 w-5 text-primary" />
+                    <span className="font-medium text-foreground">Application et utilisation</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground pl-8">
                     Application facile en 5 minutes. Nettoyez vos cils naturels, appliquez la colle sur le support, attendez 30 secondes et placez délicatement les cils. Résultat professionnel garanti.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="caracteristiques" className="border-gray-200">
-                  <AccordionTrigger className="text-sm font-medium py-4">
-                    <div className="flex items-center gap-2">
-                      <span>📋</span>
-                      <span>Caractéristiques techniques</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground pb-4">
-                    <ul className="space-y-1.5">
-                      <li>• Longueurs disponibles : 10mm, 12mm, 14mm</li>
-                      <li>• Matériau : Fibres synthétiques haute qualité</li>
-                      <li>• Colle : Hypoallergénique, sans latex</li>
-                      <li>• Durée de tenue : Jusqu'à 7 jours</li>
-                      <li>• Réutilisable : Jusqu'à 20 fois</li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="livraison" className="border-gray-200 border-b-0">
-                  <AccordionTrigger className="text-sm font-medium py-4">
-                    <div className="flex items-center gap-2">
-                      <span>📦</span>
-                      <span>Livraison et retours</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="text-sm text-muted-foreground pb-4">
+                  </p>
+                </div>
+
+                {/* Caractéristiques techniques */}
+                <div className="border-b border-gray-200 pb-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <ClipboardList className="h-5 w-5 text-primary" />
+                    <span className="font-medium text-foreground">Caractéristiques techniques</span>
+                  </div>
+                  <ul className="text-sm text-muted-foreground pl-8 space-y-1.5">
+                    <li>• Longueurs disponibles : 10mm, 12mm, 14mm</li>
+                    <li>• Matériau : Fibres synthétiques haute qualité</li>
+                    <li>• Colle : Hypoallergénique, sans latex</li>
+                    <li>• Durée de tenue : Jusqu'à 7 jours</li>
+                    <li>• Réutilisable : Jusqu'à 20 fois</li>
+                  </ul>
+                </div>
+
+                {/* Livraison et retours */}
+                <div className="pb-2">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Package className="h-5 w-5 text-primary" />
+                    <span className="font-medium text-foreground">Livraison et retours</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground pl-8">
                     Livraison gratuite en France métropolitaine sous 3-5 jours ouvrés. Retour gratuit sous 90 jours si vous n'êtes pas satisfaite. Remboursement intégral garanti.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
