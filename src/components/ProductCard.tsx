@@ -1,15 +1,17 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { Badge } from "@/components/ui/badge";
 
 interface ProductCardProps {
   image: string;
   title: string;
   price: string;
+  originalPrice?: string;
   slug: string;
   isBestSeller?: boolean;
 }
 
-const ProductCard = ({ image, title, price, slug, isBestSeller }: ProductCardProps) => {
+const ProductCard = ({ image, title, price, originalPrice, slug, isBestSeller }: ProductCardProps) => {
   return (
     <Link 
       to={`/product/${slug}`}
@@ -23,9 +25,14 @@ const ProductCard = ({ image, title, price, slug, isBestSeller }: ProductCardPro
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         {isBestSeller && (
-          <span className="absolute top-4 left-4 bg-card text-foreground text-xs font-medium px-3 py-1.5 rounded-full">
+          <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">
             Best-seller
-          </span>
+          </Badge>
+        )}
+        {originalPrice && (
+          <Badge className="absolute top-4 right-4 bg-accent text-accent-foreground">
+            -50%
+          </Badge>
         )}
       </div>
       
@@ -33,7 +40,12 @@ const ProductCard = ({ image, title, price, slug, isBestSeller }: ProductCardPro
       <div className="p-5">
         <h3 className="font-semibold text-foreground mb-2 font-body">{title}</h3>
         <div className="flex items-center justify-between">
-          <span className="text-muted-foreground">{price}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-primary font-semibold">{price}</span>
+            {originalPrice && (
+              <span className="text-muted-foreground text-sm line-through">{originalPrice}</span>
+            )}
+          </div>
           <span className="text-primary font-medium flex items-center gap-1 group-hover:gap-2 transition-all">
             Voir <ArrowRight className="h-4 w-4" />
           </span>

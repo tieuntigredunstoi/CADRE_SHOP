@@ -1,28 +1,28 @@
-import { Award, Clock, RefreshCw, Truck } from "lucide-react";
+import { Heart, Sparkles, Gift, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import FeatureCard from "./FeatureCard";
 
 const features = [
   {
-    icon: Award,
-    title: "Qualité professionnelle",
-    description: "Utilisés dans les meilleurs salons de beauté",
+    icon: Heart,
+    title: "Souvenirs éternels",
+    description: "Revivez vos plus beaux moments gravés à jamais",
   },
   {
-    icon: Clock,
-    title: "Application 5 minutes",
-    description: "Pas besoin d'être experte pour un résultat parfait",
+    icon: Sparkles,
+    title: "Qualité premium",
+    description: "Plexiglas haute définition et bois véritable",
   },
   {
-    icon: RefreshCw,
-    title: "Réutilisables",
-    description: "Jusqu'à 10 utilisations avec un bon entretien",
+    icon: Gift,
+    title: "Cadeau parfait",
+    description: "Offrez une émotion unique pour la Saint-Valentin",
   },
   {
     icon: Truck,
     title: "Livraison gratuite",
-    description: "Expédié sous 24h, chez vous en 2-3 jours",
+    description: "Expédié sous 24h, chez vous en 3-5 jours",
   },
 ];
 
@@ -34,8 +34,8 @@ const FeaturesSection = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <p className="section-label mb-2">POURQUOI LASH GLOW ?</p>
-          <h2 className="section-title">Des cils parfaits, sans rendez-vous salon</h2>
+          <p className="section-label mb-2">POURQUOI MEMORY ?</p>
+          <h2 className="section-title">Un instant figé, une émotion éternelle</h2>
         </div>
 
         {/* Features Grid */}
@@ -57,7 +57,7 @@ const FeaturesSection = () => {
             className="rounded-full px-8"
             onClick={() => navigate("/product")}
           >
-            Essayer maintenant
+            Créer mon Memory
           </Button>
         </div>
       </div>

@@ -21,7 +21,7 @@ const Header = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-xl font-bold text-foreground">LASH GLOW</span>
+            <span className="text-xl font-bold text-foreground tracking-wide">MEMORY</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -44,7 +44,7 @@ const Header = () => {
               className="hidden md:flex rounded-full px-6"
               onClick={() => navigate("/product")}
             >
-              Acheter
+              Commander
             </Button>
             <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
               <Search className="h-5 w-5" />
@@ -108,7 +108,7 @@ const Header = () => {
                 navigate("/product");
               }}
             >
-              Acheter maintenant
+              Commander maintenant
             </Button>
           </nav>
         </div>
