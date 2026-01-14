@@ -340,6 +340,9 @@ const Product = () => {
           </div>
         </section>
 
+        {/* Video Tutorial Section - Right after product info */}
+        <ProductVideoSection />
+
         {/* Product Details Tabs */}
         <section className="bg-secondary py-16 px-6">
           <div className="max-w-4xl mx-auto">
@@ -448,9 +451,6 @@ const Product = () => {
             </div>
           </div>
         </section>
-
-        {/* Video Tutorial Section */}
-        <ProductVideoSection />
 
         {/* Customer Reviews */}
         <section className="py-16 px-6 bg-secondary">
