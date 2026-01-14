@@ -444,42 +444,39 @@ const Product = () => {
                 </div>
               </div>
 
-              {/* Add to Cart Button */}
+              {/* Actions */}
               <div className="space-y-3">
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button 
-                    size="lg" 
-                    className="w-full rounded-xl py-7 text-base font-semibold uppercase tracking-wide relative overflow-hidden group"
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <Button
+                    size="lg"
+                    className="w-full rounded-xl h-auto py-4 md:py-7 text-sm md:text-base font-semibold uppercase tracking-wide relative overflow-hidden group whitespace-normal leading-tight"
                     onClick={() => navigate(`/customize?model=${currentModel.id}`)}
                   >
-                    <Palette className="mr-2 h-5 w-5" />
-                    <span className="relative z-10">Personnaliser mon Memory</span>
+                    <Palette className="mr-2 h-5 w-5 shrink-0" />
+                    <span className="relative z-10 text-center">
+                      <span className="md:hidden">Personnaliser</span>
+                      <span className="hidden md:inline">Personnaliser mon Memory</span>
+                    </span>
                     <motion.div
                       className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-primary"
-                      animate={{
-                        x: ["-100%", "100%"],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
+                      animate={{ x: ["-100%", "100%"] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
                       style={{ opacity: 0.3 }}
                     />
                   </Button>
                 </motion.div>
-                
-                <Button 
-                  size="lg" 
+
+                <Button
+                  size="lg"
                   variant="outline"
-                  className="w-full rounded-xl py-6 text-base font-medium"
+                  className="w-full rounded-xl h-auto py-4 md:py-6 text-sm md:text-base font-medium whitespace-normal leading-tight"
                   onClick={handleAddToCart}
                 >
-                  <ShoppingBag className="mr-2 h-4 w-4" />
-                  Ajouter au panier — 9,99 €
+                  <ShoppingBag className="mr-2 h-4 w-4 shrink-0" />
+                  <span className="text-center">
+                    <span className="md:hidden">Ajouter — 9,99 €</span>
+                    <span className="hidden md:inline">Ajouter au panier — 9,99 €</span>
+                  </span>
                 </Button>
               </div>
 
