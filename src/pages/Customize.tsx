@@ -213,26 +213,26 @@ const Customize = () => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
-              {/* Model Selector - Horizontal scroll on mobile */}
+              {/* Model Selector */}
               <div className="space-y-3">
                 <Label className="text-sm md:text-base font-medium">1. Choisissez votre modèle</Label>
-                
-                {/* Mobile: Horizontal scroll */}
-                <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide md:hidden -mx-4 px-4">
+
+                {/* Mobile: Grid (no horizontal scroll) */}
+                <div className="grid grid-cols-3 gap-2 md:hidden">
                   {frameModels.map((model) => (
                     <motion.button
                       key={model.id}
                       onClick={() => handleModelChange(model)}
-                      className={`relative flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all ${
+                      className={`relative rounded-xl overflow-hidden border-2 transition-all ${
                         selectedModel.id === model.id
                           ? "border-primary ring-2 ring-primary/20"
                           : "border-border"
                       }`}
-                      whileTap={{ scale: 0.95 }}
+                      whileTap={{ scale: 0.97 }}
                     >
-                      <div className="w-16 h-16">
-                        <img 
-                          src={model.image} 
+                      <div className="aspect-square">
+                        <img
+                          src={model.image}
                           alt={model.name}
                           className="w-full h-full object-cover"
                         />
@@ -264,8 +264,8 @@ const Customize = () => {
                       whileTap={{ scale: 0.98 }}
                     >
                       <div className="aspect-square">
-                        <img 
-                          src={model.image} 
+                        <img
+                          src={model.image}
                           alt={model.name}
                           className="w-full h-full object-cover"
                         />
