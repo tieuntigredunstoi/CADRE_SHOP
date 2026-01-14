@@ -369,7 +369,7 @@ const Product = () => {
         </section>
 
         {/* Video Tutorial Section */}
-        <section className="py-10 md:py-16 px-4 md:px-6 bg-background">
+        <section className="pt-6 md:pt-10 pb-10 md:pb-16 px-4 md:px-6 bg-background">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-6 md:mb-10">
               <h2 className="text-xl md:text-3xl font-display font-normal text-foreground mb-2 md:mb-3">
