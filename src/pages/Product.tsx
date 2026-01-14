@@ -236,9 +236,9 @@ const Product = () => {
               </p>
 
               {/* Stock Alert */}
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-green-500"></span>
-                <span className="text-xs md:text-sm text-primary font-medium">Stock limité — Forte demande</span>
+              <div className="inline-flex items-center gap-2 border border-green-200 bg-green-50 rounded-lg px-4 py-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                <span className="text-sm text-green-700 font-medium">Stock limité — Forte demande</span>
               </div>
 
               {/* Key Benefits Grid - 1 column on mobile, 2 on tablet+ */}
