@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, ShoppingBag, Menu, X } from "lucide-react";
+import { Search, ShoppingBag, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -7,6 +7,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import logo from "@/assets/logo.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -19,11 +20,15 @@ const Header = () => {
   ];
 
   return (
-    <header className="bg-background py-4 px-6 md:px-12 sticky top-0 z-40 border-b border-border/50">
+    <header className="bg-background py-3 px-6 md:px-12 sticky top-0 z-40 border-b border-border/50">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="text-xl md:text-2xl font-bold tracking-tight text-foreground font-display">
-          LASH GLOW
+        <Link to="/" className="flex items-center">
+          <img 
+            src={logo} 
+            alt="LASH GLOW" 
+            className="h-10 md:h-12 w-auto"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -66,7 +71,10 @@ const Header = () => {
               </button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[280px] bg-card">
-              <nav className="flex flex-col gap-4 mt-8">
+              <div className="flex justify-center mb-6 mt-4">
+                <img src={logo} alt="LASH GLOW" className="h-12 w-auto" />
+              </div>
+              <nav className="flex flex-col gap-4">
                 {navLinks.map((link) => (
                   <a 
                     key={link.label}
