@@ -166,9 +166,9 @@ const Product = () => {
                       <div
                         key={bundle.id}
                         onClick={() => setSelectedBundle(bundle.id)}
-                        className={`relative rounded-2xl p-4 cursor-pointer transition-all duration-300 ease-out ${
+                        className={`relative rounded-2xl p-3 md:p-4 cursor-pointer transition-all duration-300 ease-out ${
                           isSelected 
-                            ? "border-2 border-primary bg-primary/5 scale-[1.02] shadow-md" 
+                            ? "border-2 border-primary bg-primary/5 md:scale-[1.02] shadow-md" 
                             : "border border-border hover:border-primary/30 hover:bg-secondary/30"
                         }`}
                       >
