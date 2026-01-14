@@ -34,7 +34,7 @@ import productDetail2 from "@/assets/product-detail-2.jpg";
 import productDetail3 from "@/assets/product-detail-3.jpg";
 
 // Import payment logos
-import { logoVisa, logoMastercard, PayPalLogo, AmexLogo } from "@/components/PaymentLogos";
+import { logoVisa, logoMastercard, logoAmex } from "@/components/PaymentLogos";
 
 const productImages = [productMain, productDetail1, productDetail2, productDetail3];
 
@@ -352,10 +352,7 @@ const Product = () => {
                     <img src={logoMastercard} alt="Mastercard" className="h-4 md:h-5 w-auto" />
                   </div>
                   <div className="h-6 md:h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
-                    <AmexLogo />
-                  </div>
-                  <div className="h-6 md:h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
-                    <PayPalLogo />
+                    <img src={logoAmex} alt="American Express" className="h-4 md:h-5 w-auto" />
                   </div>
                 </div>
               </div>
