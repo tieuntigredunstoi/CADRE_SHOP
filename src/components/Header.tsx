@@ -8,14 +8,14 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { label: "Notre Histoire", href: "/about" },
-    { label: "Contact", href: "/contact" },
-    { label: "Suivi", href: "/tracking" },
+    { label: "Notre Histoire", href: "/about", highlight: true },
+    { label: "Contact", href: "/contact", highlight: false },
+    { label: "Suivi", href: "/tracking", highlight: false },
   ];
 
   return (
     <>
-      <header className="bg-background py-3 px-4 md:px-12 sticky top-0 z-40 border-b border-border/50">
+      <header className="bg-background py-3 px-4 md:px-12 sticky top-0 z-50 border-b border-border/50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
@@ -56,79 +56,63 @@ const Header = () => {
 
             {/* Mobile Menu Trigger */}
             <button 
-              className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
-              onClick={() => setMobileMenuOpen(true)}
+              className={`md:hidden p-2 w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                mobileMenuOpen 
+                  ? "bg-gray-100 text-foreground" 
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              <Menu className="h-5 w-5" />
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        <div 
+          className={`md:hidden absolute left-0 right-0 top-full bg-background border-b border-border/50 overflow-hidden transition-all duration-300 ease-in-out ${
+            mobileMenuOpen 
+              ? "max-h-[400px] opacity-100" 
+              : "max-h-0 opacity-0"
+          }`}
+        >
+          <nav className="px-4 py-6 space-y-5">
+            {navLinks.map((link) => (
+              <Link 
+                key={link.label}
+                to={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block text-xl font-display transition-colors ${
+                  link.highlight 
+                    ? "text-foreground font-medium" 
+                    : "text-primary hover:text-foreground"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+            
+            {/* CTA Button */}
+            <Button 
+              size="lg"
+              className="w-full rounded-full py-6 text-base font-medium mt-4"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                navigate("/product");
+              }}
+            >
+              Acheter maintenant
+            </Button>
+          </nav>
+        </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
+      {/* Backdrop for mobile menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          {/* Backdrop */}
-          <div 
-            className="absolute inset-0 bg-black/20" 
-            onClick={() => setMobileMenuOpen(false)}
-          />
-          
-          {/* Menu Panel */}
-          <div className="absolute inset-0 bg-background animate-in slide-in-from-right duration-300">
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-border/50">
-              <span className="text-xl font-bold text-foreground">LASH GLOW</span>
-              <div className="flex items-center gap-1">
-                <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
-                  <Search className="h-5 w-5" />
-                </button>
-                <button className="p-2 text-muted-foreground hover:text-foreground transition-colors relative">
-                  <ShoppingBag className="h-5 w-5" />
-                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-4 h-4 rounded-full flex items-center justify-center">
-                    0
-                  </span>
-                </button>
-                <button 
-                  className="p-2 w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-foreground hover:bg-gray-200 transition-colors ml-1"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <X className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
-
-            {/* Navigation Links */}
-            <nav className="px-4 py-8 space-y-6">
-              {navLinks.map((link, index) => (
-                <Link 
-                  key={link.label}
-                  to={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`block text-2xl font-display transition-colors ${
-                    index === 0 
-                      ? "text-foreground font-medium" 
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-              
-              {/* CTA Button */}
-              <Button 
-                size="lg"
-                className="w-full rounded-full py-6 text-base font-medium mt-8"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  navigate("/product");
-                }}
-              >
-                Acheter maintenant
-              </Button>
-            </nav>
-          </div>
-        </div>
+        <div 
+          className="fixed inset-0 bg-black/10 z-40 md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
       )}
     </>
   );
