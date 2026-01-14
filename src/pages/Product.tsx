@@ -16,7 +16,9 @@ import {
   Award,
   CreditCard,
   Package,
-  AlertCircle
+  AlertCircle,
+  Sparkles,
+  Heart
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -347,90 +349,170 @@ const Product = () => {
         <section className="bg-secondary py-16 px-6">
           <div className="max-w-4xl mx-auto">
             <Tabs defaultValue="description" className="w-full">
-              <TabsList className="w-full grid grid-cols-4 mb-8">
-                <TabsTrigger value="description">Description</TabsTrigger>
-                <TabsTrigger value="delivery">Livraison</TabsTrigger>
-                <TabsTrigger value="payment">Paiement</TabsTrigger>
-                <TabsTrigger value="warranty">Garantie</TabsTrigger>
+              <TabsList className="w-full justify-start gap-1 bg-transparent border-b border-border rounded-none p-0 h-auto">
+                <TabsTrigger 
+                  value="description" 
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm font-medium text-muted-foreground data-[state=active]:text-primary"
+                >
+                  Description
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="delivery"
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm font-medium text-muted-foreground data-[state=active]:text-primary"
+                >
+                  Livraison
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="payment"
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm font-medium text-muted-foreground data-[state=active]:text-primary"
+                >
+                  Paiement
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="warranty"
+                  className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 text-sm font-medium text-muted-foreground data-[state=active]:text-primary"
+                >
+                  Garantie
+                </TabsTrigger>
               </TabsList>
               
-              <TabsContent value="description" className="space-y-4">
-                <h3 className="text-xl font-display font-medium text-foreground">Le kit complet LASH GLOW</h3>
-                <p className="text-muted-foreground">
-                  Découvrez la solution ultime pour des cils parfaits à domicile. Notre kit comprend tout ce dont vous avez besoin pour une application professionnelle.
-                </p>
-                <ul className="space-y-2">
-                  {[
-                    "3 paires de faux cils individuels (différentes longueurs)",
-                    "Colle hypoallergénique longue tenue",
-                    "Pince applicatrice de précision",
-                    "Guide d'application illustré",
-                    "Étui de rangement réutilisable"
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-foreground">
-                      <Check className="h-4 w-4 text-primary" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </TabsContent>
-              
-              <TabsContent value="delivery" className="space-y-4">
-                <h3 className="text-xl font-display font-medium text-foreground">Livraison & Retours</h3>
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <Truck className="h-5 w-5 text-primary mt-1" />
+              <TabsContent value="description" className="pt-8 animate-in fade-in-0 duration-300">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-6">
                     <div>
-                      <p className="font-medium text-foreground">Livraison gratuite</p>
-                      <p className="text-sm text-muted-foreground">Expédition sous 24h, réception en 2-3 jours ouvrés</p>
+                      <h3 className="text-2xl font-display font-semibold text-foreground mb-3">Le kit complet LASH GLOW</h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Découvrez la solution ultime pour des cils parfaits à domicile. Notre kit comprend tout ce dont vous avez besoin pour une application professionnelle.
+                      </p>
+                    </div>
+                    <div className="space-y-3">
+                      {[
+                        "3 paires de faux cils individuels (différentes longueurs)",
+                        "Colle hypoallergénique longue tenue",
+                        "Pince applicatrice de précision",
+                        "Guide d'application illustré",
+                        "Étui de rangement réutilisable"
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center gap-3 group">
+                          <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
+                            <Check className="h-3.5 w-3.5 text-primary" />
+                          </div>
+                          <span className="text-foreground">{item}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <RefreshCw className="h-5 w-5 text-primary mt-1" />
-                    <div>
-                      <p className="font-medium text-foreground">Retours gratuits sous 30 jours</p>
-                      <p className="text-sm text-muted-foreground">Retournez le produit non utilisé pour un remboursement complet</p>
+                  <div className="bg-gradient-to-br from-secondary to-secondary/50 rounded-2xl p-6 space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Sparkles className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">Résultat professionnel</p>
+                        <p className="text-sm text-muted-foreground">À la maison, en quelques minutes</p>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="payment" className="space-y-4">
-                <h3 className="text-xl font-display font-medium text-foreground">Paiement sécurisé</h3>
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <CreditCard className="h-5 w-5 text-primary mt-1" />
-                    <div>
-                      <p className="font-medium text-foreground">Moyens de paiement acceptés</p>
-                      <p className="text-sm text-muted-foreground">Visa, Mastercard, American Express, PayPal, Apple Pay</p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Heart className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">Hypoallergénique</p>
+                        <p className="text-sm text-muted-foreground">Testé dermatologiquement</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <Shield className="h-5 w-5 text-primary mt-1" />
-                    <div>
-                      <p className="font-medium text-foreground">Cryptage SSL</p>
-                      <p className="text-sm text-muted-foreground">Vos données sont protégées par un cryptage de niveau bancaire</p>
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Clock className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-foreground">Tenue 24h+</p>
+                        <p className="text-sm text-muted-foreground">Résistant à l'eau et à la transpiration</p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </TabsContent>
               
-              <TabsContent value="warranty" className="space-y-4">
-                <h3 className="text-xl font-display font-medium text-foreground">Garantie satisfaction</h3>
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <Award className="h-5 w-5 text-primary mt-1" />
-                    <div>
-                      <p className="font-medium text-foreground">Garantie 100% satisfait ou remboursé</p>
-                      <p className="text-sm text-muted-foreground">Si vous n'êtes pas satisfaite, nous vous remboursons intégralement</p>
+              <TabsContent value="delivery" className="pt-8 animate-in fade-in-0 duration-300">
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                      <Truck className="h-6 w-6 text-primary" />
+                    </div>
+                    <h4 className="font-semibold text-foreground text-lg mb-2">Livraison Express</h4>
+                    <p className="text-muted-foreground text-sm mb-3">Expédition sous 24h, réception en 2-3 jours ouvrés</p>
+                    <span className="inline-flex items-center gap-1 text-primary font-medium text-sm">
+                      Gratuite <Check className="h-4 w-4" />
+                    </span>
+                  </div>
+                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                      <RefreshCw className="h-6 w-6 text-primary" />
+                    </div>
+                    <h4 className="font-semibold text-foreground text-lg mb-2">Retours Faciles</h4>
+                    <p className="text-muted-foreground text-sm mb-3">Retournez le produit non utilisé pour un remboursement complet</p>
+                    <span className="inline-flex items-center gap-1 text-primary font-medium text-sm">
+                      30 jours <Check className="h-4 w-4" />
+                    </span>
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="payment" className="pt-8 animate-in fade-in-0 duration-300">
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                      <CreditCard className="h-6 w-6 text-primary" />
+                    </div>
+                    <h4 className="font-semibold text-foreground text-lg mb-2">Paiements Acceptés</h4>
+                    <p className="text-muted-foreground text-sm mb-4">Visa, Mastercard, American Express, PayPal, Apple Pay</p>
+                    <div className="flex gap-2">
+                      <div className="w-10 h-6 bg-background rounded border border-border flex items-center justify-center">
+                        <span className="text-[10px] font-bold text-foreground">VISA</span>
+                      </div>
+                      <div className="w-10 h-6 bg-background rounded border border-border flex items-center justify-center">
+                        <span className="text-[10px] font-bold text-foreground">MC</span>
+                      </div>
+                      <div className="w-10 h-6 bg-background rounded border border-border flex items-center justify-center">
+                        <span className="text-[10px] font-bold text-foreground">AMEX</span>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-start gap-3">
-                    <Package className="h-5 w-5 text-primary mt-1" />
-                    <div>
-                      <p className="font-medium text-foreground">Qualité garantie</p>
-                      <p className="text-sm text-muted-foreground">Produits testés dermatologiquement, hypoallergéniques</p>
+                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                      <Shield className="h-6 w-6 text-primary" />
                     </div>
+                    <h4 className="font-semibold text-foreground text-lg mb-2">Paiement Sécurisé</h4>
+                    <p className="text-muted-foreground text-sm mb-3">Vos données sont protégées par un cryptage SSL de niveau bancaire</p>
+                    <span className="inline-flex items-center gap-1 text-primary font-medium text-sm">
+                      100% Sécurisé <Check className="h-4 w-4" />
+                    </span>
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="warranty" className="pt-8 animate-in fade-in-0 duration-300">
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                      <Award className="h-6 w-6 text-primary" />
+                    </div>
+                    <h4 className="font-semibold text-foreground text-lg mb-2">Satisfait ou Remboursé</h4>
+                    <p className="text-muted-foreground text-sm mb-3">Si vous n'êtes pas satisfaite, nous vous remboursons intégralement sans questions</p>
+                    <span className="inline-flex items-center gap-1 text-primary font-medium text-sm">
+                      Garantie 100% <Check className="h-4 w-4" />
+                    </span>
+                  </div>
+                  <div className="bg-secondary/50 rounded-2xl p-6 hover:bg-secondary transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                      <Package className="h-6 w-6 text-primary" />
+                    </div>
+                    <h4 className="font-semibold text-foreground text-lg mb-2">Qualité Premium</h4>
+                    <p className="text-muted-foreground text-sm mb-3">Produits testés dermatologiquement, hypoallergéniques et approuvés</p>
+                    <span className="inline-flex items-center gap-1 text-primary font-medium text-sm">
+                      Certifié <Check className="h-4 w-4" />
+                    </span>
                   </div>
                 </div>
               </TabsContent>
