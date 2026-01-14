@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Star, ShoppingBag, Check, Truck, Shield, RefreshCw, Clock, ChevronLeft, ChevronRight, ZoomIn, X, Minus, Plus, Calendar, RotateCcw, Pipette, ClipboardList, Package } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Star, ShoppingBag, Check, Truck, Shield, RefreshCw, Clock, ChevronLeft, ChevronRight, ZoomIn, X, Minus, Plus, Calendar, RotateCcw, Pipette, ClipboardList, Package, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -94,12 +95,45 @@ const Product = () => {
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
             
             {/* Image Gallery */}
-            <div className="space-y-4">
+            <motion.div 
+              className="space-y-4"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
               {/* Main Image */}
               <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden group" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
                 <div className="aspect-square">
-                  <img src={productImages[selectedImage]} alt="LASH GLOW - Faux cils individuels" className="w-full h-full object-cover cursor-zoom-in" onClick={() => setIsZoomed(true)} />
+                  <AnimatePresence mode="wait">
+                    <motion.img 
+                      key={selectedImage}
+                      src={productImages[selectedImage]} 
+                      alt="LASH GLOW - Faux cils individuels" 
+                      className="w-full h-full object-cover cursor-zoom-in" 
+                      onClick={() => setIsZoomed(true)}
+                      initial={{ opacity: 0, scale: 1.05 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </AnimatePresence>
                 </div>
+                
+                {/* Floating sparkle effect */}
+                <motion.div 
+                  className="absolute top-4 right-4 text-primary"
+                  animate={{ 
+                    rotate: [0, 15, -15, 0],
+                    scale: [1, 1.2, 1]
+                  }}
+                  transition={{ 
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "reverse"
+                  }}
+                >
+                  <Sparkles className="h-6 w-6" />
+                </motion.div>
                 
                 {/* Navigation Arrows */}
                 <button onClick={prevImage} className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 group-hover:opacity-100">
@@ -117,57 +151,109 @@ const Product = () => {
 
               {/* Thumbnails */}
               <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                {productImages.map((img, index) => <button key={index} onClick={() => setSelectedImage(index)} className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${selectedImage === index ? "border-primary ring-2 ring-primary/20" : "border-gray-200 hover:border-gray-300"}`}>
+                {productImages.map((img, index) => (
+                  <motion.button 
+                    key={index} 
+                    onClick={() => setSelectedImage(index)} 
+                    className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${selectedImage === index ? "border-primary ring-2 ring-primary/20" : "border-gray-200 hover:border-gray-300"}`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <img src={img} alt="" className="w-full h-full object-cover" />
-                  </button>)}
+                  </motion.button>
+                ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Product Info */}
-            <div className="space-y-5">
+            <motion.div 
+              className="space-y-5"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               {/* Rating */}
-              <div className="flex items-center gap-2">
+              <motion.div 
+                className="flex items-center gap-2"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
                 <div className="flex">
-                  {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />)}
+                  {[...Array(5)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.4 + i * 0.1 }}
+                    >
+                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    </motion.div>
+                  ))}
                 </div>
                 <span className="text-sm font-medium text-foreground">Excellent</span>
                 <span className="text-sm text-muted-foreground">| 4,8 sur 5</span>
-              </div>
+              </motion.div>
 
               {/* Title */}
-              <h1 className="text-3xl md:text-4xl font-display font-semibold text-foreground leading-tight">
+              <motion.h1 
+                className="text-3xl md:text-4xl font-display font-semibold text-foreground leading-tight"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+              >
                 LASH GLOW | Faux cils individuels
-              </h1>
+              </motion.h1>
 
               {/* Live Visitors */}
-              <div className="flex items-center gap-2">
+              <motion.div 
+                className="flex items-center gap-2"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.5 }}
+              >
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
                 </span>
                 <span className="text-sm text-muted-foreground">
-                  <strong className="text-foreground">{visitors} personnes</strong> consultent ce produit
+                  <motion.strong 
+                    className="text-foreground"
+                    key={visitors}
+                    initial={{ scale: 1.2, color: "hsl(var(--primary))" }}
+                    animate={{ scale: 1, color: "hsl(var(--foreground))" }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {visitors} personnes
+                  </motion.strong> consultent ce produit
                 </span>
-              </div>
+              </motion.div>
 
               {/* Benefits */}
               <div className="space-y-2.5 py-2">
-                <div className="flex items-center gap-3">
-                  <span className="text-lg">✨</span>
-                  <span className="text-sm text-muted-foreground">Parfait pour un regard naturel et glamour</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-lg">🌸</span>
-                  <span className="text-sm text-muted-foreground">Profitez d'une colle hypoallergénique et douce</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-lg">⏱️</span>
-                  <span className="text-sm text-muted-foreground">Une tenue jusqu'à 7 jours sans retouche</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-lg">💝</span>
-                  <span className="text-sm text-muted-foreground">Convient à tous les types d'yeux</span>
-                </div>
+                {[
+                  { emoji: "✨", text: "Parfait pour un regard naturel et glamour" },
+                  { emoji: "🌸", text: "Profitez d'une colle hypoallergénique et douce" },
+                  { emoji: "⏱️", text: "Une tenue jusqu'à 7 jours sans retouche" },
+                  { emoji: "💝", text: "Convient à tous les types d'yeux" },
+                ].map((benefit, i) => (
+                  <motion.div 
+                    key={i}
+                    className="flex items-center gap-3"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.6 + i * 0.1 }}
+                  >
+                    <motion.span 
+                      className="text-lg"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
+                    >
+                      {benefit.emoji}
+                    </motion.span>
+                    <span className="text-sm text-muted-foreground">{benefit.text}</span>
+                  </motion.div>
+                ))}
               </div>
 
               {/* Bundle Selection */}
@@ -240,13 +326,30 @@ const Product = () => {
               </div>
 
               {/* Add to Cart Button */}
-              <Button 
-                size="lg" 
-                className="w-full rounded-xl py-7 text-base font-semibold uppercase tracking-wide"
-                onClick={handleAddToCart}
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                Ajouter au panier — {currentBundle.price.toFixed(2).replace(".", ",")} €
-              </Button>
+                <Button 
+                  size="lg" 
+                  className="w-full rounded-xl py-7 text-base font-semibold uppercase tracking-wide relative overflow-hidden group"
+                  onClick={handleAddToCart}
+                >
+                  <span className="relative z-10">Ajouter au panier — {currentBundle.price.toFixed(2).replace(".", ",")} €</span>
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-primary"
+                    animate={{
+                      x: ["-100%", "100%"],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                    style={{ opacity: 0.3 }}
+                  />
+                </Button>
+              </motion.div>
 
               {/* Payment Icons */}
               <div className="flex items-center justify-center gap-2 py-1">
@@ -346,7 +449,7 @@ const Product = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
