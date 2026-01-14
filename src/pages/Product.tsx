@@ -30,6 +30,7 @@ import { Badge } from "@/components/ui/badge";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ProductVideoSection from "@/components/ProductVideoSection";
 
 // Import product images
 import productMain from "@/assets/product-lashes.jpg";
@@ -447,6 +448,9 @@ const Product = () => {
             </div>
           </div>
         </section>
+
+        {/* Video Tutorial Section */}
+        <ProductVideoSection />
 
         {/* Customer Reviews */}
         <section className="py-16 px-6 bg-secondary">
