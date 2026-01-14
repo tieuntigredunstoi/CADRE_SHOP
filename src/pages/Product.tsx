@@ -19,6 +19,13 @@ import productCoordinates from "@/assets/product-coordinates.webp";
 import productPerfectMatch from "@/assets/product-perfect-match.webp";
 import reviewAvatar from "@/assets/review-1.jpg";
 
+// Import how it works images
+import productMapPlaque from "@/assets/product-map-plaque.webp";
+import productNightSkyDemo from "@/assets/product-night-sky-demo.webp";
+import productAlbumCover from "@/assets/product-album-cover.webp";
+import productLifestyle1 from "@/assets/product-lifestyle-1.webp";
+import productLifestyle2 from "@/assets/product-lifestyle-2.webp";
+
 // Import payment logos
 import { logoVisa, logoMastercard, logoAmex } from "@/components/PaymentLogos";
 
@@ -554,6 +561,130 @@ const Product = () => {
                 </div>
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        {/* How It Works Section */}
+        <section className="bg-secondary/30 py-12 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 md:px-6">
+            <motion.div
+              className="text-center mb-10 md:mb-14"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="text-xs font-bold uppercase tracking-widest text-primary mb-2 block">
+                Personnalisation
+              </span>
+              <h2 className="text-2xl md:text-4xl font-display font-semibold text-foreground">
+                Créez votre souvenir unique
+              </h2>
+              <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
+                Choisissez parmi nos modèles et personnalisez chaque détail pour un cadeau vraiment unique
+              </p>
+            </motion.div>
+
+            {/* Product Types Grid */}
+            <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
+              {/* Map Plaque */}
+              <motion.div
+                className="bg-background rounded-2xl p-6 shadow-sm hover:shadow-lg transition-shadow"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+              >
+                <img 
+                  src={productMapPlaque} 
+                  alt="Plaque carte personnalisée" 
+                  className="w-full h-auto mb-4"
+                />
+                <h3 className="font-semibold text-lg text-foreground mb-2">Plaque Carte</h3>
+                <p className="text-sm text-muted-foreground">
+                  Marquez le lieu de votre rencontre avec une carte personnalisée, la date et un titre de votre choix.
+                </p>
+              </motion.div>
+
+              {/* Night Sky */}
+              <motion.div
+                className="bg-background rounded-2xl p-6 shadow-sm hover:shadow-lg transition-shadow"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <img 
+                  src={productNightSkyDemo} 
+                  alt="Carte du ciel personnalisée" 
+                  className="w-full h-auto mb-4"
+                />
+                <h3 className="font-semibold text-lg text-foreground mb-2">Carte du Ciel</h3>
+                <p className="text-sm text-muted-foreground">
+                  Capturez les étoiles exactes de votre moment spécial avec date, lieu et titre personnalisés.
+                </p>
+              </motion.div>
+
+              {/* Album Cover */}
+              <motion.div
+                className="bg-background rounded-2xl p-6 shadow-sm hover:shadow-lg transition-shadow"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+              >
+                <img 
+                  src={productAlbumCover} 
+                  alt="Plaque style Spotify" 
+                  className="w-full h-auto mb-4"
+                />
+                <h3 className="font-semibold text-lg text-foreground mb-2">Style Album</h3>
+                <p className="text-sm text-muted-foreground">
+                  Votre photo avec votre chanson préférée, le titre et l'artiste de votre choix.
+                </p>
+              </motion.div>
+            </div>
+
+            {/* Lifestyle Gallery */}
+            <motion.div
+              className="text-center mb-8"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-xl md:text-2xl font-display font-semibold text-foreground mb-2">
+                Ils ont créé leur Memory
+              </h3>
+              <p className="text-muted-foreground text-sm">Des souvenirs qui touchent le cœur</p>
+            </motion.div>
+
+            <div className="grid grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto">
+              <motion.div
+                className="rounded-2xl overflow-hidden shadow-lg"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 }}
+              >
+                <img 
+                  src={productLifestyle1} 
+                  alt="Memory en situation" 
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+              <motion.div
+                className="rounded-2xl overflow-hidden shadow-lg"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+              >
+                <img 
+                  src={productLifestyle2} 
+                  alt="Memory en situation" 
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            </div>
           </div>
         </section>
 
