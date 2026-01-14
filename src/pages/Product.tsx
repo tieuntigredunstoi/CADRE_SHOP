@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useCart } from "@/contexts/CartContext";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -31,8 +32,23 @@ const Product = () => {
   const [visitors, setVisitors] = useState(203);
   const [stock, setStock] = useState(8);
   const { toast } = useToast();
+  const { addToCart } = useCart();
   
   const currentBundle = bundles.find(b => b.id === selectedBundle) || bundles[1];
+
+  const handleAddToCart = () => {
+    addToCart({
+      name: `LASH GLOW x${currentBundle.quantity}`,
+      quantity: 1,
+      unitPrice: currentBundle.price,
+      totalPrice: currentBundle.price,
+      image: productMain,
+    });
+    toast({
+      title: "✨ Ajouté au panier !",
+      description: `${currentBundle.quantity} LASH GLOW — ${currentBundle.price.toFixed(2).replace(".", ",")} €`,
+    });
+  };
 
   // Simulate live visitors
   useEffect(() => {
@@ -227,12 +243,7 @@ const Product = () => {
               <Button 
                 size="lg" 
                 className="w-full rounded-xl py-7 text-base font-semibold uppercase tracking-wide"
-                onClick={() => {
-                  toast({
-                    title: "✨ Ajouté au panier !",
-                    description: `${currentBundle.quantity} LASH GLOW — ${currentBundle.price.toFixed(2).replace(".", ",")} €`,
-                  });
-                }}
+                onClick={handleAddToCart}
               >
                 Ajouter au panier — {currentBundle.price.toFixed(2).replace(".", ",")} €
               </Button>
@@ -414,12 +425,7 @@ const Product = () => {
           </div>
           <Button 
             className="rounded-xl px-6 py-3 h-auto font-semibold"
-            onClick={() => {
-              toast({
-                title: "✨ Ajouté au panier !",
-                description: `${currentBundle.quantity} LASH GLOW — ${currentBundle.price.toFixed(2).replace(".", ",")} €`,
-              });
-            }}
+            onClick={handleAddToCart}
           >
             <ShoppingBag className="mr-2 h-4 w-4" />
             Ajouter
