@@ -2,9 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "@fontsource/playfair-display/400.css";
-@import "@fontsource/playfair-display/500.css";
-@import "@fontsource/playfair-display/600.css";
+@import "@fontsource/cormorant-garamond/400.css";
+@import "@fontsource/cormorant-garamond/500.css";
+@import "@fontsource/cormorant-garamond/600.css";
+@import "@fontsource/cormorant-garamond/400-italic.css";
 @import "@fontsource/inter/400.css";
 @import "@fontsource/inter/500.css";
 @import "@fontsource/inter/600.css";
@@ -57,7 +58,7 @@
     --brand-gold: 38 60% 55%;
 
     /* Typography */
-    --font-display: "Playfair Display", serif;
+    --font-display: "Cormorant Garamond", serif;
     --font-body: "Inter", sans-serif;
 
     --sidebar-background: 0 0% 98%;
