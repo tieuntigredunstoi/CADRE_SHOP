@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Mail, Phone, Clock, MapPin, Send, MessageCircle } from "lucide-react";
+import { Mail, Clock, MapPin, Send, MessageCircle, Heart, Instagram, Facebook } from "lucide-react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,6 +14,7 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    orderNumber: "",
     subject: "",
     message: ""
   });
@@ -26,11 +28,11 @@ const Contact = () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     toast({
-      title: "Message envoyé !",
-      description: "Nous vous répondrons dans les plus brefs délais.",
+      title: "💌 Message envoyé !",
+      description: "Notre équipe vous répondra dans les plus brefs délais.",
     });
     
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setFormData({ name: "", email: "", orderNumber: "", subject: "", message: "" });
     setIsSubmitting(false);
   };
 
@@ -38,14 +40,8 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      value: "contact@lashglow.fr",
+      value: "contact@memory-frame.fr",
       subtitle: "Réponse sous 24h"
-    },
-    {
-      icon: Phone,
-      title: "Téléphone",
-      value: "+33 1 23 45 67 89",
-      subtitle: "Appel gratuit"
     },
     {
       icon: Clock,
@@ -56,23 +52,33 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Adresse",
-      value: "15 Rue de la Paix",
-      subtitle: "75002 Paris, France"
+      value: "Paris, France",
+      subtitle: "Fabrication artisanale"
+    },
+    {
+      icon: Heart,
+      title: "Satisfaction",
+      value: "98% clients satisfaits",
+      subtitle: "Plus de 50 000 avis"
     }
   ];
 
   const faqItems = [
     {
-      question: "Comment suivre ma commande ?",
-      answer: "Rendez-vous sur notre page de suivi de commande avec votre numéro de commande et votre email."
+      question: "Comment personnaliser mon Memory ?",
+      answer: "Après votre commande, vous recevrez un email avec un lien pour personnaliser votre cadre : date, lieu, titre et photo."
     },
     {
-      question: "Quel est le délai de livraison ?",
-      answer: "La livraison standard est de 2-3 jours ouvrés en France métropolitaine."
+      question: "Quels sont les délais de livraison ?",
+      answer: "Production sous 2-3 jours ouvrés après validation du design, puis livraison gratuite en 3-5 jours en France métropolitaine."
+    },
+    {
+      question: "Puis-je modifier ma personnalisation ?",
+      answer: "Oui, vous pouvez demander des modifications avant la validation finale. Notre équipe vous envoie un aperçu avant production."
     },
     {
       question: "Comment retourner un produit ?",
-      answer: "Vous disposez de 30 jours pour retourner un produit non utilisé. Contactez-nous pour obtenir une étiquette de retour."
+      answer: "Vous disposez de 30 jours pour retourner votre produit. Contactez-nous pour obtenir une étiquette de retour gratuite."
     }
   ];
 
@@ -85,15 +91,21 @@ const Contact = () => {
         {/* Hero Section */}
         <section className="py-12 md:py-20 px-4 md:px-6 bg-secondary/30">
           <div className="max-w-4xl mx-auto text-center">
-            <span className="text-xs font-semibold uppercase tracking-widest text-primary mb-4 block">
-              Contact
-            </span>
-            <h1 className="text-3xl md:text-5xl font-display font-normal text-foreground mb-4">
-              Nous sommes là pour vous
-            </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Une question, une suggestion ou besoin d'aide ? Notre équipe est à votre écoute pour vous accompagner.
-            </p>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <span className="text-xs font-semibold uppercase tracking-widest text-primary mb-4 block">
+                Contact
+              </span>
+              <h1 className="text-3xl md:text-5xl font-display font-semibold text-foreground mb-4">
+                Une question ? On est là.
+              </h1>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Notre équipe est à votre écoute pour vous accompagner dans la création de votre Memory parfait.
+              </p>
+            </motion.div>
           </div>
         </section>
 
@@ -102,14 +114,20 @@ const Contact = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {contactInfo.map((info, index) => (
-                <div key={index} className="bg-white rounded-2xl p-6 border border-gray-100 text-center hover:shadow-lg transition-shadow">
+                <motion.div 
+                  key={index} 
+                  className="bg-background rounded-2xl p-6 border border-border text-center hover:shadow-lg transition-all hover:-translate-y-1"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                     <info.icon className="h-5 w-5 text-primary" />
                   </div>
                   <h3 className="font-medium text-foreground mb-1">{info.title}</h3>
                   <p className="text-foreground font-semibold">{info.value}</p>
                   <p className="text-sm text-muted-foreground">{info.subtitle}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -120,13 +138,17 @@ const Contact = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Contact Form */}
-              <div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+              >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                     <MessageCircle className="h-5 w-5 text-primary" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-display font-normal text-foreground">Envoyez-nous un message</h2>
+                    <h2 className="text-xl font-display font-semibold text-foreground">Envoyez-nous un message</h2>
                     <p className="text-sm text-muted-foreground">Réponse garantie sous 24h</p>
                   </div>
                 </div>
@@ -144,7 +166,8 @@ const Contact = () => {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         required
-                        className="bg-white"
+                        maxLength={100}
+                        className="bg-background"
                       />
                     </div>
                     <div>
@@ -158,24 +181,42 @@ const Contact = () => {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         required
-                        className="bg-white"
+                        maxLength={255}
+                        className="bg-background"
                       />
                     </div>
                   </div>
-                  
-                  <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-1.5">
-                      Sujet
-                    </label>
-                    <Input
-                      id="subject"
-                      type="text"
-                      placeholder="Question sur ma commande"
-                      value={formData.subject}
-                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      required
-                      className="bg-white"
-                    />
+
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="orderNumber" className="block text-sm font-medium text-foreground mb-1.5">
+                        N° de commande <span className="text-muted-foreground">(optionnel)</span>
+                      </label>
+                      <Input
+                        id="orderNumber"
+                        type="text"
+                        placeholder="MEM-XXXXX"
+                        value={formData.orderNumber}
+                        onChange={(e) => setFormData({ ...formData, orderNumber: e.target.value })}
+                        maxLength={50}
+                        className="bg-background"
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-1.5">
+                        Sujet
+                      </label>
+                      <Input
+                        id="subject"
+                        type="text"
+                        placeholder="Question sur ma commande"
+                        value={formData.subject}
+                        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                        required
+                        maxLength={150}
+                        className="bg-background"
+                      />
+                    </div>
                   </div>
 
                   <div>
@@ -189,7 +230,8 @@ const Contact = () => {
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       required
                       rows={5}
-                      className="bg-white resize-none"
+                      maxLength={1000}
+                      className="bg-background resize-none"
                     />
                   </div>
 
@@ -209,17 +251,21 @@ const Contact = () => {
                     )}
                   </Button>
                 </form>
-              </div>
+              </motion.div>
 
               {/* FAQ */}
-              <div>
-                <h2 className="text-xl font-display font-normal text-foreground mb-6">
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <h2 className="text-xl font-display font-semibold text-foreground mb-6">
                   Questions fréquentes
                 </h2>
                 
                 <div className="space-y-4">
                   {faqItems.map((item, index) => (
-                    <div key={index} className="bg-white rounded-xl p-5 border border-gray-100">
+                    <div key={index} className="bg-background rounded-xl p-5 border border-border hover:shadow-md transition-shadow">
                       <h3 className="font-medium text-foreground mb-2">{item.question}</h3>
                       <p className="text-sm text-muted-foreground">{item.answer}</p>
                     </div>
@@ -227,18 +273,22 @@ const Contact = () => {
                 </div>
 
                 <div className="mt-8 bg-primary/5 rounded-xl p-6 border border-primary/10">
-                  <h3 className="font-medium text-foreground mb-2">Besoin d'une réponse rapide ?</h3>
+                  <h3 className="font-semibold text-foreground mb-2">Suivez-nous</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Appelez-nous directement pendant nos horaires d'ouverture pour une assistance immédiate.
+                    Rejoignez notre communauté pour découvrir les créations de nos clients et nos nouveautés.
                   </p>
-                  <a href="tel:+33123456789">
-                    <Button variant="outline" className="rounded-full">
-                      <Phone className="mr-2 h-4 w-4" />
-                      +33 1 23 45 67 89
+                  <div className="flex gap-3">
+                    <Button variant="outline" size="sm" className="rounded-full">
+                      <Instagram className="mr-2 h-4 w-4" />
+                      Instagram
                     </Button>
-                  </a>
+                    <Button variant="outline" size="sm" className="rounded-full">
+                      <Facebook className="mr-2 h-4 w-4" />
+                      Facebook
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </section>
