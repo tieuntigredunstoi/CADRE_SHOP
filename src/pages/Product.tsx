@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, ShoppingBag, Check, Truck, Shield, RefreshCw, Clock, ChevronLeft, ChevronRight, ZoomIn, X, Minus, Plus, Calendar, RotateCcw, Pipette, ClipboardList, Package, Sparkles } from "lucide-react";
+import { Star, ShoppingBag, Check, Truck, Shield, RefreshCw, Clock, ChevronLeft, ChevronRight, ZoomIn, X, Minus, Plus, Calendar, RotateCcw, Heart, ClipboardList, Package, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -11,43 +11,45 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 // Import product images
-import productMain from "@/assets/product-lashes.jpg";
-import productDetail1 from "@/assets/product-detail-1.jpg";
-import productDetail2 from "@/assets/product-detail-2.jpg";
-import productDetail3 from "@/assets/product-detail-3.jpg";
+import productNightSky from "@/assets/product-night-sky.webp";
+import productSpotify from "@/assets/product-spotify.webp";
+import productStreetSign from "@/assets/product-street-sign.webp";
+import productCoordinates from "@/assets/product-coordinates.webp";
+import productPerfectMatch from "@/assets/product-perfect-match.webp";
 import reviewAvatar from "@/assets/review-1.jpg";
 
 // Import payment logos
 import { logoVisa, logoMastercard, logoAmex } from "@/components/PaymentLogos";
-const productImages = [productMain, productDetail1, productDetail2, productDetail3];
-const bundles = [
-  { id: 1, quantity: 1, price: 19.99, originalPrice: 19.99, savings: 0 },
-  { id: 2, quantity: 2, price: 29.99, originalPrice: 39.98, savings: 9.99 },
-  { id: 3, quantity: 3, price: 39.99, originalPrice: 59.97, savings: 19.98 },
+
+const productModels = [
+  { id: "night-sky", name: "The Night We Met", description: "Carte du ciel", image: productNightSky },
+  { id: "spotify", name: "Our Song", description: "Lecteur Spotify", image: productSpotify },
+  { id: "street-sign", name: "Street Sign", description: "Noms croisés", image: productStreetSign },
+  { id: "coordinates", name: "Coordinates", description: "Lieu de rencontre", image: productCoordinates },
+  { id: "perfect-match", name: "Perfect Match", description: "Union des cœurs", image: productPerfectMatch },
 ];
 
 const Product = () => {
-  const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedModel, setSelectedModel] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
-  const [selectedBundle, setSelectedBundle] = useState(2); // Default to most popular
   const [visitors, setVisitors] = useState(203);
-  const [stock, setStock] = useState(8);
   const { toast } = useToast();
   const { addToCart } = useCart();
   
-  const currentBundle = bundles.find(b => b.id === selectedBundle) || bundles[1];
+  const currentModel = productModels[selectedModel];
+  const productImages = productModels.map(m => m.image);
 
   const handleAddToCart = () => {
     addToCart({
-      name: `LASH GLOW x${currentBundle.quantity}`,
+      name: `Memory — ${currentModel.name}`,
       quantity: 1,
-      unitPrice: currentBundle.price,
-      totalPrice: currentBundle.price,
-      image: productMain,
+      unitPrice: 9.99,
+      totalPrice: 9.99,
+      image: currentModel.image,
     });
     toast({
       title: "✨ Ajouté au panier !",
-      description: `${currentBundle.quantity} LASH GLOW — ${currentBundle.price.toFixed(2).replace(".", ",")} €`,
+      description: `Cadre Memory "${currentModel.name}" — 9,99 €`,
     });
   };
 
@@ -96,20 +98,22 @@ const Product = () => {
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
-    if (distance > 50 && selectedImage < productImages.length - 1) {
-      setSelectedImage(prev => prev + 1);
+    if (distance > 50 && selectedModel < productImages.length - 1) {
+      setSelectedModel(prev => prev + 1);
     }
-    if (distance < -50 && selectedImage > 0) {
-      setSelectedImage(prev => prev - 1);
+    if (distance < -50 && selectedModel > 0) {
+      setSelectedModel(prev => prev - 1);
     }
   };
   const nextImage = () => {
-    setSelectedImage(prev => (prev + 1) % productImages.length);
+    setSelectedModel(prev => (prev + 1) % productImages.length);
   };
   const prevImage = () => {
-    setSelectedImage(prev => (prev - 1 + productImages.length) % productImages.length);
+    setSelectedModel(prev => (prev - 1 + productImages.length) % productImages.length);
   };
-  return <div className="min-h-screen flex flex-col bg-background">
+
+  return (
+    <div className="min-h-screen flex flex-col bg-background">
       <AnnouncementBar />
       <Header />
 
@@ -130,9 +134,9 @@ const Product = () => {
                 <div className="aspect-square">
                   <AnimatePresence mode="wait">
                     <motion.img 
-                      key={selectedImage}
-                      src={productImages[selectedImage]} 
-                      alt="LASH GLOW - Faux cils individuels" 
+                      key={selectedModel}
+                      src={productImages[selectedModel]} 
+                      alt={`Memory - ${currentModel.name}`}
                       className="w-full h-full object-cover cursor-zoom-in" 
                       onClick={() => setIsZoomed(true)}
                       initial={{ opacity: 0, scale: 1.05 }}
@@ -143,7 +147,7 @@ const Product = () => {
                   </AnimatePresence>
                 </div>
                 
-                {/* Floating sparkle effect */}
+                {/* Floating heart effect */}
                 <motion.div 
                   className="absolute top-4 right-4 text-primary"
                   animate={{ 
@@ -156,7 +160,7 @@ const Product = () => {
                     repeatType: "reverse"
                   }}
                 >
-                  <Sparkles className="h-6 w-6" />
+                  <Heart className="h-6 w-6" />
                 </motion.div>
                 
                 {/* Navigation Arrows */}
@@ -169,21 +173,27 @@ const Product = () => {
 
                 {/* Mobile Dots */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 md:hidden">
-                  {productImages.map((_, index) => <button key={index} onClick={() => setSelectedImage(index)} className={`w-2 h-2 rounded-full transition-all ${selectedImage === index ? "bg-primary w-6" : "bg-white/60"}`} />)}
+                  {productImages.map((_, index) => (
+                    <button 
+                      key={index} 
+                      onClick={() => setSelectedModel(index)} 
+                      className={`w-2 h-2 rounded-full transition-all ${selectedModel === index ? "bg-primary w-6" : "bg-white/60"}`} 
+                    />
+                  ))}
                 </div>
               </div>
 
               {/* Thumbnails */}
               <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                {productImages.map((img, index) => (
+                {productModels.map((model, index) => (
                   <motion.button 
                     key={index} 
-                    onClick={() => setSelectedImage(index)} 
-                    className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${selectedImage === index ? "border-primary ring-2 ring-primary/20" : "border-gray-200 hover:border-gray-300"}`}
+                    onClick={() => setSelectedModel(index)} 
+                    className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${selectedModel === index ? "border-primary ring-2 ring-primary/20" : "border-gray-200 hover:border-gray-300"}`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img src={model.image} alt={model.name} className="w-full h-full object-cover" />
                   </motion.button>
                 ))}
               </div>
@@ -216,7 +226,7 @@ const Product = () => {
                   ))}
                 </div>
                 <span className="text-sm font-medium text-foreground">Excellent</span>
-                <span className="text-sm text-muted-foreground">| 4,8 sur 5</span>
+                <span className="text-sm text-muted-foreground">| 4,9 sur 5</span>
               </motion.div>
 
               {/* Title */}
@@ -226,7 +236,7 @@ const Product = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
               >
-                LASH GLOW | Faux cils individuels
+                Memory | Cadre Souvenir Personnalisé
               </motion.h1>
 
               {/* Live Visitors */}
@@ -256,10 +266,10 @@ const Product = () => {
               {/* Benefits */}
               <div className="space-y-2.5 py-2">
                 {[
-                  { emoji: "✨", text: "Parfait pour un regard naturel et glamour" },
-                  { emoji: "🌸", text: "Profitez d'une colle hypoallergénique et douce" },
-                  { emoji: "⏱️", text: "Une tenue jusqu'à 7 jours sans retouche" },
-                  { emoji: "💝", text: "Convient à tous les types d'yeux" },
+                  { emoji: "💝", text: "Capturez l'essence de vos moments uniques" },
+                  { emoji: "✨", text: "Plaque plexiglas haute définition premium" },
+                  { emoji: "🪵", text: "Support en bois véritable élégant" },
+                  { emoji: "🎁", text: "Le cadeau parfait pour la Saint-Valentin" },
                 ].map((benefit, i) => (
                   <motion.div 
                     key={i}
@@ -304,7 +314,7 @@ const Product = () => {
                       animate={{ opacity: [1, 0.3, 1] }}
                       transition={{ duration: 1, repeat: Infinity }}
                     />
-                    <span className="text-xs font-medium text-background/70 uppercase tracking-wider">Offre limitée</span>
+                    <span className="text-xs font-medium text-background/70 uppercase tracking-wider">Offre Saint-Valentin</span>
                   </div>
                   
                   <div className="flex items-center justify-center gap-3">
@@ -362,23 +372,23 @@ const Product = () => {
                   </div>
                   
                   <p className="text-center text-sm text-background/80 mt-4">
-                    <span className="text-primary font-semibold">-50%</span> + Livraison offerte
+                    <span className="text-primary font-semibold">-50%</span> + Livraison GRATUITE
                   </p>
                 </div>
               </motion.div>
 
-              {/* Bundle Selection */}
+              {/* Model Selection */}
               <div className="space-y-3">
-                <label className="text-sm font-medium text-foreground">Choisissez votre offre</label>
+                <label className="text-sm font-medium text-foreground">Choisissez votre modèle</label>
                 <div className="space-y-3">
-                  {bundles.map((bundle) => {
-                    const isSelected = selectedBundle === bundle.id;
-                    const isPopular = bundle.id === 2;
+                  {productModels.map((model, index) => {
+                    const isSelected = selectedModel === index;
+                    const isPopular = index === 0;
                     
                     return (
                       <div
-                        key={bundle.id}
-                        onClick={() => setSelectedBundle(bundle.id)}
+                        key={model.id}
+                        onClick={() => setSelectedModel(index)}
                         className={`relative rounded-2xl p-3 md:p-4 cursor-pointer transition-all duration-300 ease-out ${
                           isSelected 
                             ? "border-2 border-primary bg-primary/5 md:scale-[1.02] shadow-md" 
@@ -407,26 +417,22 @@ const Product = () => {
                               <p className={`font-medium transition-colors duration-200 ${
                                 isSelected ? "text-primary" : "text-foreground"
                               }`}>
-                                {bundle.quantity} unité{bundle.quantity > 1 ? "s" : ""}
+                                {model.name}
                               </p>
-                              {bundle.savings > 0 && (
-                                <p className="text-sm text-amber-700 font-medium">
-                                  Économisez {bundle.savings.toFixed(2).replace(".", ",")} €
-                                </p>
-                              )}
+                              <p className="text-sm text-muted-foreground">
+                                {model.description}
+                              </p>
                             </div>
                             
                             <div className="text-right">
                               <span className={`text-xl font-bold transition-colors duration-200 ${
                                 isSelected ? "text-primary" : "text-foreground"
                               }`}>
-                                {bundle.price.toFixed(2).replace(".", ",")} €
+                                9,99 €
                               </span>
-                              {bundle.savings > 0 && (
-                                <p className="text-sm text-muted-foreground line-through">
-                                  {bundle.originalPrice.toFixed(2).replace(".", ",")} €
-                                </p>
-                              )}
+                              <p className="text-sm text-muted-foreground line-through">
+                                20,00 €
+                              </p>
                             </div>
                           </div>
                         </div>
@@ -446,7 +452,7 @@ const Product = () => {
                   className="w-full rounded-xl py-7 text-base font-semibold uppercase tracking-wide relative overflow-hidden group"
                   onClick={handleAddToCart}
                 >
-                  <span className="relative z-10">Ajouter au panier — {currentBundle.price.toFixed(2).replace(".", ",")} €</span>
+                  <span className="relative z-10">Créer mon Memory — 9,99 €</span>
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-primary"
                     animate={{
@@ -473,12 +479,7 @@ const Product = () => {
                 <div className="h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
                   <img src={logoAmex} alt="American Express" className="h-5 w-auto" />
                 </div>
-                
-                
               </div>
-
-              {/* Stock Alert */}
-              
 
               {/* Trust Badges */}
               <div className="grid grid-cols-3 gap-4 py-4 border-t border-b border-gray-100">
@@ -492,7 +493,7 @@ const Product = () => {
                   <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
                     <Calendar className="h-5 w-5 text-primary" />
                   </div>
-                  <span className="text-xs font-medium text-foreground">Essai de 90 jours</span>
+                  <span className="text-xs font-medium text-foreground">Garanti 30 jours</span>
                 </div>
                 <div className="flex flex-col items-center text-center gap-2">
                   <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
@@ -505,16 +506,16 @@ const Product = () => {
               {/* Customer Testimonial */}
               <div className="bg-secondary/50 rounded-2xl p-5">
                 <div className="flex gap-4">
-                  <img src={reviewAvatar} alt="Charlotte V." className="w-14 h-14 rounded-full object-cover flex-shrink-0" />
+                  <img src={reviewAvatar} alt="Marie L." className="w-14 h-14 rounded-full object-cover flex-shrink-0" />
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground italic leading-relaxed">
-                      « Je ne retournerai jamais à une autre méthode. Mes cils sont magnifiques et naturels. J'aurais aimé découvrir ça bien plus tôt. »
+                      « J'ai offert ce cadre à mon mari pour notre anniversaire. Revoir cette date gravée sur le ciel étoilé de notre première rencontre... l'émotion était indescriptible. Un souvenir éternel. »
                     </p>
                     <div className="flex items-center gap-2">
                       <div className="flex">
                         {[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />)}
                       </div>
-                      <span className="text-sm font-medium text-foreground">Charlotte V.</span>
+                      <span className="text-sm font-medium text-foreground">Marie L.</span>
                       <span className="text-green-500">✓</span>
                     </div>
                   </div>
@@ -523,14 +524,14 @@ const Product = () => {
 
               {/* Info Sections - Always visible */}
               <div className="space-y-4">
-                {/* Application et utilisation */}
+                {/* Personnalisation */}
                 <div className="border-b border-gray-200 pb-4">
                   <div className="flex items-center gap-3 mb-3">
-                    <Pipette className="h-5 w-5 text-primary" />
-                    <span className="font-medium text-foreground">Application et utilisation</span>
+                    <Heart className="h-5 w-5 text-primary" />
+                    <span className="font-medium text-foreground">Personnalisation</span>
                   </div>
                   <p className="text-sm text-muted-foreground pl-8">
-                    Application facile en 5 minutes. Nettoyez vos cils naturels, appliquez la colle sur le support, attendez 30 secondes et placez délicatement les cils. Résultat professionnel garanti.
+                    Après votre commande, vous recevrez un email pour personnaliser votre cadre : choisissez votre date, lieu, titre et photo. Notre équipe créera votre design unique.
                   </p>
                 </div>
 
@@ -538,14 +539,14 @@ const Product = () => {
                 <div className="border-b border-gray-200 pb-4">
                   <div className="flex items-center gap-3 mb-3">
                     <ClipboardList className="h-5 w-5 text-primary" />
-                    <span className="font-medium text-foreground">Caractéristiques techniques</span>
+                    <span className="font-medium text-foreground">Caractéristiques</span>
                   </div>
                   <ul className="text-sm text-muted-foreground pl-8 space-y-1.5">
-                    <li>• Longueurs disponibles : 10mm, 12mm, 14mm</li>
-                    <li>• Matériau : Fibres synthétiques haute qualité</li>
-                    <li>• Colle : Hypoallergénique, sans latex</li>
-                    <li>• Durée de tenue : Jusqu'à 7 jours</li>
-                    <li>• Réutilisable : Jusqu'à 20 fois</li>
+                    <li>• Dimensions : 15 x 20 cm</li>
+                    <li>• Matériau : Plexiglas haute qualité 5mm</li>
+                    <li>• Support : Bois de hêtre naturel</li>
+                    <li>• Impression : Haute définition durable</li>
+                    <li>• Emballage : Coffret cadeau inclus</li>
                   </ul>
                 </div>
 
@@ -556,7 +557,7 @@ const Product = () => {
                     <span className="font-medium text-foreground">Livraison et retours</span>
                   </div>
                   <p className="text-sm text-muted-foreground pl-8">
-                    Livraison gratuite en France métropolitaine sous 3-5 jours ouvrés. Retour gratuit sous 90 jours si vous n'êtes pas satisfaite. Remboursement intégral garanti.
+                    Livraison gratuite en France métropolitaine sous 3-5 jours ouvrés. Retour gratuit sous 30 jours si vous n'êtes pas satisfait. Remboursement intégral garanti.
                   </p>
                 </div>
               </div>
@@ -573,46 +574,46 @@ const Product = () => {
           <Accordion type="single" collapsible className="w-full space-y-3">
             <AccordionItem value="faq-1" className="border border-border rounded-xl px-4 data-[state=open]:bg-secondary/30">
               <AccordionTrigger className="text-sm md:text-base font-medium py-4 hover:no-underline">
-                Comment appliquer les faux cils LASH GLOW ?
+                Comment personnaliser mon cadre Memory ?
               </AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground pb-4">
-                Nettoyez vos cils naturels, appliquez une fine couche de colle sur le support, attendez 30 secondes que la colle devienne légèrement collante, puis placez délicatement les cils le long de votre ligne de cils. L'application prend environ 5 minutes.
+                Après votre commande, vous recevrez un email avec un lien vers notre formulaire de personnalisation. Vous pourrez y indiquer la date, le lieu, le titre souhaité et télécharger votre photo. Notre équipe créera ensuite votre design unique et vous l'enverra pour validation avant production.
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="faq-2" className="border border-border rounded-xl px-4 data-[state=open]:bg-secondary/30">
               <AccordionTrigger className="text-sm md:text-base font-medium py-4 hover:no-underline">
-                Combien de temps durent les faux cils ?
+                Quels sont les délais de livraison ?
               </AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground pb-4">
-                Nos faux cils peuvent tenir jusqu'à 7 jours avec une application correcte. Ils sont également réutilisables jusqu'à 20 fois si vous en prenez soin et les nettoyez délicatement après chaque utilisation.
+                La production de votre cadre personnalisé prend 2-3 jours ouvrés après validation du design. La livraison gratuite en France métropolitaine prend ensuite 3-5 jours ouvrés. Pour la Saint-Valentin, commandez avant le 8 février pour une réception garantie.
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="faq-3" className="border border-border rounded-xl px-4 data-[state=open]:bg-secondary/30">
               <AccordionTrigger className="text-sm md:text-base font-medium py-4 hover:no-underline">
-                La colle est-elle adaptée aux peaux sensibles ?
+                Quelle est la qualité d'impression ?
               </AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground pb-4">
-                Oui ! Notre colle est hypoallergénique et sans latex, spécialement formulée pour les peaux sensibles. Elle a été testée dermatologiquement et convient à tous les types de peau.
+                Nous utilisons une technologie d'impression UV haute définition directement sur le plexiglas. Le résultat est net, durable et résistant aux UV. Les couleurs restent éclatantes pendant des années sans jaunir ni s'estomper.
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="faq-4" className="border border-border rounded-xl px-4 data-[state=open]:bg-secondary/30">
               <AccordionTrigger className="text-sm md:text-base font-medium py-4 hover:no-underline">
-                Puis-je me maquiller avec les faux cils ?
+                Puis-je offrir le cadre en cadeau ?
               </AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground pb-4">
-                Absolument ! Vous pouvez appliquer du mascara, de l'eye-liner et tout autre maquillage pour les yeux. Nous recommandons d'utiliser des produits à base d'eau pour prolonger la durée de vie de vos cils.
+                Absolument ! C'est le cadeau idéal pour la Saint-Valentin, un anniversaire ou toute occasion spéciale. Chaque cadre est livré dans un élégant coffret cadeau. Vous pouvez aussi ajouter une carte personnalisée avec votre message.
               </AccordionContent>
             </AccordionItem>
 
             <AccordionItem value="faq-5" className="border border-border rounded-xl px-4 data-[state=open]:bg-secondary/30">
               <AccordionTrigger className="text-sm md:text-base font-medium py-4 hover:no-underline">
-                Comment retirer les faux cils en toute sécurité ?
+                Comment fonctionne le modèle "Carte du ciel" ?
               </AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground pb-4">
-                Utilisez un coton imbibé d'huile de coco ou d'un démaquillant à base d'huile. Appliquez-le sur la ligne des cils pendant quelques secondes, puis retirez délicatement les cils de l'extérieur vers l'intérieur. Ne tirez jamais brusquement.
+                Le modèle "The Night We Met" affiche les constellations exactes telles qu'elles étaient visibles depuis un lieu précis à une date donnée. Vous nous indiquez la date et le lieu de votre souvenir, et nous générons une carte du ciel authentique et unique.
               </AccordionContent>
             </AccordionItem>
 
@@ -621,7 +622,7 @@ const Product = () => {
                 Quelle est votre politique de retour ?
               </AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground pb-4">
-                Nous offrons une garantie satisfait ou remboursé de 90 jours. Si vous n'êtes pas entièrement satisfaite de votre achat, contactez-nous et nous vous rembourserons intégralement, sans poser de questions.
+                Nous offrons une garantie satisfait ou remboursé de 30 jours. Si vous n'êtes pas entièrement satisfait de votre cadre, contactez-nous et nous vous rembourserons intégralement ou produirons un nouveau cadre avec les corrections souhaitées.
               </AccordionContent>
             </AccordionItem>
           </Accordion>
@@ -634,8 +635,8 @@ const Product = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg py-3 px-4 z-50 md:hidden">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="font-medium text-foreground text-sm">LASH GLOW</p>
-            <p className="text-primary font-bold">{currentBundle.price.toFixed(2).replace(".", ",")} €</p>
+            <p className="font-medium text-foreground text-sm">Memory — {currentModel.name}</p>
+            <p className="text-primary font-bold">9,99 €</p>
           </div>
           <Button 
             className="rounded-xl px-6 py-3 h-auto font-semibold"
@@ -651,22 +652,32 @@ const Product = () => {
       <div className="h-20 md:h-0" />
 
       {/* Image Zoom Modal */}
-      {isZoomed && <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4" onClick={() => setIsZoomed(false)}>
+      {isZoomed && (
+        <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4" onClick={() => setIsZoomed(false)}>
           <button className="absolute top-4 right-4 text-white p-2 hover:bg-white/10 rounded-full transition-colors" onClick={() => setIsZoomed(false)}>
             <X className="h-6 w-6" />
           </button>
           
           <div className="w-full h-full flex items-center justify-center" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-            <img src={productImages[selectedImage]} alt="LASH GLOW" className="max-w-full max-h-[85vh] object-contain rounded-lg" />
+            <img src={productImages[selectedModel]} alt="Memory" className="max-w-full max-h-[85vh] object-contain rounded-lg" />
           </div>
 
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
-            {productImages.map((_, index) => <button key={index} onClick={e => {
-          e.stopPropagation();
-          setSelectedImage(index);
-        }} className={`w-2.5 h-2.5 rounded-full transition-all ${selectedImage === index ? "bg-white w-8" : "bg-white/40"}`} />)}
+            {productImages.map((_, index) => (
+              <button 
+                key={index} 
+                onClick={e => {
+                  e.stopPropagation();
+                  setSelectedModel(index);
+                }} 
+                className={`w-2.5 h-2.5 rounded-full transition-all ${selectedModel === index ? "bg-white w-8" : "bg-white/40"}`} 
+              />
+            ))}
           </div>
-        </div>}
-    </div>;
+        </div>
+      )}
+    </div>
+  );
 };
+
 export default Product;

@@ -1,24 +1,56 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProductCard from "./ProductCard";
-import productLashes from "@/assets/product-lashes.jpg";
-import productBundle from "@/assets/product-bundle.jpg";
+import productNightSky from "@/assets/product-night-sky.webp";
+import productSpotify from "@/assets/product-spotify.webp";
+import productStreetSign from "@/assets/product-street-sign.webp";
+import productCoordinates from "@/assets/product-coordinates.webp";
+import productPerfectMatch from "@/assets/product-perfect-match.webp";
 
 const products = [
   {
     id: 1,
-    slug: "lash-glow-faux-cils-individuels",
-    image: productLashes,
-    title: "LASH GLOW - Faux cils individuels",
-    price: "19,99 €",
+    slug: "the-night-we-met",
+    image: productNightSky,
+    title: "The Night We Met — Carte du ciel",
+    price: "9,99 €",
+    originalPrice: "20,00 €",
     isBestSeller: true,
   },
   {
     id: 2,
-    slug: "lash-glow-bundle-de-2",
-    image: productBundle,
-    title: "LASH GLOW - Bundle de 2",
-    price: "39,99 €",
+    slug: "our-song",
+    image: productSpotify,
+    title: "Our Song — Lecteur Spotify",
+    price: "9,99 €",
+    originalPrice: "20,00 €",
+    isBestSeller: false,
+  },
+  {
+    id: 3,
+    slug: "street-sign",
+    image: productStreetSign,
+    title: "Street Sign — Noms croisés",
+    price: "9,99 €",
+    originalPrice: "20,00 €",
+    isBestSeller: false,
+  },
+  {
+    id: 4,
+    slug: "coordinates",
+    image: productCoordinates,
+    title: "Coordinates — Lieu de rencontre",
+    price: "9,99 €",
+    originalPrice: "20,00 €",
+    isBestSeller: false,
+  },
+  {
+    id: 5,
+    slug: "perfect-match",
+    image: productPerfectMatch,
+    title: "Perfect Match — Union des cœurs",
+    price: "9,99 €",
+    originalPrice: "20,00 €",
     isBestSeller: false,
   },
 ];
@@ -30,8 +62,8 @@ const ProductsSection = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
           <div>
-            <p className="section-label mb-2">NOS BEST-SELLERS</p>
-            <h2 className="section-title">Produits phares</h2>
+            <p className="section-label mb-2">NOS MODÈLES</p>
+            <h2 className="section-title">Immortalisez vos moments</h2>
           </div>
           <Link 
             to="/product"
@@ -42,7 +74,7 @@ const ProductsSection = () => {
         </div>
 
         {/* Products Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product) => (
             <ProductCard
               key={product.id}
@@ -50,6 +82,7 @@ const ProductsSection = () => {
               image={product.image}
               title={product.title}
               price={product.price}
+              originalPrice={product.originalPrice}
               isBestSeller={product.isBestSeller}
             />
           ))}
@@ -61,7 +94,7 @@ const ProductsSection = () => {
             to="/product"
             className="inline-flex items-center gap-2 text-primary font-medium"
           >
-            Voir tous les produits <ArrowRight className="h-4 w-4" />
+            Voir tous les modèles <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </div>
