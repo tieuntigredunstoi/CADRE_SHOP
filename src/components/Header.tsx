@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Search, ShoppingBag, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "@/contexts/CartContext";
 
 const Header = () => {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { totalItems, setIsCartOpen } = useCart();
 
   const navLinks = [
     { label: "Notre Histoire", href: "/about", highlight: true },
@@ -47,11 +49,16 @@ const Header = () => {
             <button className="p-2 text-muted-foreground hover:text-foreground transition-colors">
               <Search className="h-5 w-5" />
             </button>
-            <button className="p-2 text-muted-foreground hover:text-foreground transition-colors relative">
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors relative"
+            >
               <ShoppingBag className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-4 h-4 rounded-full flex items-center justify-center">
-                0
-              </span>
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-xs w-5 h-5 rounded-full flex items-center justify-center font-medium animate-scale-in">
+                  {totalItems > 9 ? "9+" : totalItems}
+                </span>
+              )}
             </button>
 
             {/* Mobile Menu Trigger */}
