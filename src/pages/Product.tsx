@@ -16,16 +16,13 @@ import reviewAvatar from "@/assets/review-1.jpg";
 
 // Import payment logos
 import { logoVisa, logoMastercard, logoAmex } from "@/components/PaymentLogos";
-
 const productImages = [productMain, productDetail1, productDetail2, productDetail3];
-
 const Product = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [visitors, setVisitors] = useState(203);
   const [stock, setStock] = useState(8);
-
   const originalPrice = 59.99;
   const currentPrice = 29.99;
   const discountPercent = Math.round((1 - currentPrice / originalPrice) * 100);
@@ -41,16 +38,13 @@ const Product = () => {
   // Swipe handling for mobile image gallery
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  
   const handleTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
   };
-  
   const handleTouchMove = (e: React.TouchEvent) => {
     setTouchEnd(e.targetTouches[0].clientX);
   };
-  
   const handleTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
@@ -61,17 +55,13 @@ const Product = () => {
       setSelectedImage(prev => prev - 1);
     }
   };
-
   const nextImage = () => {
     setSelectedImage(prev => (prev + 1) % productImages.length);
   };
-
   const prevImage = () => {
     setSelectedImage(prev => (prev - 1 + productImages.length) % productImages.length);
   };
-
-  return (
-    <div className="min-h-screen flex flex-col bg-background">
+  return <div className="min-h-screen flex flex-col bg-background">
       <AnnouncementBar />
       <Header />
 
@@ -83,62 +73,30 @@ const Product = () => {
             {/* Image Gallery */}
             <div className="space-y-4">
               {/* Main Image */}
-              <div 
-                className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden group"
-                onTouchStart={handleTouchStart}
-                onTouchMove={handleTouchMove}
-                onTouchEnd={handleTouchEnd}
-              >
+              <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden group" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
                 <div className="aspect-square">
-                  <img 
-                    src={productImages[selectedImage]} 
-                    alt="LASH GLOW - Faux cils individuels" 
-                    className="w-full h-full object-cover cursor-zoom-in"
-                    onClick={() => setIsZoomed(true)}
-                  />
+                  <img src={productImages[selectedImage]} alt="LASH GLOW - Faux cils individuels" className="w-full h-full object-cover cursor-zoom-in" onClick={() => setIsZoomed(true)} />
                 </div>
                 
                 {/* Navigation Arrows */}
-                <button 
-                  onClick={prevImage}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 group-hover:opacity-100"
-                >
+                <button onClick={prevImage} className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 group-hover:opacity-100">
                   <ChevronLeft className="h-5 w-5 text-gray-700" />
                 </button>
-                <button 
-                  onClick={nextImage}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 group-hover:opacity-100"
-                >
+                <button onClick={nextImage} className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 hover:bg-white rounded-full flex items-center justify-center shadow-lg transition-all opacity-0 group-hover:opacity-100">
                   <ChevronRight className="h-5 w-5 text-gray-700" />
                 </button>
 
                 {/* Mobile Dots */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 md:hidden">
-                  {productImages.map((_, index) => (
-                    <button 
-                      key={index} 
-                      onClick={() => setSelectedImage(index)}
-                      className={`w-2 h-2 rounded-full transition-all ${selectedImage === index ? "bg-primary w-6" : "bg-white/60"}`} 
-                    />
-                  ))}
+                  {productImages.map((_, index) => <button key={index} onClick={() => setSelectedImage(index)} className={`w-2 h-2 rounded-full transition-all ${selectedImage === index ? "bg-primary w-6" : "bg-white/60"}`} />)}
                 </div>
               </div>
 
               {/* Thumbnails */}
               <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
-                {productImages.map((img, index) => (
-                  <button 
-                    key={index} 
-                    onClick={() => setSelectedImage(index)} 
-                    className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${
-                      selectedImage === index 
-                        ? "border-primary ring-2 ring-primary/20" 
-                        : "border-gray-200 hover:border-gray-300"
-                    }`}
-                  >
+                {productImages.map((img, index) => <button key={index} onClick={() => setSelectedImage(index)} className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${selectedImage === index ? "border-primary ring-2 ring-primary/20" : "border-gray-200 hover:border-gray-300"}`}>
                     <img src={img} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
+                  </button>)}
               </div>
             </div>
 
@@ -147,9 +105,7 @@ const Product = () => {
               {/* Rating */}
               <div className="flex items-center gap-2">
                 <div className="flex">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  ))}
+                  {[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />)}
                 </div>
                 <span className="text-sm font-medium text-foreground">Excellent</span>
                 <span className="text-sm text-muted-foreground">| 4,8 sur 5</span>
@@ -204,29 +160,20 @@ const Product = () => {
               <div className="space-y-2">
                 <label className="text-sm font-medium text-foreground">Quantité</label>
                 <div className="inline-flex items-center border border-gray-200 rounded-xl overflow-hidden">
-                  <button 
-                    onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                    className="w-12 h-12 flex items-center justify-center hover:bg-gray-50 transition-colors"
-                  >
+                  <button onClick={() => setQuantity(q => Math.max(1, q - 1))} className="w-12 h-12 flex items-center justify-center hover:bg-gray-50 transition-colors">
                     <Minus className="h-4 w-4 text-gray-600" />
                   </button>
                   <span className="w-12 h-12 flex items-center justify-center text-base font-medium border-x border-gray-200">
                     {quantity}
                   </span>
-                  <button 
-                    onClick={() => setQuantity(q => Math.min(stock, q + 1))}
-                    className="w-12 h-12 flex items-center justify-center hover:bg-gray-50 transition-colors"
-                  >
+                  <button onClick={() => setQuantity(q => Math.min(stock, q + 1))} className="w-12 h-12 flex items-center justify-center hover:bg-gray-50 transition-colors">
                     <Plus className="h-4 w-4 text-gray-600" />
                   </button>
                 </div>
               </div>
 
               {/* Add to Cart Button */}
-              <Button 
-                size="lg" 
-                className="w-full rounded-xl py-7 text-base font-semibold uppercase tracking-wide"
-              >
+              <Button size="lg" className="w-full rounded-xl py-7 text-base font-semibold uppercase tracking-wide">
                 Ajouter au panier
               </Button>
 
@@ -241,20 +188,12 @@ const Product = () => {
                 <div className="h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
                   <img src={logoAmex} alt="American Express" className="h-5 w-auto" />
                 </div>
-                <div className="h-7 px-3 bg-black text-white text-xs font-medium rounded flex items-center justify-center">
-                  Apple Pay
-                </div>
-                <div className="h-7 px-3 bg-white border border-gray-200 text-xs font-medium rounded flex items-center justify-center">
-                  G Pay
-                </div>
+                
+                
               </div>
 
               {/* Stock Alert */}
-              <div className="flex items-center justify-center gap-2 py-2">
-                <span className="text-primary font-medium text-sm">
-                  ⚡ Seulement {stock} LASH GLOW en stock !
-                </span>
-              </div>
+              
 
               {/* Trust Badges */}
               <div className="grid grid-cols-3 gap-4 py-4 border-t border-b border-gray-100">
@@ -281,20 +220,14 @@ const Product = () => {
               {/* Customer Testimonial */}
               <div className="bg-secondary/50 rounded-2xl p-5">
                 <div className="flex gap-4">
-                  <img 
-                    src={reviewAvatar} 
-                    alt="Charlotte V." 
-                    className="w-14 h-14 rounded-full object-cover flex-shrink-0"
-                  />
+                  <img src={reviewAvatar} alt="Charlotte V." className="w-14 h-14 rounded-full object-cover flex-shrink-0" />
                   <div className="space-y-2">
                     <p className="text-sm text-muted-foreground italic leading-relaxed">
                       « Je ne retournerai jamais à une autre méthode. Mes cils sont magnifiques et naturels. J'aurais aimé découvrir ça bien plus tôt. »
                     </p>
                     <div className="flex items-center gap-2">
                       <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        ))}
+                        {[...Array(5)].map((_, i) => <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />)}
                       </div>
                       <span className="text-sm font-medium text-foreground">Charlotte V.</span>
                       <span className="text-green-500">✓</span>
@@ -370,49 +303,22 @@ const Product = () => {
       <div className="h-20 md:h-0" />
 
       {/* Image Zoom Modal */}
-      {isZoomed && (
-        <div 
-          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4" 
-          onClick={() => setIsZoomed(false)}
-        >
-          <button 
-            className="absolute top-4 right-4 text-white p-2 hover:bg-white/10 rounded-full transition-colors"
-            onClick={() => setIsZoomed(false)}
-          >
+      {isZoomed && <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4" onClick={() => setIsZoomed(false)}>
+          <button className="absolute top-4 right-4 text-white p-2 hover:bg-white/10 rounded-full transition-colors" onClick={() => setIsZoomed(false)}>
             <X className="h-6 w-6" />
           </button>
           
-          <div 
-            className="w-full h-full flex items-center justify-center"
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            <img 
-              src={productImages[selectedImage]} 
-              alt="LASH GLOW" 
-              className="max-w-full max-h-[85vh] object-contain rounded-lg" 
-            />
+          <div className="w-full h-full flex items-center justify-center" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+            <img src={productImages[selectedImage]} alt="LASH GLOW" className="max-w-full max-h-[85vh] object-contain rounded-lg" />
           </div>
 
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
-            {productImages.map((_, index) => (
-              <button 
-                key={index} 
-                onClick={e => {
-                  e.stopPropagation();
-                  setSelectedImage(index);
-                }} 
-                className={`w-2.5 h-2.5 rounded-full transition-all ${
-                  selectedImage === index ? "bg-white w-8" : "bg-white/40"
-                }`} 
-              />
-            ))}
+            {productImages.map((_, index) => <button key={index} onClick={e => {
+          e.stopPropagation();
+          setSelectedImage(index);
+        }} className={`w-2.5 h-2.5 rounded-full transition-all ${selectedImage === index ? "bg-white w-8" : "bg-white/40"}`} />)}
           </div>
-        </div>
-      )}
-    </div>
-  );
+        </div>}
+    </div>;
 };
-
 export default Product;
