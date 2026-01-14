@@ -51,6 +51,30 @@ const Product = () => {
     });
   };
 
+  // Countdown timer - ends at midnight
+  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const midnight = new Date();
+      midnight.setHours(23, 59, 59, 999);
+      const diff = midnight.getTime() - now.getTime();
+      
+      if (diff > 0) {
+        setTimeLeft({
+          hours: Math.floor(diff / (1000 * 60 * 60)),
+          minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((diff % (1000 * 60)) / 1000),
+        });
+      }
+    };
+    
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   // Simulate live visitors
   useEffect(() => {
     const interval = setInterval(() => {
@@ -255,6 +279,57 @@ const Product = () => {
                   </motion.div>
                 ))}
               </div>
+
+              {/* Countdown Timer */}
+              <motion.div 
+                className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-2xl p-4 border border-primary/20"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.8 }}
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    >
+                      <Clock className="h-5 w-5 text-primary" />
+                    </motion.div>
+                    <span className="text-sm font-medium text-foreground">Offre expire dans :</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <motion.div 
+                      className="bg-primary text-primary-foreground px-2 py-1 rounded-lg text-sm font-bold min-w-[36px] text-center"
+                      key={timeLeft.hours}
+                      initial={{ scale: 1.2 }}
+                      animate={{ scale: 1 }}
+                    >
+                      {String(timeLeft.hours).padStart(2, '0')}
+                    </motion.div>
+                    <span className="text-primary font-bold">:</span>
+                    <motion.div 
+                      className="bg-primary text-primary-foreground px-2 py-1 rounded-lg text-sm font-bold min-w-[36px] text-center"
+                      key={timeLeft.minutes}
+                      initial={{ scale: 1.2 }}
+                      animate={{ scale: 1 }}
+                    >
+                      {String(timeLeft.minutes).padStart(2, '0')}
+                    </motion.div>
+                    <span className="text-primary font-bold">:</span>
+                    <motion.div 
+                      className="bg-primary text-primary-foreground px-2 py-1 rounded-lg text-sm font-bold min-w-[36px] text-center"
+                      key={timeLeft.seconds}
+                      initial={{ scale: 1.2 }}
+                      animate={{ scale: 1 }}
+                    >
+                      {String(timeLeft.seconds).padStart(2, '0')}
+                    </motion.div>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground mt-2 text-center">
+                  🔥 <strong>50% de réduction</strong> — Livraison GRATUITE incluse
+                </p>
+              </motion.div>
 
               {/* Bundle Selection */}
               <div className="space-y-3">
