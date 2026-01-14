@@ -404,16 +404,17 @@ const Product = () => {
 
         {/* CTA Section */}
         <section className="py-12 px-4 md:px-6 bg-primary/10">
-          <div className="max-w-2xl mx-auto text-center space-y-6">
-            <h2 className="text-2xl md:text-3xl font-display text-foreground">
+          <div className="max-w-2xl mx-auto text-center space-y-4 md:space-y-6">
+            <h2 className="text-xl md:text-3xl font-display text-foreground">
               Prête à transformer votre regard ?
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-sm md:text-base text-muted-foreground px-4">
               Rejoignez plus de 10 000 femmes satisfaites et découvrez la magie LASH GLOW.
             </p>
-            <Button size="lg" className="rounded-full px-10 py-6 text-lg font-semibold">
-              <ShoppingBag className="mr-2 h-5 w-5" />
-              COMMANDER MAINTENANT — {price.toFixed(2)} €
+            <Button size="lg" className="w-full sm:w-auto rounded-full px-6 md:px-10 py-5 md:py-6 text-base md:text-lg font-semibold">
+              <ShoppingBag className="mr-2 h-4 w-4 md:h-5 md:w-5" />
+              <span className="hidden sm:inline">COMMANDER MAINTENANT — {price.toFixed(2)} €</span>
+              <span className="sm:hidden">COMMANDER — {price.toFixed(2)} €</span>
             </Button>
           </div>
         </section>
