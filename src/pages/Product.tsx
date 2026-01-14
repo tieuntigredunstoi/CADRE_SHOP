@@ -211,23 +211,60 @@ const Product = () => {
                 <span className="text-xs md:text-sm text-primary font-medium">Stock limité — Forte demande</span>
               </div>
 
-              {/* Key Benefits Grid - 1 column on mobile, 2 on tablet+ */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3 py-1 md:py-2">
-                <div className="flex items-center gap-2.5">
-                  <Zap className="h-4 w-4 text-primary flex-shrink-0" />
-                  <span className="text-xs md:text-sm text-muted-foreground">Résultats visibles dès la 1ère utilisation</span>
+              {/* Key Benefits - Horizontal scroll on mobile, grid on desktop */}
+              <div className="py-1 md:py-2">
+                {/* Desktop: Grid layout */}
+                <div className="hidden sm:grid sm:grid-cols-2 gap-2.5 md:gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <Zap className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="text-xs md:text-sm text-muted-foreground">Résultats visibles dès la 1ère utilisation</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Award className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="text-xs md:text-sm text-muted-foreground">Design primé internationalement</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Shield className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="text-xs md:text-sm text-muted-foreground">Garantie 2 ans incluse</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <Truck className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="text-xs md:text-sm text-muted-foreground">Livraison gratuite en France</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <Award className="h-4 w-4 text-primary flex-shrink-0" />
-                  <span className="text-xs md:text-sm text-muted-foreground">Design primé internationalement</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Shield className="h-4 w-4 text-primary flex-shrink-0" />
-                  <span className="text-xs md:text-sm text-muted-foreground">Garantie 2 ans incluse</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Truck className="h-4 w-4 text-primary flex-shrink-0" />
-                  <span className="text-xs md:text-sm text-muted-foreground">Livraison gratuite en France</span>
+                
+                {/* Mobile: Horizontal scroll */}
+                <div className="sm:hidden -mx-4 px-4">
+                  <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide snap-x snap-mandatory">
+                    <div className="flex-shrink-0 w-[140px] snap-start bg-secondary/30 rounded-xl p-3 flex flex-col items-center text-center gap-2">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Shield className="h-5 w-5 text-primary" />
+                      </div>
+                      <span className="text-xs font-medium text-foreground">Sans danger</span>
+                      <span className="text-[10px] text-muted-foreground leading-tight">Colle hypoallergénique sans latex</span>
+                    </div>
+                    <div className="flex-shrink-0 w-[140px] snap-start bg-secondary/30 rounded-xl p-3 flex flex-col items-center text-center gap-2">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Zap className="h-5 w-5 text-primary" />
+                      </div>
+                      <span className="text-xs font-medium text-foreground">Résultat naturel</span>
+                      <span className="text-[10px] text-muted-foreground leading-tight">Effet glamour et naturel</span>
+                    </div>
+                    <div className="flex-shrink-0 w-[140px] snap-start bg-secondary/30 rounded-xl p-3 flex flex-col items-center text-center gap-2">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Clock className="h-5 w-5 text-primary" />
+                      </div>
+                      <span className="text-xs font-medium text-foreground">Longue tenue</span>
+                      <span className="text-[10px] text-muted-foreground leading-tight">Jusqu'à 7 jours de tenue</span>
+                    </div>
+                    <div className="flex-shrink-0 w-[140px] snap-start bg-secondary/30 rounded-xl p-3 flex flex-col items-center text-center gap-2">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Truck className="h-5 w-5 text-primary" />
+                      </div>
+                      <span className="text-xs font-medium text-foreground">Livraison rapide</span>
+                      <span className="text-[10px] text-muted-foreground leading-tight">Expédition sous 24h</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
