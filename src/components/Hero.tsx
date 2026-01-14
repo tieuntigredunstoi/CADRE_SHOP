@@ -1,5 +1,6 @@
 import { ArrowRight, Gift } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-model.png";
 
 const Hero = () => {
@@ -16,11 +17,11 @@ const Hero = () => {
             </div>
             
             {/* Hero Image */}
-            <div className="relative rounded-2xl overflow-hidden bg-secondary">
+            <Link to="/product" className="block relative rounded-2xl overflow-hidden bg-secondary group">
               <img
                 src={heroImage}
                 alt="LASH GLOW - Faux cils individuels professionnels"
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
               />
               {/* Brand watermark */}
               <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
@@ -28,7 +29,7 @@ const Hero = () => {
                   LASH GLOW
                 </span>
               </div>
-            </div>
+            </Link>
           </div>
 
           {/* Content Section */}
@@ -61,12 +62,12 @@ const Hero = () => {
             </div>
 
             {/* CTA Button */}
-            <a href="/product">
+            <Link to="/product">
               <Button size="lg" className="rounded-full px-8 group">
                 Découvrir — 19,99€
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

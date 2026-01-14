@@ -1,16 +1,18 @@
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface ProductCardProps {
   image: string;
   title: string;
   price: string;
+  slug: string;
   isBestSeller?: boolean;
 }
 
-const ProductCard = ({ image, title, price, isBestSeller }: ProductCardProps) => {
+const ProductCard = ({ image, title, price, slug, isBestSeller }: ProductCardProps) => {
   return (
-    <a 
-      href="#" 
+    <Link 
+      to={`/product/${slug}`}
       className="group block bg-card rounded-2xl overflow-hidden border border-border hover:shadow-lg transition-all duration-300"
     >
       {/* Image Container */}
@@ -37,7 +39,7 @@ const ProductCard = ({ image, title, price, isBestSeller }: ProductCardProps) =>
           </span>
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 
