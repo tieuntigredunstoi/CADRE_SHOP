@@ -644,31 +644,40 @@ const Product = () => {
         </section>
       </main>
 
-      <Footer />
-
       {/* Mobile Sticky Add to Cart */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg py-3 px-4 z-50 md:hidden">
+      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.1)] py-4 px-4 z-50 md:hidden safe-area-bottom">
         <div className="flex items-center justify-between gap-3">
-          <div>
-            <p className="font-medium text-foreground text-sm">Memory — {currentModel.name}</p>
-            <p className="text-primary font-bold">9,99 €</p>
+          <div className="flex items-center gap-3">
+            <img 
+              src={currentModel.image} 
+              alt={currentModel.name}
+              className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+            />
+            <div>
+              <p className="font-medium text-foreground text-sm line-clamp-1">{currentModel.name}</p>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-primary font-bold">9,99 €</span>
+                <span className="text-xs text-muted-foreground line-through">20€</span>
+              </div>
+            </div>
           </div>
           <Button 
-            className="rounded-xl px-6 py-3 h-auto font-semibold"
-            onClick={handleAddToCart}
+            className="rounded-xl px-5 py-3 h-auto font-semibold flex-shrink-0"
+            onClick={() => navigate(`/customize?model=${currentModel.id}`)}
           >
-            <ShoppingBag className="mr-2 h-4 w-4" />
-            Ajouter
+            Personnaliser
           </Button>
         </div>
       </div>
 
       {/* Bottom padding for mobile sticky bar */}
-      <div className="h-20 md:h-0" />
+      <div className="h-24 md:h-0" />
+
+      <Footer />
 
       {/* Image Zoom Modal */}
       {isZoomed && (
-        <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4" onClick={() => setIsZoomed(false)}>
+        <div className="fixed inset-0 bg-black/95 z-[60] flex items-center justify-center p-4" onClick={() => setIsZoomed(false)}>
           <button className="absolute top-4 right-4 text-white p-2 hover:bg-white/10 rounded-full transition-colors" onClick={() => setIsZoomed(false)}>
             <X className="h-6 w-6" />
           </button>
