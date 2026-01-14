@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, ShoppingBag, Check, Truck, Shield, RefreshCw, Clock, ChevronLeft, ChevronRight, ZoomIn, X, Minus, Plus, Calendar, RotateCcw, Heart, ClipboardList, Package, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Star, ShoppingBag, Check, Truck, Shield, RefreshCw, Clock, ChevronLeft, ChevronRight, ZoomIn, X, Minus, Plus, Calendar, RotateCcw, Heart, ClipboardList, Package, Sparkles, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
@@ -35,6 +36,7 @@ const Product = () => {
   const [visitors, setVisitors] = useState(203);
   const { toast } = useToast();
   const { addToCart } = useCart();
+  const navigate = useNavigate();
   
   const currentModel = productModels[selectedModel];
   const productImages = productModels.map(m => m.image);
@@ -443,30 +445,43 @@ const Product = () => {
               </div>
 
               {/* Add to Cart Button */}
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
+              <div className="space-y-3">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button 
+                    size="lg" 
+                    className="w-full rounded-xl py-7 text-base font-semibold uppercase tracking-wide relative overflow-hidden group"
+                    onClick={() => navigate(`/customize?model=${currentModel.id}`)}
+                  >
+                    <Palette className="mr-2 h-5 w-5" />
+                    <span className="relative z-10">Personnaliser mon Memory</span>
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-primary"
+                      animate={{
+                        x: ["-100%", "100%"],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                      style={{ opacity: 0.3 }}
+                    />
+                  </Button>
+                </motion.div>
+                
                 <Button 
                   size="lg" 
-                  className="w-full rounded-xl py-7 text-base font-semibold uppercase tracking-wide relative overflow-hidden group"
+                  variant="outline"
+                  className="w-full rounded-xl py-6 text-base font-medium"
                   onClick={handleAddToCart}
                 >
-                  <span className="relative z-10">Créer mon Memory — 9,99 €</span>
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-primary"
-                    animate={{
-                      x: ["-100%", "100%"],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
-                    style={{ opacity: 0.3 }}
-                  />
+                  <ShoppingBag className="mr-2 h-4 w-4" />
+                  Ajouter au panier — 9,99 €
                 </Button>
-              </motion.div>
+              </div>
 
               {/* Payment Icons */}
               <div className="flex items-center justify-center gap-2 py-1">

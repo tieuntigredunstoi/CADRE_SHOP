@@ -7,6 +7,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import Index from "./pages/Index";
 import Product from "./pages/Product";
+import Customize from "./pages/Customize";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Tracking from "./pages/Tracking";
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/product" element={<Product />} />
             <Route path="/product/:slug" element={<Product />} />
+            <Route path="/customize" element={<Customize />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/tracking" element={<Tracking />} />
