@@ -339,6 +339,68 @@ const Product = () => {
           </div>
         </section>
 
+        {/* FAQ Section */}
+        <section className="max-w-3xl mx-auto px-4 md:px-6 py-12 md:py-16">
+          <h2 className="text-2xl md:text-3xl font-display font-semibold text-center mb-8">
+            Questions fréquentes
+          </h2>
+          
+          <Accordion type="single" collapsible className="w-full space-y-3">
+            <AccordionItem value="faq-1" className="border border-border rounded-xl px-4 data-[state=open]:bg-secondary/30">
+              <AccordionTrigger className="text-sm md:text-base font-medium py-4 hover:no-underline">
+                Comment appliquer les faux cils LASH GLOW ?
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground pb-4">
+                Nettoyez vos cils naturels, appliquez une fine couche de colle sur le support, attendez 30 secondes que la colle devienne légèrement collante, puis placez délicatement les cils le long de votre ligne de cils. L'application prend environ 5 minutes.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="faq-2" className="border border-border rounded-xl px-4 data-[state=open]:bg-secondary/30">
+              <AccordionTrigger className="text-sm md:text-base font-medium py-4 hover:no-underline">
+                Combien de temps durent les faux cils ?
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground pb-4">
+                Nos faux cils peuvent tenir jusqu'à 7 jours avec une application correcte. Ils sont également réutilisables jusqu'à 20 fois si vous en prenez soin et les nettoyez délicatement après chaque utilisation.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="faq-3" className="border border-border rounded-xl px-4 data-[state=open]:bg-secondary/30">
+              <AccordionTrigger className="text-sm md:text-base font-medium py-4 hover:no-underline">
+                La colle est-elle adaptée aux peaux sensibles ?
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground pb-4">
+                Oui ! Notre colle est hypoallergénique et sans latex, spécialement formulée pour les peaux sensibles. Elle a été testée dermatologiquement et convient à tous les types de peau.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="faq-4" className="border border-border rounded-xl px-4 data-[state=open]:bg-secondary/30">
+              <AccordionTrigger className="text-sm md:text-base font-medium py-4 hover:no-underline">
+                Puis-je me maquiller avec les faux cils ?
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground pb-4">
+                Absolument ! Vous pouvez appliquer du mascara, de l'eye-liner et tout autre maquillage pour les yeux. Nous recommandons d'utiliser des produits à base d'eau pour prolonger la durée de vie de vos cils.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="faq-5" className="border border-border rounded-xl px-4 data-[state=open]:bg-secondary/30">
+              <AccordionTrigger className="text-sm md:text-base font-medium py-4 hover:no-underline">
+                Comment retirer les faux cils en toute sécurité ?
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground pb-4">
+                Utilisez un coton imbibé d'huile de coco ou d'un démaquillant à base d'huile. Appliquez-le sur la ligne des cils pendant quelques secondes, puis retirez délicatement les cils de l'extérieur vers l'intérieur. Ne tirez jamais brusquement.
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="faq-6" className="border border-border rounded-xl px-4 data-[state=open]:bg-secondary/30">
+              <AccordionTrigger className="text-sm md:text-base font-medium py-4 hover:no-underline">
+                Quelle est votre politique de retour ?
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground pb-4">
+                Nous offrons une garantie satisfait ou remboursé de 90 jours. Si vous n'êtes pas entièrement satisfaite de votre achat, contactez-nous et nous vous rembourserons intégralement, sans poser de questions.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </section>
       </main>
 
       <Footer />
