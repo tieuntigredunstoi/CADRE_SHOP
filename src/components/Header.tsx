@@ -22,7 +22,7 @@ const Header = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <img src={logoMemory} alt="Memory" className="h-8 md:h-10 w-auto" />
+            <img src={logoMemory} alt="Memory" className="h-12 md:h-14 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
