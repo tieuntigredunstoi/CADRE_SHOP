@@ -281,6 +281,86 @@ const Product = () => {
             </div>
           </div>
         </section>
+
+        {/* Cross-sell Section */}
+        <section className="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12 border-t border-border">
+          <h2 className="text-2xl md:text-3xl font-display font-semibold text-center mb-8">
+            Offres Exclusives
+          </h2>
+          
+          <div className="grid md:grid-cols-3 gap-4 md:gap-6">
+            {/* Bundle 1 - Standard */}
+            <div className="relative bg-card border border-border rounded-2xl p-6 hover:shadow-lg transition-all">
+              <div className="text-center space-y-4">
+                <div className="w-20 h-20 mx-auto bg-secondary rounded-xl flex items-center justify-center">
+                  <span className="text-3xl">1️⃣</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg text-foreground">1 LASH GLOW</h3>
+                  <p className="text-sm text-muted-foreground">Kit complet individuel</p>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-2xl font-bold text-foreground">19,99 €</span>
+                </div>
+                <Button variant="outline" className="w-full rounded-xl py-6">
+                  Sélectionner
+                </Button>
+              </div>
+            </div>
+
+            {/* Bundle 2 - Best Value */}
+            <div className="relative bg-card border-2 border-primary rounded-2xl p-6 hover:shadow-lg transition-all">
+              <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1">
+                Plus populaire
+              </Badge>
+              <div className="text-center space-y-4">
+                <div className="w-20 h-20 mx-auto bg-primary/10 rounded-xl flex items-center justify-center">
+                  <span className="text-3xl">2️⃣</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg text-foreground">2 LASH GLOW</h3>
+                  <p className="text-sm text-muted-foreground">Un pour vous, un à offrir</p>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-2xl font-bold text-foreground">29,99 €</span>
+                  <span className="text-sm text-muted-foreground line-through">39,98 €</span>
+                </div>
+                <Badge variant="secondary" className="bg-green-100 text-green-700 border-0">
+                  Économisez 10 €
+                </Badge>
+                <Button className="w-full rounded-xl py-6">
+                  Sélectionner
+                </Button>
+              </div>
+            </div>
+
+            {/* Bundle 3 - Max Savings */}
+            <div className="relative bg-card border border-border rounded-2xl p-6 hover:shadow-lg transition-all">
+              <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary text-secondary-foreground px-4 py-1">
+                Meilleure économie
+              </Badge>
+              <div className="text-center space-y-4">
+                <div className="w-20 h-20 mx-auto bg-secondary rounded-xl flex items-center justify-center">
+                  <span className="text-3xl">3️⃣</span>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg text-foreground">3 LASH GLOW</h3>
+                  <p className="text-sm text-muted-foreground">Pour vous et vos amies</p>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-2xl font-bold text-foreground">39,99 €</span>
+                  <span className="text-sm text-muted-foreground line-through">59,97 €</span>
+                </div>
+                <Badge variant="secondary" className="bg-green-100 text-green-700 border-0">
+                  Économisez 20 €
+                </Badge>
+                <Button variant="outline" className="w-full rounded-xl py-6">
+                  Sélectionner
+                </Button>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />
