@@ -3,6 +3,7 @@ import { Search, ShoppingBag, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "@/contexts/CartContext";
+import logoMemory from "@/assets/logo-memory.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ const Header = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-xl font-bold text-foreground tracking-wide">MEMORY</span>
+            <img src={logoMemory} alt="Memory" className="h-8 md:h-10 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
