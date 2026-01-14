@@ -17,15 +17,20 @@ import reviewAvatar from "@/assets/review-1.jpg";
 // Import payment logos
 import { logoVisa, logoMastercard, logoAmex } from "@/components/PaymentLogos";
 const productImages = [productMain, productDetail1, productDetail2, productDetail3];
+const bundles = [
+  { id: 1, quantity: 1, price: 19.99, originalPrice: 19.99, savings: 0 },
+  { id: 2, quantity: 2, price: 29.99, originalPrice: 39.98, savings: 9.99 },
+  { id: 3, quantity: 3, price: 39.99, originalPrice: 59.97, savings: 19.98 },
+];
+
 const Product = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
-  const [quantity, setQuantity] = useState(1);
+  const [selectedBundle, setSelectedBundle] = useState(2); // Default to most popular
   const [visitors, setVisitors] = useState(203);
   const [stock, setStock] = useState(8);
-  const originalPrice = 59.99;
-  const currentPrice = 29.99;
-  const discountPercent = Math.round((1 - currentPrice / originalPrice) * 100);
+  
+  const currentBundle = bundles.find(b => b.id === selectedBundle) || bundles[1];
 
   // Simulate live visitors
   useEffect(() => {
@@ -147,85 +152,72 @@ const Product = () => {
                 </div>
               </div>
 
-              {/* Price */}
-              <div className="flex items-center gap-3 py-2">
-                <span className="text-3xl font-bold text-foreground">{currentPrice.toFixed(2)} €</span>
-                <span className="text-lg text-muted-foreground line-through">{originalPrice.toFixed(2)} €</span>
-                <Badge className="bg-primary/10 text-primary border-0 font-semibold">
-                  -{discountPercent} %
-                </Badge>
-              </div>
-
               {/* Bundle Selection */}
               <div className="space-y-3">
                 <label className="text-sm font-medium text-foreground">Choisissez votre offre</label>
-                <div className="space-y-2">
-                  {/* Bundle 1 */}
-                  <div className="flex items-center justify-between p-4 border border-border rounded-xl hover:border-primary/50 cursor-pointer transition-all">
-                    <div className="flex items-center gap-3">
-                      <span className="text-lg">1️⃣</span>
-                      <div>
-                        <p className="font-medium text-foreground text-sm">1 LASH GLOW</p>
-                        <p className="text-xs text-muted-foreground">Kit complet</p>
+                <div className="space-y-3">
+                  {bundles.map((bundle) => {
+                    const isSelected = selectedBundle === bundle.id;
+                    const isPopular = bundle.id === 2;
+                    
+                    return (
+                      <div
+                        key={bundle.id}
+                        onClick={() => setSelectedBundle(bundle.id)}
+                        className={`relative rounded-2xl p-4 cursor-pointer transition-all ${
+                          isSelected 
+                            ? "border-2 border-primary bg-primary/5" 
+                            : "border border-border hover:border-primary/30"
+                        }`}
+                      >
+                        {isPopular && (
+                          <Badge className="absolute -top-3 left-4 bg-primary text-primary-foreground text-xs px-3 py-1">
+                            Plus populaire
+                          </Badge>
+                        )}
+                        
+                        <div className="flex items-center gap-4">
+                          {/* Radio Circle */}
+                          <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                            isSelected ? "border-primary bg-primary" : "border-muted-foreground/30"
+                          }`}>
+                            {isSelected && <Check className="h-4 w-4 text-primary-foreground" />}
+                          </div>
+                          
+                          {/* Content */}
+                          <div className="flex-1 flex items-center justify-between">
+                            <div>
+                              <p className="font-medium text-foreground">
+                                {bundle.quantity} unité{bundle.quantity > 1 ? "s" : ""}
+                              </p>
+                              {bundle.savings > 0 && (
+                                <p className="text-sm text-amber-700 font-medium">
+                                  Économisez {bundle.savings.toFixed(2).replace(".", ",")} €
+                                </p>
+                              )}
+                            </div>
+                            
+                            <div className="text-right">
+                              <span className="text-xl font-bold text-foreground">
+                                {bundle.price.toFixed(2).replace(".", ",")} €
+                              </span>
+                              {bundle.savings > 0 && (
+                                <p className="text-sm text-muted-foreground line-through">
+                                  {bundle.originalPrice.toFixed(2).replace(".", ",")} €
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <span className="font-bold text-foreground">19,99 €</span>
-                  </div>
-                  
-                  {/* Bundle 2 - Popular */}
-                  <div className="relative flex items-center justify-between p-4 border-2 border-primary rounded-xl bg-primary/5 cursor-pointer transition-all">
-                    <Badge className="absolute -top-2.5 left-4 bg-primary text-primary-foreground text-xs px-2 py-0.5">
-                      Plus populaire
-                    </Badge>
-                    <div className="flex items-center gap-3">
-                      <span className="text-lg">2️⃣</span>
-                      <div>
-                        <p className="font-medium text-foreground text-sm">2 LASH GLOW</p>
-                        <p className="text-xs text-muted-foreground">Économisez 10 €</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-bold text-foreground">29,99 €</span>
-                      <p className="text-xs text-muted-foreground line-through">39,98 €</p>
-                    </div>
-                  </div>
-                  
-                  {/* Bundle 3 */}
-                  <div className="flex items-center justify-between p-4 border border-border rounded-xl hover:border-primary/50 cursor-pointer transition-all">
-                    <div className="flex items-center gap-3">
-                      <span className="text-lg">3️⃣</span>
-                      <div>
-                        <p className="font-medium text-foreground text-sm">3 LASH GLOW</p>
-                        <p className="text-xs text-green-600 font-medium">Économisez 20 €</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-bold text-foreground">39,99 €</span>
-                      <p className="text-xs text-muted-foreground line-through">59,97 €</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Quantity Selector */}
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-foreground">Quantité</label>
-                <div className="inline-flex items-center border border-gray-200 rounded-xl overflow-hidden">
-                  <button onClick={() => setQuantity(q => Math.max(1, q - 1))} className="w-12 h-12 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                    <Minus className="h-4 w-4 text-gray-600" />
-                  </button>
-                  <span className="w-12 h-12 flex items-center justify-center text-base font-medium border-x border-gray-200">
-                    {quantity}
-                  </span>
-                  <button onClick={() => setQuantity(q => Math.min(stock, q + 1))} className="w-12 h-12 flex items-center justify-center hover:bg-gray-50 transition-colors">
-                    <Plus className="h-4 w-4 text-gray-600" />
-                  </button>
+                    );
+                  })}
                 </div>
               </div>
 
               {/* Add to Cart Button */}
               <Button size="lg" className="w-full rounded-xl py-7 text-base font-semibold uppercase tracking-wide">
-                Ajouter au panier
+                Ajouter au panier — {currentBundle.price.toFixed(2).replace(".", ",")} €
               </Button>
 
               {/* Payment Icons */}
@@ -342,7 +334,7 @@ const Product = () => {
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="font-medium text-foreground text-sm">LASH GLOW</p>
-            <p className="text-primary font-bold">{currentPrice.toFixed(2)} €</p>
+            <p className="text-primary font-bold">{currentBundle.price.toFixed(2).replace(".", ",")} €</p>
           </div>
           <Button className="rounded-xl px-6 py-3 h-auto font-semibold">
             <ShoppingBag className="mr-2 h-4 w-4" />
