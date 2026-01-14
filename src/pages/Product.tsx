@@ -50,6 +50,8 @@ const Product = () => {
   const [showStickyBar, setShowStickyBar] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState(1);
   const [countdown, setCountdown] = useState({ hours: 2, minutes: 47, seconds: 32 });
+  const [visitors, setVisitors] = useState(14);
+  const [stock, setStock] = useState(7);
 
   // Countdown timer
   useEffect(() => {
@@ -66,6 +68,18 @@ const Product = () => {
       });
     }, 1000);
     return () => clearInterval(timer);
+  }, []);
+
+  // Simulate live visitors count
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setVisitors(prev => {
+        const change = Math.random() > 0.5 ? 1 : -1;
+        const newValue = prev + change;
+        return Math.max(8, Math.min(24, newValue));
+      });
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   // Sticky bar on scroll
@@ -236,9 +250,14 @@ const Product = () => {
               </p>
 
               {/* Stock Alert */}
-              <div className="inline-flex items-center gap-2 border border-green-200 bg-green-50 rounded-lg px-4 py-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-green-500"></span>
-                <span className="text-sm text-green-700 font-medium">Stock limité — Forte demande</span>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <div className="inline-flex items-center gap-2 border border-green-200 bg-green-50 rounded-lg px-4 py-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+                  <span className="text-sm text-green-700 font-medium">{visitors} personnes regardent ce produit</span>
+                </div>
+                <div className="inline-flex items-center gap-2 border border-orange-200 bg-orange-50 rounded-lg px-4 py-2">
+                  <span className="text-sm text-orange-700 font-medium">🔥 Plus que {stock} en stock</span>
+                </div>
               </div>
 
               {/* Key Benefits Grid - 1 column on mobile, 2 on tablet+ */}
