@@ -164,10 +164,10 @@ const Product = () => {
                       <div
                         key={bundle.id}
                         onClick={() => setSelectedBundle(bundle.id)}
-                        className={`relative rounded-2xl p-4 cursor-pointer transition-all ${
+                        className={`relative rounded-2xl p-4 cursor-pointer transition-all duration-300 ease-out ${
                           isSelected 
-                            ? "border-2 border-primary bg-primary/5" 
-                            : "border border-border hover:border-primary/30"
+                            ? "border-2 border-primary bg-primary/5 scale-[1.02] shadow-md" 
+                            : "border border-border hover:border-primary/30 hover:bg-secondary/30"
                         }`}
                       >
                         {isPopular && (
@@ -178,16 +178,20 @@ const Product = () => {
                         
                         <div className="flex items-center gap-4">
                           {/* Radio Circle */}
-                          <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
-                            isSelected ? "border-primary bg-primary" : "border-muted-foreground/30"
+                          <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+                            isSelected ? "border-primary bg-primary scale-110" : "border-muted-foreground/30"
                           }`}>
-                            {isSelected && <Check className="h-4 w-4 text-primary-foreground" />}
+                            <Check className={`h-4 w-4 text-primary-foreground transition-all duration-200 ${
+                              isSelected ? "opacity-100 scale-100" : "opacity-0 scale-50"
+                            }`} />
                           </div>
                           
                           {/* Content */}
                           <div className="flex-1 flex items-center justify-between">
                             <div>
-                              <p className="font-medium text-foreground">
+                              <p className={`font-medium transition-colors duration-200 ${
+                                isSelected ? "text-primary" : "text-foreground"
+                              }`}>
                                 {bundle.quantity} unité{bundle.quantity > 1 ? "s" : ""}
                               </p>
                               {bundle.savings > 0 && (
@@ -198,7 +202,9 @@ const Product = () => {
                             </div>
                             
                             <div className="text-right">
-                              <span className="text-xl font-bold text-foreground">
+                              <span className={`text-xl font-bold transition-colors duration-200 ${
+                                isSelected ? "text-primary" : "text-foreground"
+                              }`}>
                                 {bundle.price.toFixed(2).replace(".", ",")} €
                               </span>
                               {bundle.savings > 0 && (
