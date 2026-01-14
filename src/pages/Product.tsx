@@ -87,31 +87,11 @@ const Product = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Swipe handling for mobile image gallery
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-  const handleTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-    const distance = touchStart - touchEnd;
-    if (distance > 50 && selectedModel < productImages.length - 1) {
-      setSelectedModel(prev => prev + 1);
-    }
-    if (distance < -50 && selectedModel > 0) {
-      setSelectedModel(prev => prev - 1);
-    }
-  };
   const nextImage = () => {
-    setSelectedModel(prev => (prev + 1) % productImages.length);
+    setSelectedModel((prev) => (prev + 1) % productImages.length);
   };
   const prevImage = () => {
-    setSelectedModel(prev => (prev - 1 + productImages.length) % productImages.length);
+    setSelectedModel((prev) => (prev - 1 + productImages.length) % productImages.length);
   };
 
   return (
@@ -119,7 +99,7 @@ const Product = () => {
       <AnnouncementBar />
       <Header />
 
-      <main className="flex-1">
+      <main className="flex-1 pb-32 md:pb-0">
         {/* Product Section */}
         <section className="max-w-7xl mx-auto px-4 md:px-6 py-6 md:py-12">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-16">
@@ -132,7 +112,7 @@ const Product = () => {
               transition={{ duration: 0.5 }}
             >
               {/* Main Image */}
-              <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden group" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+              <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden group">
                 <div className="aspect-square">
                   <AnimatePresence mode="wait">
                     <motion.img 
@@ -186,16 +166,16 @@ const Product = () => {
               </div>
 
               {/* Thumbnails */}
-              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+              <div className="grid grid-cols-4 sm:grid-cols-5 gap-2">
                 {productModels.map((model, index) => (
                   <motion.button 
                     key={index} 
                     onClick={() => setSelectedModel(index)} 
-                    className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${selectedModel === index ? "border-primary ring-2 ring-primary/20" : "border-gray-200 hover:border-gray-300"}`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    className={`aspect-square w-full rounded-xl overflow-hidden border-2 transition-all ${selectedModel === index ? "border-primary ring-2 ring-primary/20" : "border-gray-200 hover:border-gray-300"}`}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
                   >
-                    <img src={model.image} alt={model.name} className="w-full h-full object-cover" />
+                    <img src={model.image} alt={model.name} className="w-full h-full object-cover" loading="lazy" />
                   </motion.button>
                 ))}
               </div>
@@ -319,59 +299,59 @@ const Product = () => {
                     <span className="text-xs font-medium text-background/70 uppercase tracking-wider">Offre Saint-Valentin</span>
                   </div>
                   
-                  <div className="flex items-center justify-center gap-3">
-                    {/* Hours */}
-                    <div className="text-center">
-                      <motion.div 
-                        className="bg-background/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-background/10"
-                        key={timeLeft.hours}
-                        initial={{ rotateX: -90 }}
-                        animate={{ rotateX: 0 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                      >
-                        <span className="text-3xl font-bold text-background tabular-nums">
-                          {String(timeLeft.hours).padStart(2, '0')}
-                        </span>
-                      </motion.div>
-                      <span className="text-[10px] text-background/50 uppercase mt-1 block">Heures</span>
-                    </div>
-                    
-                    <span className="text-2xl font-light text-background/40 -mt-4">:</span>
-                    
-                    {/* Minutes */}
-                    <div className="text-center">
-                      <motion.div 
-                        className="bg-background/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-background/10"
-                        key={timeLeft.minutes}
-                        initial={{ rotateX: -90 }}
-                        animate={{ rotateX: 0 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                      >
-                        <span className="text-3xl font-bold text-background tabular-nums">
-                          {String(timeLeft.minutes).padStart(2, '0')}
-                        </span>
-                      </motion.div>
-                      <span className="text-[10px] text-background/50 uppercase mt-1 block">Minutes</span>
-                    </div>
-                    
-                    <span className="text-2xl font-light text-background/40 -mt-4">:</span>
-                    
-                    {/* Seconds */}
-                    <div className="text-center">
-                      <motion.div 
-                        className="bg-primary/80 backdrop-blur-sm rounded-xl px-4 py-3 border border-primary/50"
-                        key={timeLeft.seconds}
-                        initial={{ rotateX: -90 }}
-                        animate={{ rotateX: 0 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                      >
-                        <span className="text-3xl font-bold text-primary-foreground tabular-nums">
-                          {String(timeLeft.seconds).padStart(2, '0')}
-                        </span>
-                      </motion.div>
-                      <span className="text-[10px] text-background/50 uppercase mt-1 block">Secondes</span>
-                    </div>
-                  </div>
+                   <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                     {/* Hours */}
+                     <div className="text-center">
+                       <motion.div 
+                         className="bg-background/10 backdrop-blur-sm rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 border border-background/10"
+                         key={timeLeft.hours}
+                         initial={{ rotateX: -90 }}
+                         animate={{ rotateX: 0 }}
+                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                       >
+                         <span className="text-2xl sm:text-3xl font-bold text-background tabular-nums">
+                           {String(timeLeft.hours).padStart(2, '0')}
+                         </span>
+                       </motion.div>
+                       <span className="text-[10px] text-background/50 uppercase mt-1 block">Heures</span>
+                     </div>
+                     
+                     <span className="text-xl sm:text-2xl font-light text-background/40 -mt-4">:</span>
+                     
+                     {/* Minutes */}
+                     <div className="text-center">
+                       <motion.div 
+                         className="bg-background/10 backdrop-blur-sm rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 border border-background/10"
+                         key={timeLeft.minutes}
+                         initial={{ rotateX: -90 }}
+                         animate={{ rotateX: 0 }}
+                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                       >
+                         <span className="text-2xl sm:text-3xl font-bold text-background tabular-nums">
+                           {String(timeLeft.minutes).padStart(2, '0')}
+                         </span>
+                       </motion.div>
+                       <span className="text-[10px] text-background/50 uppercase mt-1 block">Minutes</span>
+                     </div>
+                     
+                     <span className="text-xl sm:text-2xl font-light text-background/40 -mt-4">:</span>
+                     
+                     {/* Seconds */}
+                     <div className="text-center">
+                       <motion.div 
+                         className="bg-primary/80 backdrop-blur-sm rounded-xl px-3 py-2.5 sm:px-4 sm:py-3 border border-primary/50"
+                         key={timeLeft.seconds}
+                         initial={{ rotateX: -90 }}
+                         animate={{ rotateX: 0 }}
+                         transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                       >
+                         <span className="text-2xl sm:text-3xl font-bold text-primary-foreground tabular-nums">
+                           {String(timeLeft.seconds).padStart(2, '0')}
+                         </span>
+                       </motion.div>
+                       <span className="text-[10px] text-background/50 uppercase mt-1 block">Secondes</span>
+                     </div>
+                   </div>
                   
                   <p className="text-center text-sm text-background/80 mt-4">
                     <span className="text-primary font-semibold">-50%</span> + Livraison GRATUITE
@@ -403,7 +383,7 @@ const Product = () => {
                           </Badge>
                         )}
                         
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-4 min-w-0">
                           {/* Radio Circle */}
                           <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                             isSelected ? "border-primary bg-primary scale-110" : "border-muted-foreground/30"
@@ -414,19 +394,19 @@ const Product = () => {
                           </div>
                           
                           {/* Content */}
-                          <div className="flex-1 flex items-center justify-between">
-                            <div>
-                              <p className={`font-medium transition-colors duration-200 ${
+                          <div className="flex-1 min-w-0 flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                              <p className={`font-medium leading-snug break-words transition-colors duration-200 ${
                                 isSelected ? "text-primary" : "text-foreground"
                               }`}>
                                 {model.name}
                               </p>
-                              <p className="text-sm text-muted-foreground">
+                              <p className="text-sm text-muted-foreground leading-snug break-words">
                                 {model.description}
                               </p>
                             </div>
                             
-                            <div className="text-right">
+                            <div className="text-right flex-shrink-0">
                               <span className={`text-xl font-bold transition-colors duration-200 ${
                                 isSelected ? "text-primary" : "text-foreground"
                               }`}>
@@ -666,10 +646,6 @@ const Product = () => {
           </Button>
         </div>
       </div>
-
-      {/* Bottom padding for mobile sticky bar */}
-      <div className="h-24 md:h-0" />
-
       <Footer />
 
       {/* Image Zoom Modal */}
@@ -679,7 +655,7 @@ const Product = () => {
             <X className="h-6 w-6" />
           </button>
           
-          <div className="w-full h-full flex items-center justify-center" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
+          <div className="w-full h-full flex items-center justify-center">
             <img src={productImages[selectedModel]} alt="Memory" className="max-w-full max-h-[85vh] object-contain rounded-lg" />
           </div>
 
