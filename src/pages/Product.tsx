@@ -33,6 +33,9 @@ import productDetail1 from "@/assets/product-detail-1.jpg";
 import productDetail2 from "@/assets/product-detail-2.jpg";
 import productDetail3 from "@/assets/product-detail-3.jpg";
 
+// Import payment logos
+import { logoVisa, logoMastercard, PayPalLogo, AmexLogo } from "@/components/PaymentLogos";
+
 const productImages = [productMain, productDetail1, productDetail2, productDetail3];
 
 const offers = [
@@ -341,12 +344,19 @@ const Product = () => {
                   <CreditCard className="h-3.5 md:h-4 w-3.5 md:w-4" />
                   <span>Paiements acceptés :</span>
                 </div>
-                <div className="flex gap-1.5 md:gap-2">
-                  {['VISA', 'MC', 'AMEX', 'PayPal'].map((method) => (
-                    <div key={method} className="px-2 md:px-3 py-1 bg-white border border-gray-200 rounded text-[10px] md:text-xs font-medium text-foreground">
-                      {method}
-                    </div>
-                  ))}
+                <div className="flex items-center gap-2 md:gap-3">
+                  <div className="h-6 md:h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
+                    <img src={logoVisa} alt="Visa" className="h-4 md:h-5 w-auto" />
+                  </div>
+                  <div className="h-6 md:h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
+                    <img src={logoMastercard} alt="Mastercard" className="h-4 md:h-5 w-auto" />
+                  </div>
+                  <div className="h-6 md:h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
+                    <AmexLogo />
+                  </div>
+                  <div className="h-6 md:h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
+                    <PayPalLogo />
+                  </div>
                 </div>
               </div>
 
