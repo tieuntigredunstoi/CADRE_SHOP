@@ -6,14 +6,16 @@ import {
   Truck, 
   Shield, 
   RefreshCw,
-  Clock,
   ChevronLeft,
-  ZoomIn,
+  ChevronRight,
   X,
-  Award,
-  Zap,
-  Package,
-  CreditCard
+  Sparkles,
+  Clock,
+  Heart,
+  Eye,
+  Users,
+  Minus,
+  Plus
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +24,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -32,42 +33,69 @@ import productMain from "@/assets/product-lashes.jpg";
 import productDetail1 from "@/assets/product-detail-1.jpg";
 import productDetail2 from "@/assets/product-detail-2.jpg";
 import productDetail3 from "@/assets/product-detail-3.jpg";
-
-// Import payment logos
-import { logoVisa, logoMastercard, logoAmex } from "@/components/PaymentLogos";
+import reviewImg1 from "@/assets/review-1.jpg";
 
 const productImages = [productMain, productDetail1, productDetail2, productDetail3];
 
-const offers = [
-  { id: 1, units: 1, price: 19.99, originalPrice: null, label: null, savings: null },
-  { id: 2, units: 2, price: 36.00, originalPrice: 39.98, label: "Plus populaire", savings: 4.00 },
-  { id: 3, units: 3, price: 48.00, originalPrice: 59.97, label: null, savings: 12.00 },
+const benefits = [
+  { icon: "✨", text: "Application en 5 minutes seulement" },
+  { icon: "💫", text: "Tenue longue durée jusqu'à 7 jours" },
+  { icon: "🌸", text: "Légers et confortables toute la journée" },
+  { icon: "♻️", text: "Réutilisables jusqu'à 10 fois" },
+];
+
+const features = [
+  {
+    icon: Shield,
+    title: "Sans danger pour les yeux",
+    description: "Colle hypoallergénique sans latex, testée dermatologiquement et adaptée aux yeux sensibles."
+  },
+  {
+    icon: Sparkles,
+    title: "Résultat naturel",
+    description: "Des cils individuels qui se fondent parfaitement avec vos cils naturels pour un effet glamour."
+  },
+  {
+    icon: Clock,
+    title: "Application rapide",
+    description: "Seulement 5 minutes pour un regard transformé. Idéal pour les matins pressés."
+  },
+  {
+    icon: Heart,
+    title: "Booste la confiance",
+    description: "Révélez votre beauté naturelle et sentez-vous plus sûre de vous au quotidien."
+  },
+  {
+    icon: Eye,
+    title: "Convient à tous les yeux",
+    description: "Disponible en plusieurs longueurs pour s'adapter à la forme de chaque regard."
+  },
+  {
+    icon: Users,
+    title: "Approuvé par +10 000 clientes",
+    description: "Rejoignez notre communauté de femmes satisfaites qui ont transformé leur regard."
+  },
 ];
 
 const Product = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
   const [showStickyBar, setShowStickyBar] = useState(false);
-  const [selectedOffer, setSelectedOffer] = useState(1);
-  const [countdown, setCountdown] = useState({ hours: 2, minutes: 47, seconds: 32 });
-  const [visitors, setVisitors] = useState(14);
-  const [stock, setStock] = useState(7);
+  const [quantity, setQuantity] = useState(1);
+  const [visitors, setVisitors] = useState(127);
+  const [stock, setStock] = useState(14);
 
-  // Countdown timer
+  const price = 19.99;
+  const originalPrice = 39.99;
+  const discount = 50;
+
+  // Sticky bar on scroll
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown(prev => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        }
-        return prev;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
+    const handleScroll = () => {
+      setShowStickyBar(window.scrollY > 500);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Simulate live visitors count
@@ -76,22 +104,11 @@ const Product = () => {
       setVisitors(prev => {
         const change = Math.random() > 0.5 ? 1 : -1;
         const newValue = prev + change;
-        return Math.max(8, Math.min(24, newValue));
+        return Math.max(80, Math.min(180, newValue));
       });
-    }, 5000);
+    }, 4000);
     return () => clearInterval(interval);
   }, []);
-
-  // Sticky bar on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowStickyBar(window.scrollY > 400);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const currentOffer = offers.find(o => o.id === selectedOffer) || offers[0];
 
   // Swipe handling for mobile image gallery
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -120,273 +137,202 @@ const Product = () => {
     }
   };
 
+  const nextImage = () => {
+    setSelectedImage(prev => (prev + 1) % productImages.length);
+  };
+
+  const prevImage = () => {
+    setSelectedImage(prev => (prev - 1 + productImages.length) % productImages.length);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <AnnouncementBar />
       <Header />
 
-      {/* Breadcrumb - Hidden on very small screens */}
-      <div className="max-w-7xl mx-auto w-full px-4 md:px-6 py-3 md:py-4">
+      {/* Breadcrumb */}
+      <div className="max-w-7xl mx-auto w-full px-4 md:px-6 py-3">
         <a href="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ChevronLeft className="h-4 w-4" />
-          <span className="hidden xs:inline">Retour à l'accueil</span>
-          <span className="xs:hidden">Retour</span>
+          <span>Retour à l'accueil</span>
         </a>
-      </div>
-
-      {/* Countdown Banner - Optimized for mobile */}
-      <div className="px-4 md:px-6 mb-6 md:mb-8">
-        <div className="max-w-7xl mx-auto bg-primary rounded-2xl md:rounded-full py-3 px-4 md:px-8">
-          <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-primary-foreground">
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 md:h-5 md:w-5" />
-              <span className="font-medium text-xs md:text-sm">OFFRE LIMITÉE — Livraison gratuite</span>
-            </div>
-            <div className="flex items-center gap-1.5 md:gap-2">
-              <span className="bg-gray-800 text-white px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg font-semibold text-xs md:text-sm">
-                {String(countdown.hours).padStart(2, '0')}h
-              </span>
-              <span className="font-bold text-primary-foreground">:</span>
-              <span className="bg-gray-800 text-white px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg font-semibold text-xs md:text-sm">
-                {String(countdown.minutes).padStart(2, '0')}m
-              </span>
-              <span className="font-bold text-primary-foreground">:</span>
-              <span className="bg-gray-800 text-white px-2.5 md:px-3 py-1 md:py-1.5 rounded-lg font-semibold text-xs md:text-sm">
-                {String(countdown.seconds).padStart(2, '0')}s
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
 
       <main className="flex-1">
         {/* Product Section */}
-        <section className="max-w-7xl mx-auto px-4 md:px-6 pb-8 md:pb-16">
-          <div className="grid lg:grid-cols-2 gap-6 lg:gap-16">
-            {/* Image Gallery - Mobile optimized with swipe */}
-            <div>
-              {/* Main Image with swipe support */}
+        <section className="max-w-7xl mx-auto px-4 md:px-6 pb-8">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+            
+            {/* Image Gallery */}
+            <div className="relative">
               <div 
-                className="relative bg-white rounded-xl md:rounded-2xl overflow-hidden group border border-gray-100 shadow-sm touch-pan-y"
-                onClick={() => setIsZoomed(true)}
+                className="relative bg-gradient-to-br from-secondary/50 to-secondary rounded-2xl overflow-hidden"
                 onTouchStart={handleTouchStart}
                 onTouchMove={handleTouchMove}
                 onTouchEnd={handleTouchEnd}
               >
-                <div className="aspect-square md:aspect-[4/3]">
+                <div className="aspect-square">
                   <img
                     src={productImages[selectedImage]}
                     alt="LASH GLOW - Faux cils individuels"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover cursor-pointer"
+                    onClick={() => setIsZoomed(true)}
                   />
                 </div>
-                {/* Desktop zoom button */}
-                <button className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hidden md:flex">
-                  <ZoomIn className="h-5 w-5 text-gray-600" />
+
+                {/* Navigation Arrows */}
+                <button 
+                  onClick={prevImage}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-colors"
+                >
+                  <ChevronLeft className="h-5 w-5 text-foreground" />
                 </button>
-                
-                {/* Mobile image indicators */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 md:hidden">
+                <button 
+                  onClick={nextImage}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-colors"
+                >
+                  <ChevronRight className="h-5 w-5 text-foreground" />
+                </button>
+
+                {/* Dots Navigation */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
                   {productImages.map((_, index) => (
                     <button
                       key={index}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedImage(index);
-                      }}
-                      className={`w-2 h-2 rounded-full transition-all ${
+                      onClick={() => setSelectedImage(index)}
+                      className={`w-2.5 h-2.5 rounded-full transition-all ${
                         selectedImage === index 
-                          ? "bg-primary w-6" 
-                          : "bg-white/60"
+                          ? "bg-foreground w-6" 
+                          : "bg-foreground/30"
                       }`}
                     />
                   ))}
                 </div>
               </div>
-
-              {/* Desktop Thumbnails - Hidden on mobile */}
-              <div className="hidden md:grid grid-cols-4 gap-3 mt-4">
-                {productImages.map((img, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                      selectedImage === index 
-                        ? "border-primary ring-2 ring-primary/20" 
-                        : "border-transparent hover:border-border"
-                    }`}
-                  >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
-                  </button>
-                ))}
-              </div>
             </div>
 
-            {/* Product Info - Mobile optimized */}
-            <div className="space-y-4 md:space-y-5">
-              {/* Collection Label & Rating */}
-              <div className="flex flex-wrap items-center gap-2 md:gap-4">
-                <span className="text-[10px] md:text-xs font-semibold uppercase tracking-widest text-primary">
-                  COLLECTION PREMIUM
-                </span>
-                <div className="flex items-center gap-1.5 md:gap-2">
-                  <div className="flex">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-3.5 md:h-4 w-3.5 md:w-4 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <span className="text-xs md:text-sm text-muted-foreground">(847 avis)</span>
+            {/* Product Info */}
+            <div className="space-y-5">
+              {/* Rating */}
+              <div className="flex items-center gap-2">
+                <div className="flex">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                  ))}
                 </div>
+                <span className="text-sm text-muted-foreground">Excellent</span>
+                <span className="text-sm text-muted-foreground">|</span>
+                <span className="text-sm font-medium">4,9 sur 5</span>
               </div>
 
               {/* Title */}
-              <h1 className="text-2xl md:text-[2.5rem] font-display font-normal text-foreground leading-tight">
-                LASH GLOW - Faux cils individuels
+              <h1 className="text-3xl md:text-4xl font-display font-normal text-foreground leading-tight">
+                LASH GLOW | Faux cils individuels
               </h1>
 
-              {/* Description */}
-              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
-                Faux cils individuels LASH GLOW de qualité professionnelle. Faciles à appliquer, légers et naturels. Disponibles en différentes longueurs (10mm, 12mm, 14mm) pour un regard sur-mesure.
-              </p>
+              {/* Live Visitors Badge */}
+              <div className="inline-flex items-center gap-2 border border-green-200 bg-green-50 rounded-full px-4 py-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+                <span className="text-sm text-green-700 font-medium">
+                  <strong>{visitors} personnes</strong> consultent ce produit
+                </span>
+              </div>
+
+              {/* Benefits List */}
+              <div className="space-y-3 py-2">
+                {benefits.map((benefit, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <span className="text-xl">{benefit.icon}</span>
+                    <span className="text-foreground">{benefit.text}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Price Section */}
+              <div className="flex items-center gap-3 pt-2">
+                <span className="text-3xl font-bold text-foreground">{price.toFixed(2)} €</span>
+                <span className="text-xl text-muted-foreground line-through">{originalPrice.toFixed(2)} €</span>
+                <span className="bg-primary text-primary-foreground text-sm font-bold px-3 py-1 rounded-full">
+                  - {discount}%
+                </span>
+              </div>
+
+              {/* Quantity Selector */}
+              <div className="space-y-2">
+                <span className="text-sm font-medium text-foreground">Quantité</span>
+                <div className="inline-flex items-center border border-border rounded-lg">
+                  <button 
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="p-3 hover:bg-secondary transition-colors"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </button>
+                  <span className="px-6 py-3 font-medium text-lg">{quantity}</span>
+                  <button 
+                    onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                    className="p-3 hover:bg-secondary transition-colors"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Add to Cart Button */}
+              <Button 
+                size="lg" 
+                className="w-full rounded-full py-7 text-lg font-semibold bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg"
+              >
+                <ShoppingBag className="mr-2 h-5 w-5" />
+                AJOUTER AU PANIER
+              </Button>
 
               {/* Stock Alert */}
-              <div className="flex flex-col sm:flex-row gap-2">
-                <div className="inline-flex items-center gap-2 border border-green-200 bg-green-50 rounded-lg px-4 py-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
-                  <span className="text-sm text-green-700 font-medium">{visitors} personnes regardent ce produit</span>
-                </div>
-                <div className="inline-flex items-center gap-2 border border-orange-200 bg-orange-50 rounded-lg px-4 py-2">
-                  <span className="text-sm text-orange-700 font-medium">🔥 Plus que {stock} en stock</span>
-                </div>
-              </div>
-
-              {/* Key Benefits Grid - 1 column on mobile, 2 on tablet+ */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3 py-1 md:py-2">
-                <div className="flex items-center gap-2.5">
-                  <Zap className="h-4 w-4 text-primary flex-shrink-0" />
-                  <span className="text-xs md:text-sm text-muted-foreground">Résultats visibles dès la 1ère utilisation</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Award className="h-4 w-4 text-primary flex-shrink-0" />
-                  <span className="text-xs md:text-sm text-muted-foreground">Design primé internationalement</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Shield className="h-4 w-4 text-primary flex-shrink-0" />
-                  <span className="text-xs md:text-sm text-muted-foreground">Garantie 2 ans incluse</span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Truck className="h-4 w-4 text-primary flex-shrink-0" />
-                  <span className="text-xs md:text-sm text-muted-foreground">Livraison gratuite en France</span>
+              <div className="flex justify-center">
+                <div className="inline-flex items-center gap-2 bg-orange-100 border border-orange-200 rounded-full px-5 py-2">
+                  <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+                  <span className="text-sm text-orange-700 font-medium">
+                    Seulement {stock} LASH GLOW en stock !
+                  </span>
                 </div>
               </div>
 
-              {/* Offers Selection */}
-              <div className="space-y-2.5 md:space-y-3 pt-1 md:pt-2">
-                <p className="font-medium text-foreground text-sm md:text-base">Choisissez votre offre</p>
-                <div className="space-y-2.5 md:space-y-3">
-                  {offers.map((offer) => (
-                    <button
-                      key={offer.id}
-                      onClick={() => setSelectedOffer(offer.id)}
-                      className={`w-full p-3 md:p-4 rounded-xl border transition-all relative flex items-center justify-between ${
-                        selectedOffer === offer.id 
-                          ? "border-primary bg-white shadow-sm" 
-                          : "border-gray-200 bg-white hover:border-gray-300"
-                      }`}
-                    >
-                      {offer.label && (
-                        <Badge className="absolute -top-2 md:-top-2.5 left-3 md:left-4 bg-primary text-primary-foreground text-[10px] md:text-xs px-2 md:px-3 py-0.5 rounded-full">
-                          {offer.label}
-                        </Badge>
-                      )}
-                      <div className="flex items-center gap-2.5 md:gap-3">
-                        <div className={`w-5 h-5 md:w-6 md:h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
-                          selectedOffer === offer.id 
-                            ? "border-primary bg-primary" 
-                            : "border-gray-300 bg-white"
-                        }`}>
-                          {selectedOffer === offer.id && (
-                            <Check className="h-3 md:h-3.5 w-3 md:w-3.5 text-white" />
-                          )}
-                        </div>
-                        <div className="flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2 text-left">
-                          <span className="font-medium text-foreground text-sm md:text-base">
-                            {offer.units} unité{offer.units > 1 ? 's' : ''}
-                          </span>
-                          {offer.savings && (
-                            <span className="text-xs md:text-sm text-primary">
-                              Économisez {offer.savings.toFixed(2)} €
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div className="text-right flex flex-col sm:flex-row sm:items-center gap-0.5 sm:gap-2">
-                        <span className="text-lg md:text-xl font-bold text-foreground">{offer.price.toFixed(2)} €</span>
-                        {offer.originalPrice && (
-                          <span className="text-xs md:text-sm text-muted-foreground line-through">
-                            {offer.originalPrice.toFixed(2)} €
-                          </span>
-                        )}
-                      </div>
-                    </button>
-                  ))}
+              {/* Trust Badges */}
+              <div className="grid grid-cols-3 gap-4 py-4 border-t border-b border-border">
+                <div className="flex flex-col items-center text-center gap-2">
+                  <Truck className="h-8 w-8 text-primary" />
+                  <span className="text-xs font-medium text-foreground">Livraison offerte</span>
+                </div>
+                <div className="flex flex-col items-center text-center gap-2">
+                  <RefreshCw className="h-8 w-8 text-primary" />
+                  <span className="text-xs font-medium text-foreground">Retour 30 jours</span>
+                </div>
+                <div className="flex flex-col items-center text-center gap-2">
+                  <Shield className="h-8 w-8 text-primary" />
+                  <span className="text-xs font-medium text-foreground">Paiement sécurisé</span>
                 </div>
               </div>
 
-              {/* Add to Cart - Hidden on mobile (shown in sticky bar) */}
-              <div className="hidden md:block">
-                <Button size="lg" className="w-full rounded-full py-7 text-base font-medium mt-2">
-                  <ShoppingBag className="mr-2 h-5 w-5" />
-                  Ajouter au panier — {currentOffer.price.toFixed(2)} €
-                </Button>
-              </div>
-
-              {/* Trust Badges - Compact on mobile */}
-              <div className="flex flex-wrap items-center justify-center gap-4 md:gap-8 py-2 md:py-3">
-                <div className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm text-muted-foreground">
-                  <Shield className="h-3.5 md:h-4 w-3.5 md:w-4" />
-                  <span>Paiement sécurisé</span>
-                </div>
-                <div className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm text-muted-foreground">
-                  <RefreshCw className="h-3.5 md:h-4 w-3.5 md:w-4" />
-                  <span>Satisfait ou remboursé</span>
-                </div>
-                <div className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm text-muted-foreground">
-                  <Package className="h-3.5 md:h-4 w-3.5 md:w-4" />
-                  <span>Expédition 24h</span>
-                </div>
-              </div>
-
-              {/* Payment Methods - Scrollable on mobile */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-2 md:gap-3">
-                <div className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm text-muted-foreground">
-                  <CreditCard className="h-3.5 md:h-4 w-3.5 md:w-4" />
-                  <span>Paiements acceptés :</span>
-                </div>
-                <div className="flex items-center gap-2 md:gap-3">
-                  <div className="h-6 md:h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
-                    <img src={logoVisa} alt="Visa" className="h-4 md:h-5 w-auto" />
-                  </div>
-                  <div className="h-6 md:h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
-                    <img src={logoMastercard} alt="Mastercard" className="h-4 md:h-5 w-auto" />
-                  </div>
-                  <div className="h-6 md:h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
-                    <img src={logoAmex} alt="American Express" className="h-4 md:h-5 w-auto" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Delivery Estimate */}
-              <div className="bg-secondary/50 rounded-xl p-3 md:p-4">
-                <div className="flex items-start gap-2.5 md:gap-3">
-                  <Truck className="h-4 md:h-5 w-4 md:w-5 text-primary flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-medium text-foreground text-sm md:text-base">
-                      Livraison estimée : 18-20 Janvier
+              {/* Customer Review */}
+              <div className="bg-secondary/50 rounded-2xl p-5">
+                <div className="flex gap-4">
+                  <img 
+                    src={reviewImg1} 
+                    alt="Cliente satisfaite" 
+                    className="w-14 h-14 rounded-full object-cover"
+                  />
+                  <div className="flex-1">
+                    <p className="text-foreground italic leading-relaxed">
+                      « J'ai enfin trouvé les faux cils parfaits ! Faciles à appliquer et tellement naturels. Mes amies n'en reviennent pas ! »
                     </p>
-                    <p className="text-xs md:text-sm text-muted-foreground">
-                      Commandez avant 14h pour une expédition aujourd'hui
-                    </p>
+                    <div className="flex items-center gap-2 mt-3">
+                      <div className="flex">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                        ))}
+                      </div>
+                      <span className="font-medium text-sm">Sophie L.</span>
+                      <Check className="h-4 w-4 text-green-500" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -394,46 +340,94 @@ const Product = () => {
           </div>
         </section>
 
-        {/* Video Tutorial Section */}
-        <section className="pt-6 md:pt-10 pb-10 md:pb-16 px-4 md:px-6 bg-background">
+        {/* What Makes LASH GLOW Unique Section */}
+        <section className="py-12 px-4 md:px-6 bg-gradient-to-b from-secondary/30 to-background">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-2xl md:text-4xl font-display font-normal text-foreground mb-6">
+              Qu'est-ce qui rend<br />LASH GLOW unique ?
+            </h2>
+            <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto">
+              LASH GLOW utilise une <strong className="text-foreground">technologie de fibres ultra-légères</strong> qui se fondent 
+              naturellement avec vos cils. Grâce à notre colle hypoallergénique et une 
+              précision <strong className="text-foreground">3 fois supérieure aux extensions classiques</strong>, 
+              vous obtenez un regard <strong className="text-foreground">sublimé en seulement 5 minutes</strong>, 
+              tout en préservant la santé de vos cils naturels.
+            </p>
+          </div>
+        </section>
+
+        {/* Features Grid */}
+        <section className="py-12 px-4 md:px-6 bg-primary/5">
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-6 md:mb-10">
-              <h2 className="text-xl md:text-3xl font-display font-normal text-foreground mb-2 md:mb-3">
-                Découvrez le produit en action
-              </h2>
-              <p className="text-sm md:text-base text-muted-foreground">
-                Une application simple et rapide pour un résultat professionnel
-              </p>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {features.map((feature, index) => (
+                <div key={index} className="text-center space-y-3">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-background border border-border">
+                    <feature.icon className="h-7 w-7 text-foreground" />
+                  </div>
+                  <h3 className="font-semibold text-foreground">{feature.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
             </div>
-            
-            {/* Video Player */}
-            <div className="relative rounded-xl md:rounded-2xl overflow-hidden bg-black shadow-xl md:shadow-2xl">
-              <video
-                className="w-full aspect-video"
-                controls
-                playsInline
-                poster={productMain}
-              >
-                <source src="/videos/tutorial-lashes.mp4" type="video/mp4" />
-                Votre navigateur ne supporte pas la lecture de vidéos.
-              </video>
+          </div>
+        </section>
+
+        {/* Product Showcase */}
+        <section className="py-12 px-4 md:px-6">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div className="order-2 md:order-1">
+                <img 
+                  src={productDetail2} 
+                  alt="LASH GLOW en action" 
+                  className="w-full rounded-2xl shadow-xl"
+                />
+              </div>
+              <div className="order-1 md:order-2 text-center md:text-left space-y-4">
+                <h3 className="text-2xl font-display text-foreground">
+                  Un kit complet pour des résultats professionnels
+                </h3>
+                <p className="text-muted-foreground">
+                  Chaque kit LASH GLOW contient tout le nécessaire : faux cils individuels de différentes longueurs, 
+                  colle longue tenue, pince de précision et guide d'application détaillé.
+                </p>
+                <Button className="rounded-full px-8">
+                  ACHETER MAINTENANT →
+                </Button>
+              </div>
             </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-12 px-4 md:px-6 bg-primary/10">
+          <div className="max-w-2xl mx-auto text-center space-y-6">
+            <h2 className="text-2xl md:text-3xl font-display text-foreground">
+              Prête à transformer votre regard ?
+            </h2>
+            <p className="text-muted-foreground">
+              Rejoignez plus de 10 000 femmes satisfaites et découvrez la magie LASH GLOW.
+            </p>
+            <Button size="lg" className="rounded-full px-10 py-6 text-lg font-semibold">
+              <ShoppingBag className="mr-2 h-5 w-5" />
+              COMMANDER MAINTENANT — {price.toFixed(2)} €
+            </Button>
           </div>
         </section>
 
         {/* FAQ Section */}
-        <section className="py-10 md:py-16 px-4 md:px-6 bg-background">
+        <section className="py-12 px-4 md:px-6 bg-background">
           <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-6 md:mb-10">
-              <h2 className="text-xl md:text-3xl font-display font-normal text-foreground mb-2 md:mb-3">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-display font-normal text-foreground mb-3">
                 Questions fréquentes
               </h2>
-              <p className="text-sm md:text-base text-muted-foreground">
-                Tout ce que vous devez savoir sur nos faux cils
-              </p>
             </div>
 
-            <Accordion type="single" collapsible className="space-y-2 md:space-y-3">
+            <Accordion type="single" collapsible className="space-y-3">
               {[
                 {
                   question: "Comment appliquer les faux cils LASH GLOW ?",
@@ -441,7 +435,7 @@ const Product = () => {
                 },
                 {
                   question: "Combien de temps tiennent les faux cils ?",
-                  answer: "Avec notre colle longue tenue, les faux cils restent en place jusqu'à 24 heures. Ils résistent à l'eau et à la transpiration."
+                  answer: "Avec notre colle longue tenue, les faux cils restent en place jusqu'à 7 jours. Ils résistent à l'eau et à la transpiration."
                 },
                 {
                   question: "Les faux cils sont-ils réutilisables ?",
@@ -452,10 +446,6 @@ const Product = () => {
                   answer: "Absolument. Notre colle est formulée sans latex, testée dermatologiquement et convient aux yeux sensibles et aux porteuses de lentilles."
                 },
                 {
-                  question: "Quelle est la politique de retour ?",
-                  answer: "Nous offrons une garantie satisfait ou remboursé de 30 jours. Si vous n'êtes pas satisfaite, retournez le produit pour un remboursement complet."
-                },
-                {
                   question: "Quels sont les délais de livraison ?",
                   answer: "Expédition sous 24h, livraison en 2-3 jours ouvrés en France métropolitaine. Livraison gratuite sans minimum d'achat."
                 },
@@ -463,12 +453,12 @@ const Product = () => {
                 <AccordionItem 
                   key={index} 
                   value={`item-${index}`} 
-                  className="bg-white border border-gray-100 rounded-xl px-4 md:px-6"
+                  className="bg-white border border-border rounded-xl px-5"
                 >
-                  <AccordionTrigger className="text-left text-foreground hover:no-underline py-4 md:py-5 text-sm md:text-base">
+                  <AccordionTrigger className="text-left text-foreground hover:no-underline py-4">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground pb-4 md:pb-5 text-sm">
+                  <AccordionContent className="text-muted-foreground pb-4">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
@@ -480,37 +470,33 @@ const Product = () => {
 
       <Footer />
 
-      {/* Sticky Add to Cart Bar - Always visible on mobile, scroll-triggered on desktop */}
-      <div className={`fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg py-3 md:py-4 px-4 md:px-6 z-50 transition-transform duration-300 ${
-        showStickyBar ? "translate-y-0" : "md:translate-y-full translate-y-0"
+      {/* Sticky Add to Cart Bar */}
+      <div className={`fixed bottom-0 left-0 right-0 bg-white border-t border-border shadow-2xl py-4 px-4 z-50 transition-transform duration-300 ${
+        showStickyBar ? "translate-y-0" : "translate-y-full"
       }`}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3 md:gap-4">
-          <div className="flex items-center gap-3 md:gap-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
             <img 
               src={productMain} 
               alt="LASH GLOW" 
-              className="w-10 h-10 md:w-12 md:h-12 rounded-lg object-cover"
+              className="w-12 h-12 rounded-lg object-cover"
             />
             <div>
-              <p className="font-medium text-foreground text-xs md:text-sm line-clamp-1">LASH GLOW - Faux cils</p>
-              <p className="text-primary font-bold text-sm md:text-base">{currentOffer.price.toFixed(2)} €</p>
+              <p className="font-medium text-foreground text-sm">LASH GLOW</p>
+              <p className="text-primary font-bold">{(price * quantity).toFixed(2)} €</p>
             </div>
           </div>
-          <Button size="lg" className="rounded-full text-sm md:text-base px-4 md:px-6 py-2.5 md:py-3 h-auto">
-            <ShoppingBag className="mr-1.5 md:mr-2 h-4 w-4" />
-            <span className="hidden sm:inline">Ajouter au panier</span>
-            <span className="sm:hidden">Ajouter</span>
+          <Button className="rounded-full px-6">
+            <ShoppingBag className="mr-2 h-4 w-4" />
+            AJOUTER AU PANIER
           </Button>
         </div>
       </div>
 
-      {/* Bottom padding to account for sticky bar on mobile */}
-      <div className="h-20 md:h-0" />
-
       {/* Image Zoom Modal */}
       {isZoomed && (
         <div 
-          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-2 md:p-4"
+          className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
           onClick={() => setIsZoomed(false)}
         >
           <button 
@@ -520,7 +506,6 @@ const Product = () => {
             <X className="h-6 w-6" />
           </button>
           
-          {/* Swipeable zoom image on mobile */}
           <div 
             className="w-full h-full flex items-center justify-center"
             onTouchStart={handleTouchStart}
@@ -534,7 +519,6 @@ const Product = () => {
             />
           </div>
 
-          {/* Image indicators in zoom modal */}
           <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
             {productImages.map((_, index) => (
               <button
