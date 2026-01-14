@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { Calendar, MapPin, Music, User, Heart, Upload, X, ArrowRight, Check, Star } from "lucide-react";
+import { Calendar, MapPin, Music, User, Heart, Upload, X, ArrowRight, Check, Star, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +20,7 @@ import productPerfectMatch from "@/assets/product-perfect-match.webp";
 interface FrameModel {
   id: string;
   name: string;
+  shortName: string;
   description: string;
   image: string;
   fields: FieldConfig[];
@@ -38,6 +39,7 @@ const frameModels: FrameModel[] = [
   {
     id: "night-sky",
     name: "The Night We Met",
+    shortName: "Ciel",
     description: "Carte du ciel personnalisée",
     image: productNightSky,
     fields: [
@@ -49,6 +51,7 @@ const frameModels: FrameModel[] = [
   {
     id: "spotify",
     name: "Our Song",
+    shortName: "Song",
     description: "Lecteur Spotify personnalisé",
     image: productSpotify,
     fields: [
@@ -60,6 +63,7 @@ const frameModels: FrameModel[] = [
   {
     id: "street-sign",
     name: "Street Sign",
+    shortName: "Street",
     description: "Panneaux de rue croisés",
     image: productStreetSign,
     fields: [
@@ -71,6 +75,7 @@ const frameModels: FrameModel[] = [
   {
     id: "coordinates",
     name: "Coordinates",
+    shortName: "GPS",
     description: "Coordonnées GPS personnalisées",
     image: productCoordinates,
     fields: [
@@ -82,6 +87,7 @@ const frameModels: FrameModel[] = [
   {
     id: "perfect-match",
     name: "Perfect Match",
+    shortName: "Match",
     description: "Union des cœurs",
     image: productPerfectMatch,
     fields: [
@@ -161,17 +167,6 @@ const Customize = () => {
       return;
     }
 
-    // Create personalization summary
-    const personalization = selectedModel.fields
-      .map(field => {
-        if (field.type === "photo") {
-          return photos[field.id] ? `${field.label}: ✓` : null;
-        }
-        return formData[field.id] ? `${field.label}: ${formData[field.id]}` : null;
-      })
-      .filter(Boolean)
-      .join(" | ");
-
     addToCart({
       name: `Memory — ${selectedModel.name}`,
       quantity: 1,
@@ -193,35 +188,69 @@ const Customize = () => {
       <AnnouncementBar />
       <Header />
 
-      <main className="flex-1 py-8 md:py-12">
+      <main className="flex-1 py-6 md:py-12 pb-32 md:pb-12">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
           {/* Header */}
           <motion.div 
-            className="text-center mb-10"
+            className="text-center mb-6 md:mb-10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
             <p className="section-label mb-2">PERSONNALISATION</p>
-            <h1 className="text-3xl md:text-4xl font-display font-semibold text-foreground mb-4">
-              Créez votre Memory unique
+            <h1 className="text-2xl md:text-4xl font-display font-semibold text-foreground mb-2 md:mb-4">
+              Créez votre Memory
             </h1>
-            <p className="text-muted-foreground max-w-xl mx-auto">
-              Personnalisez votre cadre avec vos souvenirs les plus précieux. Chaque détail compte pour créer un moment éternel.
+            <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto">
+              Personnalisez votre cadre avec vos souvenirs les plus précieux.
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-12">
             {/* Left: Model Selection & Form */}
             <motion.div 
-              className="space-y-8"
+              className="space-y-6"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
-              {/* Model Selector */}
-              <div className="space-y-4">
-                <Label className="text-base font-medium">1. Choisissez votre modèle</Label>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              {/* Model Selector - Horizontal scroll on mobile */}
+              <div className="space-y-3">
+                <Label className="text-sm md:text-base font-medium">1. Choisissez votre modèle</Label>
+                
+                {/* Mobile: Horizontal scroll */}
+                <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide md:hidden -mx-4 px-4">
+                  {frameModels.map((model) => (
+                    <motion.button
+                      key={model.id}
+                      onClick={() => handleModelChange(model)}
+                      className={`relative flex-shrink-0 rounded-xl overflow-hidden border-2 transition-all ${
+                        selectedModel.id === model.id
+                          ? "border-primary ring-2 ring-primary/20"
+                          : "border-border"
+                      }`}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <div className="w-16 h-16">
+                        <img 
+                          src={model.image} 
+                          alt={model.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      {selectedModel.id === model.id && (
+                        <div className="absolute top-1 right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
+                          <Check className="h-2.5 w-2.5 text-primary-foreground" />
+                        </div>
+                      )}
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/60 py-0.5">
+                        <span className="text-[10px] text-white font-medium">{model.shortName}</span>
+                      </div>
+                    </motion.button>
+                  ))}
+                </div>
+
+                {/* Desktop: Grid */}
+                <div className="hidden md:grid grid-cols-5 gap-3">
                   {frameModels.map((model) => (
                     <motion.button
                       key={model.id}
@@ -249,14 +278,15 @@ const Customize = () => {
                     </motion.button>
                   ))}
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Sélectionné : <span className="font-medium text-foreground">{selectedModel.name}</span> — {selectedModel.description}
+
+                <p className="text-xs md:text-sm text-muted-foreground">
+                  <span className="font-medium text-foreground">{selectedModel.name}</span> — {selectedModel.description}
                 </p>
               </div>
 
               {/* Dynamic Form */}
               <div className="space-y-4">
-                <Label className="text-base font-medium">2. Personnalisez votre cadre</Label>
+                <Label className="text-sm md:text-base font-medium">2. Personnalisez votre cadre</Label>
                 
                 <motion.div 
                   className="space-y-4"
@@ -282,7 +312,7 @@ const Customize = () => {
                       {field.type === "photo" ? (
                         <div className="space-y-2">
                           {photos[field.id] ? (
-                            <div className="relative w-32 h-32 rounded-xl overflow-hidden border border-border">
+                            <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-xl overflow-hidden border border-border">
                               <img 
                                 src={photos[field.id].preview} 
                                 alt="Aperçu"
@@ -298,10 +328,10 @@ const Customize = () => {
                           ) : (
                             <div 
                               onClick={() => fileInputRefs.current[field.id]?.click()}
-                              className="w-full h-32 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-primary/50 hover:bg-secondary/30 transition-all"
+                              className="w-full h-24 md:h-32 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-primary/50 hover:bg-secondary/30 transition-all active:bg-secondary/50"
                             >
-                              <Upload className="h-8 w-8 text-muted-foreground" />
-                              <span className="text-sm text-muted-foreground">Cliquez pour télécharger</span>
+                              <Upload className="h-6 w-6 md:h-8 md:w-8 text-muted-foreground" />
+                              <span className="text-xs md:text-sm text-muted-foreground">Télécharger une photo</span>
                             </div>
                           )}
                           <input
@@ -321,7 +351,7 @@ const Customize = () => {
                           type="date"
                           value={formData[field.id] || ""}
                           onChange={(e) => handleInputChange(field.id, e.target.value)}
-                          className="rounded-xl"
+                          className="rounded-xl h-12"
                         />
                       ) : (
                         <Input
@@ -330,25 +360,64 @@ const Customize = () => {
                           placeholder={field.placeholder}
                           value={formData[field.id] || ""}
                           onChange={(e) => handleInputChange(field.id, e.target.value)}
-                          className="rounded-xl"
+                          className="rounded-xl h-12"
                         />
                       )}
                     </motion.div>
                   ))}
                 </motion.div>
               </div>
+
+              {/* Desktop CTA */}
+              <div className="hidden lg:block">
+                <div className="bg-card rounded-2xl p-5 border border-border space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Prix total</p>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-bold text-primary">9,99 €</span>
+                        <span className="text-base text-muted-foreground line-through">20,00 €</span>
+                      </div>
+                    </div>
+                    <span className="bg-accent text-accent-foreground text-xs font-medium px-2 py-1 rounded-full">
+                      -50%
+                    </span>
+                  </div>
+
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button 
+                      size="lg" 
+                      className="w-full rounded-xl py-6 text-base font-semibold"
+                      onClick={handleSubmit}
+                      disabled={!isFormValid()}
+                    >
+                      <ShoppingBag className="mr-2 h-4 w-4" />
+                      Ajouter au panier
+                    </Button>
+                  </motion.div>
+
+                  {!isFormValid() && (
+                    <p className="text-xs text-center text-muted-foreground">
+                      Remplissez tous les champs pour continuer
+                    </p>
+                  )}
+                </div>
+              </div>
             </motion.div>
 
-            {/* Right: Preview */}
+            {/* Right: Preview - Hidden on mobile, shown on desktop */}
             <motion.div 
-              className="space-y-6"
+              className="hidden lg:block space-y-6"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
             >
               <Label className="text-base font-medium">Aperçu de votre Memory</Label>
               
-              <div className="bg-secondary/30 rounded-2xl p-6 border border-border">
+              <div className="bg-secondary/30 rounded-2xl p-6 border border-border sticky top-24">
                 {/* Frame Preview */}
                 <div className="relative aspect-[3/4] max-w-sm mx-auto rounded-xl overflow-hidden bg-white shadow-xl">
                   <img 
@@ -393,55 +462,44 @@ const Customize = () => {
                     })}
                   </div>
                 </div>
-              </div>
 
-              {/* Price & CTA */}
-              <div className="bg-card rounded-2xl p-6 border border-border space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-muted-foreground">Prix total</p>
-                    <div className="flex items-baseline gap-2">
-                      <span className="text-3xl font-bold text-primary">9,99 €</span>
-                      <span className="text-lg text-muted-foreground line-through">20,00 €</span>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <span className="inline-block bg-accent text-accent-foreground text-xs font-medium px-2 py-1 rounded-full">
-                      -50%
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="mt-4 flex items-center gap-2 text-sm text-muted-foreground">
                   <Heart className="h-4 w-4 text-primary" />
                   <span>Livraison gratuite • Coffret cadeau inclus</span>
                 </div>
-
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button 
-                    size="lg" 
-                    className="w-full rounded-xl py-6 text-base font-semibold"
-                    onClick={handleSubmit}
-                    disabled={!isFormValid()}
-                  >
-                    Ajouter au panier
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </motion.div>
-
-                {!isFormValid() && (
-                  <p className="text-xs text-center text-muted-foreground">
-                    Remplissez tous les champs obligatoires pour continuer
-                  </p>
-                )}
               </div>
             </motion.div>
           </div>
         </div>
       </main>
+
+      {/* Mobile Sticky Bottom Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg py-3 px-4 z-50 lg:hidden">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <img 
+              src={selectedModel.image} 
+              alt={selectedModel.name}
+              className="w-12 h-12 rounded-lg object-cover"
+            />
+            <div>
+              <p className="font-medium text-foreground text-sm">{selectedModel.shortName}</p>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-primary font-bold">9,99 €</span>
+                <span className="text-xs text-muted-foreground line-through">20€</span>
+              </div>
+            </div>
+          </div>
+          <Button 
+            className="rounded-xl px-5 py-3 h-auto font-semibold"
+            onClick={handleSubmit}
+            disabled={!isFormValid()}
+          >
+            <ShoppingBag className="mr-2 h-4 w-4" />
+            Ajouter
+          </Button>
+        </div>
+      </div>
 
       <Footer />
     </div>
