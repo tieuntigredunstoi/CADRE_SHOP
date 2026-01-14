@@ -131,7 +131,7 @@ const Product = () => {
 
       <main className="flex-1">
         {/* Product Section */}
-        <section className="max-w-7xl mx-auto px-6 pb-8">
+        <section className="max-w-7xl mx-auto px-6 pb-4">
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Image Gallery */}
             <div className="space-y-4">
