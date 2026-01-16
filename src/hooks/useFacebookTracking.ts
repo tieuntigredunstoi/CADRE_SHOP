@@ -13,7 +13,12 @@ export const useFacebookTracking = () => {
     // Initialiser le fbclid à chaque changement de page
     initFbclid();
 
-    // Envoyer PageView avec fbclid
-    trackPageView();
+    // Attendre un peu pour s'assurer que le DOM est prêt
+    // Envoyer PageView avec fbclid après un court délai
+    const timer = setTimeout(() => {
+      trackPageView();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [location.pathname]);
 };

@@ -36,24 +36,60 @@ export const getFbclid = (): string | null => {
 };
 
 /**
+ * Vérifie que le pixel Facebook est chargé et prêt
+ */
+const waitForFacebookPixel = (callback: () => void, maxAttempts = 50) => {
+  let attempts = 0;
+  const checkPixel = () => {
+    attempts++;
+    if (typeof window !== "undefined" && window.fbq && typeof window.fbq === "function") {
+      callback();
+    } else if (attempts < maxAttempts) {
+      setTimeout(checkPixel, 100);
+    } else {
+      console.warn("Facebook Pixel not loaded after maximum attempts");
+    }
+  };
+  checkPixel();
+};
+
+/**
  * Envoie un événement Facebook Pixel avec le fbclid
  */
 export const trackFacebookEvent = (eventName: string, params?: Record<string, any>) => {
-  if (typeof window === "undefined" || !window.fbq) {
-    console.warn("Facebook Pixel not initialized");
+  if (typeof window === "undefined") {
     return;
   }
 
-  const fbclid = getFbclid();
-  
-  // Préparer les paramètres avec le fbclid
-  const eventParams = {
-    ...params,
-    ...(fbclid && { fbclid }),
+  const sendEvent = () => {
+    if (!window.fbq || typeof window.fbq !== "function") {
+      console.warn("Facebook Pixel not initialized");
+      return;
+    }
+
+    const fbclid = getFbclid();
+    
+    // Préparer les paramètres avec le fbclid
+    const eventParams = {
+      ...params,
+      ...(fbclid && { fbclid }),
+    };
+
+    // Envoyer l'événement avec les paramètres
+    try {
+      window.fbq("track", eventName, eventParams);
+    } catch (error) {
+      console.error("Error tracking Facebook event:", error);
+    }
   };
 
-  // Envoyer l'événement avec les paramètres
-  window.fbq("track", eventName, eventParams);
+  // Si le pixel est déjà chargé, envoyer immédiatement
+  if (window.fbq && typeof window.fbq === "function") {
+    sendEvent();
+  } else {
+    // Sinon, attendre que le pixel soit chargé
+    waitForFacebookPixel(sendEvent);
+  }
 };
 
 /**
