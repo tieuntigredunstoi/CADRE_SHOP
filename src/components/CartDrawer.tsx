@@ -7,9 +7,45 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useCart } from "@/contexts/CartContext";
+import { trackInitiateCheckout, getFbclid } from "@/lib/facebookPixel";
 
 const CartDrawer = () => {
   const { items, removeFromCart, updateQuantity, totalItems, totalPrice, isCartOpen, setIsCartOpen } = useCart();
+
+  const handleCheckout = () => {
+    // Vérifier qu'il y a au moins un produit dans le panier
+    if (items.length === 0) return;
+
+    // Prendre le premier produit du panier (ou vous pouvez gérer plusieurs produits)
+    const firstItem = items[0];
+
+    // Récupérer le fbclid depuis localStorage
+    const fbclid = getFbclid();
+
+    // Construire l'URL de base
+    const baseUrl = "https://www.bcdxmn8trk.com/JGGB6W/3XCLCFG/";
+    const url = new URL(baseUrl);
+
+    // Ajouter les paramètres
+    url.searchParams.append("sub1", "MEMORY");
+    url.searchParams.append("sub3", firstItem.name);
+    url.searchParams.append("sub4", firstItem.image);
+
+    // Ajouter le fbclid si disponible
+    if (fbclid) {
+      url.searchParams.append("fbclid", fbclid);
+    }
+
+    // Track InitiateCheckout event with fbclid
+    trackInitiateCheckout({
+      value: totalPrice,
+      currency: "EUR",
+      num_items: totalItems,
+    });
+
+    // Rediriger vers l'URL de checkout
+    window.location.href = url.toString();
+  };
 
   return (
     <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
@@ -92,7 +128,10 @@ const CartDrawer = () => {
                 </span>
               </div>
               
-              <Button className="w-full py-6 text-base font-semibold">
+              <Button 
+                className="w-full py-6 text-base font-semibold"
+                onClick={handleCheckout}
+              >
                 Commander maintenant
               </Button>
               

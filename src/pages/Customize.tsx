@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
+import { trackAddToCart } from "@/lib/facebookPixel";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -166,6 +167,16 @@ const Customize = () => {
       });
       return;
     }
+
+    // Track AddToCart event with fbclid
+    trackAddToCart({
+      content_name: `Memory — ${selectedModel.name}`,
+      content_ids: [selectedModel.id],
+      content_type: "product",
+      value: 9.99,
+      currency: "EUR",
+      quantity: 1,
+    });
 
     addToCart({
       name: `Memory — ${selectedModel.name}`,

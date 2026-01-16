@@ -7,6 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
+import { trackViewContent } from "@/lib/facebookPixel";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -93,6 +94,21 @@ const Product = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  // Track ViewContent after 3 seconds on product page
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      trackViewContent({
+        content_name: currentModel.name,
+        content_ids: [currentModel.id],
+        content_type: "product",
+        value: 9.99,
+        currency: "EUR",
+      });
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [currentModel.id, currentModel.name]);
 
   const nextImage = () => {
     setSelectedModel((prev) => (prev + 1) % productImages.length);
@@ -452,19 +468,6 @@ const Product = () => {
                     />
                   </Button>
                 </motion.div>
-
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="w-full rounded-xl h-auto py-4 md:py-6 text-sm md:text-base font-medium whitespace-normal leading-tight"
-                  onClick={handleAddToCart}
-                >
-                  <ShoppingBag className="mr-2 h-4 w-4 shrink-0" />
-                  <span className="text-center">
-                    <span className="md:hidden">Ajouter — 9,99 €</span>
-                    <span className="hidden md:inline">Ajouter au panier — 9,99 €</span>
-                  </span>
-                </Button>
               </div>
 
               {/* Payment Icons */}
