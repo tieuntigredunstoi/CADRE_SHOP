@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { Calendar, MapPin, Music, User, Heart, Upload, X, ArrowRight, Check, Star, ShoppingBag } from "lucide-react";
@@ -143,6 +143,11 @@ const Customize = () => {
   const [photos, setPhotos] = useState<Record<string, { file: File; preview: string }>>({});
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
   const [showLimitDialog, setShowLimitDialog] = useState(false);
+
+  // Scroll vers le haut au chargement de la page
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [modelParam]);
 
   const handleModelChange = (model: FrameModel) => {
     setSelectedModel(model);

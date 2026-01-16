@@ -10,6 +10,9 @@ export const useFacebookTracking = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // Scroll vers le haut de la page à chaque changement de route
+    window.scrollTo(0, 0);
+
     // Initialiser le fbclid à chaque changement de page
     initFbclid();
 
