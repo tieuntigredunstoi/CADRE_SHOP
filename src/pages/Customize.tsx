@@ -239,7 +239,7 @@ const Customize = () => {
       <AnnouncementBar />
       <Header />
 
-      <main className="flex-1 py-6 md:py-12 pb-32 md:pb-12">
+      <main className="flex-1 py-6 md:py-12 pb-12">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
           {/* Header */}
           <motion.div 
@@ -458,6 +458,45 @@ const Customize = () => {
                 </motion.div>
               </div>
 
+              {/* Mobile CTA - Below form */}
+              <div className="lg:hidden mt-6">
+                <div className="bg-card rounded-2xl p-5 border border-border space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm text-muted-foreground">Prix total</p>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-2xl font-bold text-primary">9,95 €</span>
+                        <span className="text-base text-muted-foreground line-through">20,00 €</span>
+                      </div>
+                    </div>
+                    <span className="bg-accent text-accent-foreground text-xs font-medium px-2 py-1 rounded-full">
+                      -50%
+                    </span>
+                  </div>
+
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Button 
+                      size="lg" 
+                      className="w-full rounded-xl py-6 text-base font-semibold"
+                      onClick={handleSubmit}
+                      disabled={!isFormValid()}
+                    >
+                      <ShoppingBag className="mr-2 h-4 w-4" />
+                      Ajouter au panier
+                    </Button>
+                  </motion.div>
+
+                  {!isFormValid() && (
+                    <p className="text-xs text-center text-muted-foreground">
+                      Remplissez tous les champs pour continuer
+                    </p>
+                  )}
+                </div>
+              </div>
+
               {/* Desktop CTA */}
               <div className="hidden lg:block">
                 <div className="bg-card rounded-2xl p-5 border border-border space-y-4">
@@ -575,33 +614,6 @@ const Customize = () => {
         </div>
       </main>
 
-      {/* Mobile Sticky Bottom Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-background border-t border-border shadow-lg py-3 px-4 z-50 lg:hidden">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <img 
-              src={selectedModel.image} 
-              alt={selectedModel.name}
-              className="w-12 h-12 rounded-lg object-cover"
-            />
-            <div>
-              <p className="font-medium text-foreground text-sm">{selectedModel.shortName}</p>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-primary font-bold">9,95 €</span>
-                <span className="text-xs text-muted-foreground line-through">20€</span>
-              </div>
-            </div>
-          </div>
-          <Button 
-            className="rounded-xl px-5 py-3 h-auto font-semibold"
-            onClick={handleSubmit}
-            disabled={!isFormValid()}
-          >
-            <ShoppingBag className="mr-2 h-4 w-4" />
-            Ajouter
-          </Button>
-        </div>
-      </div>
 
       {/* Alert Dialog pour la limitation à un produit */}
       <AlertDialog open={showLimitDialog} onOpenChange={setShowLimitDialog}>
