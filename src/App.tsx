@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import CartDrawer from "@/components/CartDrawer";
-import { initFbclid } from "@/lib/facebookPixel";
+import { initFbclid, initFacebookPixel } from "@/lib/facebookPixel";
 import { useFacebookTracking } from "@/hooks/useFacebookTracking";
 import Index from "./pages/Index";
 import Product from "./pages/Product";
@@ -46,8 +46,11 @@ const AppRoutes = () => {
 };
 
 const App = () => {
-  // Initialiser le fbclid au chargement initial de l'app
+  // Initialiser le pixel Facebook et le fbclid au chargement initial de l'app
   useEffect(() => {
+    // S'assurer que le pixel est initialisé (au cas où le script dans index.html ne se charge pas)
+    initFacebookPixel();
+    // Initialiser le fbclid
     initFbclid();
   }, []);
 

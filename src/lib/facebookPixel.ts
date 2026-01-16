@@ -8,6 +8,48 @@ declare global {
 }
 
 const FBCLID_STORAGE_KEY = "fbclid";
+const PIXEL_ID = "4142361916004324";
+
+/**
+ * Initialise le pixel Facebook s'il n'est pas déjà chargé
+ */
+export const initFacebookPixel = () => {
+  if (typeof window === "undefined") return;
+
+  // Si le pixel est déjà initialisé, ne rien faire
+  if (window.fbq && window._fbq) {
+    return;
+  }
+
+  // Initialiser le pixel Facebook
+  (function(f: any, b: any, e: string, v: string, n: any, t: any, s: any) {
+    if (f.fbq) return;
+    n = f.fbq = function(...args: any[]) {
+      n.callMethod ? n.callMethod.apply(n, args) : n.queue.push(args);
+    };
+    if (!f._fbq) f._fbq = n;
+    n.push = n;
+    n.loaded = true;
+    n.version = "2.0";
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = true;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t, s);
+  })(
+    window,
+    document,
+    "script",
+    "https://connect.facebook.net/en_US/fbevents.js"
+  );
+
+  // Initialiser le pixel avec l'ID
+  if (window.fbq) {
+    window.fbq("init", PIXEL_ID);
+    window.fbq("track", "PageView");
+  }
+};
 
 /**
  * Récupère le fbclid de l'URL et le stocke dans localStorage

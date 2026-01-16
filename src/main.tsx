@@ -1,10 +1,13 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
-import { initFbclid } from "./lib/facebookPixel";
+import { initFbclid, initFacebookPixel } from "./lib/facebookPixel";
 
-// Initialiser le fbclid au chargement de l'application
+// Initialiser le pixel Facebook et le fbclid au chargement de l'application
 if (typeof window !== "undefined") {
+  // Initialiser le pixel Facebook
+  initFacebookPixel();
+  // Initialiser le fbclid
   initFbclid();
 }
 
