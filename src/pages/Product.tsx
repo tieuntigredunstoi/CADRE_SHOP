@@ -18,10 +18,15 @@ import productSpotify from "@/assets/product-spotify.webp";
 import productStreetSign from "@/assets/product-street-sign.webp";
 import productCoordinates from "@/assets/product-coordinates.webp";
 import productPerfectMatch from "@/assets/product-perfect-match.webp";
+import productMapPlaque from "@/assets/Anniversary---Where-We-Met-Map-Plaque.webp";
 import reviewAvatar from "@/assets/review-1.jpg";
 
+// Import stand images - À ajouter dans src/assets/
+// import standWood from "@/assets/stand-wood.webp";
+// import standBlack from "@/assets/stand-black.webp";
+// import standClear from "@/assets/stand-clear.webp";
+
 // Import how it works images
-import productMapPlaque from "@/assets/product-map-plaque.webp";
 import productNightSkyDemo from "@/assets/product-night-sky-demo.webp";
 import productAlbumCover from "@/assets/product-album-cover.webp";
 import productLifestyle1 from "@/assets/product-lifestyle-1.webp";
@@ -36,12 +41,14 @@ const productModels = [
   { id: "street-sign", name: "Street Sign", description: "Noms croisés", image: productStreetSign },
   { id: "coordinates", name: "Coordinates", description: "Lieu de rencontre", image: productCoordinates },
   { id: "perfect-match", name: "Perfect Match", description: "Union des cœurs", image: productPerfectMatch },
+  { id: "map-plaque", name: "Map Plaque", description: "Where We Met", image: productMapPlaque },
 ];
 
 const Product = () => {
   const [selectedModel, setSelectedModel] = useState(0);
+  const [selectedStand, setSelectedStand] = useState<"wood" | "clear" | "black" | "none">("clear");
   const [isZoomed, setIsZoomed] = useState(false);
-  const [visitors, setVisitors] = useState(203);
+  const [visitors, setVisitors] = useState(78);
   const { toast } = useToast();
   const { addToCart } = useCart();
   const navigate = useNavigate();
@@ -53,13 +60,13 @@ const Product = () => {
     addToCart({
       name: `Memory — ${currentModel.name}`,
       quantity: 1,
-      unitPrice: 9.99,
-      totalPrice: 9.99,
+      unitPrice: 9.95,
+      totalPrice: 9.95,
       image: currentModel.image,
     });
     toast({
       title: "✨ Ajouté au panier !",
-      description: `Cadre Memory "${currentModel.name}" — 9,99 €`,
+      description: `Cadre Memory "${currentModel.name}" — 9,95 €`,
     });
   };
 
@@ -102,7 +109,7 @@ const Product = () => {
         content_name: currentModel.name,
         content_ids: [currentModel.id],
         content_type: "product",
-        value: 9.99,
+        value: 9.95,
         currency: "EUR",
       });
     }, 3000);
@@ -433,7 +440,7 @@ const Product = () => {
                               <span className={`text-xl font-bold transition-colors duration-200 ${
                                 isSelected ? "text-primary" : "text-foreground"
                               }`}>
-                                9,99 €
+                                9,95 €
                               </span>
                               <p className="text-sm text-muted-foreground line-through">
                                 20,00 €
@@ -444,6 +451,132 @@ const Product = () => {
                       </div>
                     );
                   })}
+                </div>
+              </div>
+
+              {/* Stand Selection */}
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-foreground">Choisissez votre socle</label>
+                <div className="grid grid-cols-4 gap-2 md:gap-3">
+                  {/* Wood Stand */}
+                  <motion.button
+                    onClick={() => setSelectedStand("wood")}
+                    className={`relative rounded-xl p-2 md:p-3 border-2 transition-all duration-300 ${
+                      selectedStand === "wood"
+                        ? "border-primary bg-primary/5 shadow-md"
+                        : "border-border hover:border-primary/30 hover:bg-secondary/30"
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="space-y-2">
+                      {/* Stand Preview Image */}
+                      <div className="w-full aspect-[4/3] flex items-center justify-center bg-secondary/20 rounded-lg overflow-hidden">
+                        <img 
+                          src="/stand-wood.webp" 
+                          alt="Socle bois"
+                          className="w-full h-full object-contain"
+                          onError={(e) => {
+                            // Fallback si l'image n'existe pas encore
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                            target.parentElement!.innerHTML = '<div class="w-full h-full bg-gradient-to-br from-amber-200 to-amber-400 rounded"></div>';
+                          }}
+                        />
+                      </div>
+                      <p className={`text-xs font-medium text-center ${selectedStand === "wood" ? "text-primary" : "text-foreground"}`}>
+                        Bois
+                      </p>
+                    </div>
+                  </motion.button>
+
+                  {/* Clear Stand */}
+                  <motion.button
+                    onClick={() => setSelectedStand("clear")}
+                    className={`relative rounded-xl p-2 md:p-3 border-2 transition-all duration-300 ${
+                      selectedStand === "clear"
+                        ? "border-primary bg-primary/5 shadow-md"
+                        : "border-border hover:border-primary/30 hover:bg-secondary/30"
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="space-y-2">
+                      {/* Stand Preview Image */}
+                      <div className="w-full aspect-[4/3] flex items-center justify-center bg-secondary/20 rounded-lg overflow-hidden">
+                        <img 
+                          src="/stand-clear.webp" 
+                          alt="Socle transparent"
+                          className="w-full h-full object-contain"
+                          onError={(e) => {
+                            // Fallback si l'image n'existe pas encore
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                            target.parentElement!.innerHTML = '<div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 rounded border-2 border-gray-300"></div>';
+                          }}
+                        />
+                      </div>
+                      <p className={`text-xs font-medium text-center ${selectedStand === "clear" ? "text-primary" : "text-foreground"}`}>
+                        Transparent
+                      </p>
+                    </div>
+                  </motion.button>
+
+                  {/* Black Stand */}
+                  <motion.button
+                    onClick={() => setSelectedStand("black")}
+                    className={`relative rounded-xl p-2 md:p-3 border-2 transition-all duration-300 ${
+                      selectedStand === "black"
+                        ? "border-primary bg-primary/5 shadow-md"
+                        : "border-border hover:border-primary/30 hover:bg-secondary/30"
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="space-y-2">
+                      {/* Stand Preview Image */}
+                      <div className="w-full aspect-[4/3] flex items-center justify-center bg-secondary/20 rounded-lg overflow-hidden">
+                        <img 
+                          src="/stand-black.webp" 
+                          alt="Socle noir"
+                          className="w-full h-full object-contain"
+                          onError={(e) => {
+                            // Fallback si l'image n'existe pas encore
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                            target.parentElement!.innerHTML = '<div class="w-full h-full bg-black rounded"></div>';
+                          }}
+                        />
+                      </div>
+                      <p className={`text-xs font-medium text-center ${selectedStand === "black" ? "text-primary" : "text-foreground"}`}>
+                        Noir
+                      </p>
+                    </div>
+                  </motion.button>
+
+                  {/* Without Stand */}
+                  <motion.button
+                    onClick={() => setSelectedStand("none")}
+                    className={`relative rounded-xl p-2 md:p-3 border-2 transition-all duration-300 ${
+                      selectedStand === "none"
+                        ? "border-primary bg-primary/5 shadow-md"
+                        : "border-border hover:border-primary/30 hover:bg-secondary/30"
+                    }`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="space-y-2">
+                      {/* Without stand icon */}
+                      <div className="w-full aspect-[4/3] flex items-center justify-center">
+                        <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-primary flex items-center justify-center">
+                          <X className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+                        </div>
+                      </div>
+                      <p className={`text-xs font-medium text-center ${selectedStand === "none" ? "text-primary" : "text-foreground"}`}>
+                        Sans socle
+                      </p>
+                    </div>
+                  </motion.button>
                 </div>
               </div>
 
@@ -559,7 +692,7 @@ const Product = () => {
                     <span className="font-medium text-foreground">Livraison et retours</span>
                   </div>
                   <p className="text-sm text-muted-foreground pl-8">
-                    Livraison gratuite en France métropolitaine sous 3-5 jours ouvrés. Retour gratuit sous 30 jours si vous n'êtes pas satisfait. Remboursement intégral garanti.
+                    Livraison gratuite en France métropolitaine sous 3-5 jours ouvrés. <strong className="text-foreground">Livré avant la Saint-Valentin ou remboursé !</strong> Retour gratuit sous 30 jours si vous n'êtes pas satisfait. Remboursement intégral garanti.
                   </p>
                 </div>
               </div>
@@ -767,7 +900,7 @@ const Product = () => {
             <div className="min-w-0">
               <p className="font-medium text-foreground text-xs truncate">{currentModel.name}</p>
               <div className="flex items-baseline gap-1">
-                <span className="text-primary font-bold text-sm">9,99 €</span>
+                <span className="text-primary font-bold text-sm">9,95 €</span>
                 <span className="text-[10px] text-muted-foreground line-through">20€</span>
               </div>
             </div>

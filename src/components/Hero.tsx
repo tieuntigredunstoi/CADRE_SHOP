@@ -65,7 +65,7 @@ const Hero = () => {
             <div className="pt-4">
               <Link to="/product">
                 <Button size="lg" className="rounded-full px-8 group">
-                  Créer mon cadre — 9,99€
+                  Créer mon cadre — 9,95€
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>

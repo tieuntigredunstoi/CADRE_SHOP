@@ -11,7 +11,7 @@ export interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (item: Omit<CartItem, "id">) => void;
+  addToCart: (item: Omit<CartItem, "id">) => boolean; // Retourne true si ajouté, false si limité
   removeFromCart: (id: number) => void;
   updateQuantity: (id: number, quantity: number) => void;
   clearCart: () => void;
@@ -42,7 +42,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem("cart", JSON.stringify(items));
   }, [items]);
 
-  const addToCart = (newItem: Omit<CartItem, "id">) => {
+  const addToCart = (newItem: Omit<CartItem, "id">): boolean => {
+    // Limiter à un seul produit dans le panier
+    if (items.length > 0) {
+      return false; // Le panier n'est pas vide, on ne peut pas ajouter
+    }
+
     setItems((prev) => {
       const existingIndex = prev.findIndex(
         (item) => item.name === newItem.name && item.unitPrice === newItem.unitPrice
@@ -61,6 +66,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return [...prev, { ...newItem, id: Date.now() }];
     });
     setIsCartOpen(true);
+    return true; // Produit ajouté avec succès
   };
 
   const removeFromCart = (id: number) => {

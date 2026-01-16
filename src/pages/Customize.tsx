@@ -8,6 +8,15 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useCart } from "@/contexts/CartContext";
 import { trackAddToCart } from "@/lib/facebookPixel";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -17,6 +26,7 @@ import productSpotify from "@/assets/product-spotify.webp";
 import productStreetSign from "@/assets/product-street-sign.webp";
 import productCoordinates from "@/assets/product-coordinates.webp";
 import productPerfectMatch from "@/assets/product-perfect-match.webp";
+import productMapPlaque from "@/assets/product-map-plaque.webp";
 
 interface FrameModel {
   id: string;
@@ -34,6 +44,7 @@ interface FieldConfig {
   type: "text" | "date" | "location" | "photo";
   icon: React.ElementType;
   required?: boolean;
+  maxLength?: number;
 }
 
 const frameModels: FrameModel[] = [
@@ -44,9 +55,10 @@ const frameModels: FrameModel[] = [
     description: "Carte du ciel personnalisée",
     image: productNightSky,
     fields: [
-      { id: "title", label: "Titre", placeholder: "The Night We Met", type: "text", icon: Star, required: true },
-      { id: "date", label: "Date de l'événement", placeholder: "Sélectionnez une date", type: "date", icon: Calendar, required: true },
-      { id: "location", label: "Lieu", placeholder: "Paris, France", type: "location", icon: MapPin, required: true },
+      { id: "location", label: "Lieu", placeholder: "Search Location", type: "location", icon: MapPin, required: true },
+      { id: "date", label: "Date", placeholder: "Select Date", type: "date", icon: Calendar, required: true },
+      { id: "title", label: "Titre", placeholder: "Enter Title - eg. Happy Anniversary!, First Date", type: "text", icon: Star, required: true, maxLength: 19 },
+      { id: "locationTitle", label: "Titre de localisation", placeholder: "Enter Location Title - eg. Starbucks, Star Casino", type: "text", icon: MapPin, required: false, maxLength: 45 },
     ],
   },
   {
@@ -58,7 +70,8 @@ const frameModels: FrameModel[] = [
     fields: [
       { id: "songTitle", label: "Titre de la chanson", placeholder: "Perfect", type: "text", icon: Music, required: true },
       { id: "artistName", label: "Nom de l'artiste", placeholder: "Ed Sheeran", type: "text", icon: User, required: true },
-      { id: "photo", label: "Votre photo", placeholder: "Téléchargez votre photo", type: "photo", icon: Upload, required: true },
+      { id: "photo1", label: "Photo 1", placeholder: "Téléchargez votre première photo", type: "photo", icon: Upload, required: true },
+      { id: "photo2", label: "Photo 2", placeholder: "Téléchargez votre deuxième photo", type: "photo", icon: Upload, required: true },
     ],
   },
   {
@@ -80,9 +93,10 @@ const frameModels: FrameModel[] = [
     description: "Coordonnées GPS personnalisées",
     image: productCoordinates,
     fields: [
-      { id: "title", label: "Titre", placeholder: "Where We Met", type: "text", icon: Star, required: true },
-      { id: "location", label: "Lieu exact", placeholder: "Tour Eiffel, Paris", type: "location", icon: MapPin, required: true },
-      { id: "date", label: "Date", placeholder: "Sélectionnez une date", type: "date", icon: Calendar, required: true },
+      { id: "location", label: "Lieu", placeholder: "Search Location", type: "location", icon: MapPin, required: true },
+      { id: "title", label: "Titre", placeholder: "Enter Title - eg. Happy Anniversary!, First Date", type: "text", icon: Star, required: true, maxLength: 19 },
+      { id: "locationTitle", label: "Titre de localisation", placeholder: "Enter Location Title - eg. Starbucks, Star Casino", type: "text", icon: MapPin, required: false, maxLength: 45 },
+      { id: "date", label: "Date", placeholder: "Select Date", type: "date", icon: Calendar, required: true },
     ],
   },
   {
@@ -97,6 +111,19 @@ const frameModels: FrameModel[] = [
       { id: "date", label: "Date spéciale", placeholder: "Sélectionnez une date", type: "date", icon: Calendar, required: true },
       { id: "photo1", label: "Photo 1", placeholder: "Première photo", type: "photo", icon: Upload, required: true },
       { id: "photo2", label: "Photo 2", placeholder: "Deuxième photo", type: "photo", icon: Upload, required: true },
+    ],
+  },
+  {
+    id: "map-plaque",
+    name: "Map Plaque",
+    shortName: "Map",
+    description: "Where We Met",
+    image: productMapPlaque,
+    fields: [
+      { id: "location", label: "Lieu", placeholder: "Search Location", type: "location", icon: MapPin, required: true },
+      { id: "date", label: "Date", placeholder: "Select Date", type: "date", icon: Calendar, required: true },
+      { id: "title", label: "Titre", placeholder: "Enter Title - eg. Happy Anniversary!, First Date", type: "text", icon: Star, required: true, maxLength: 19 },
+      { id: "locationTitle", label: "Titre de localisation", placeholder: "Enter Location Title - eg. Starbucks, Star Casino", type: "text", icon: MapPin, required: false, maxLength: 45 },
     ],
   },
 ];
@@ -115,6 +142,7 @@ const Customize = () => {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [photos, setPhotos] = useState<Record<string, { file: File; preview: string }>>({});
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const [showLimitDialog, setShowLimitDialog] = useState(false);
 
   const handleModelChange = (model: FrameModel) => {
     setSelectedModel(model);
@@ -168,27 +196,34 @@ const Customize = () => {
       return;
     }
 
+    // Vérifier si le panier est déjà plein
+    const added = addToCart({
+      name: `Memory — ${selectedModel.name}`,
+      quantity: 1,
+      unitPrice: 9.95,
+      totalPrice: 9.95,
+      image: selectedModel.image,
+    });
+
+    if (!added) {
+      // Le panier est déjà plein, afficher le popup
+      setShowLimitDialog(true);
+      return;
+    }
+
     // Track AddToCart event with fbclid
     trackAddToCart({
       content_name: `Memory — ${selectedModel.name}`,
       content_ids: [selectedModel.id],
       content_type: "product",
-      value: 9.99,
+      value: 9.95,
       currency: "EUR",
       quantity: 1,
     });
 
-    addToCart({
-      name: `Memory — ${selectedModel.name}`,
-      quantity: 1,
-      unitPrice: 9.99,
-      totalPrice: 9.99,
-      image: selectedModel.image,
-    });
-
     toast({
       title: "✨ Cadre personnalisé ajouté !",
-      description: `${selectedModel.name} — 9,99 €`,
+      description: `${selectedModel.name} — 9,95 €`,
     });
 
     navigate("/product");
@@ -364,7 +399,7 @@ const Customize = () => {
                           onChange={(e) => handleInputChange(field.id, e.target.value)}
                           className="rounded-xl h-12"
                         />
-                      ) : (
+                      ) : field.type === "location" ? (
                         <Input
                           id={field.id}
                           type="text"
@@ -373,6 +408,23 @@ const Customize = () => {
                           onChange={(e) => handleInputChange(field.id, e.target.value)}
                           className="rounded-xl h-12"
                         />
+                      ) : (
+                        <div className="relative">
+                          <Input
+                            id={field.id}
+                            type="text"
+                            placeholder={field.placeholder}
+                            value={formData[field.id] || ""}
+                            onChange={(e) => handleInputChange(field.id, e.target.value)}
+                            className="rounded-xl h-12 pr-16"
+                            maxLength={field.maxLength}
+                          />
+                          {field.maxLength && (
+                            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                              {(formData[field.id] || "").length}/{field.maxLength}
+                            </div>
+                          )}
+                        </div>
                       )}
                     </motion.div>
                   ))}
@@ -386,7 +438,7 @@ const Customize = () => {
                     <div>
                       <p className="text-sm text-muted-foreground">Prix total</p>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-bold text-primary">9,99 €</span>
+                        <span className="text-2xl font-bold text-primary">9,95 €</span>
                         <span className="text-base text-muted-foreground line-through">20,00 €</span>
                       </div>
                     </div>
@@ -431,22 +483,31 @@ const Customize = () => {
               <div className="bg-secondary/30 rounded-2xl p-6 border border-border sticky top-24">
                 {/* Frame Preview */}
                 <div className="relative aspect-[3/4] max-w-sm mx-auto rounded-xl overflow-hidden bg-white shadow-xl">
+                  {/* Image de base du modèle */}
                   <img 
                     src={selectedModel.image} 
                     alt={selectedModel.name}
                     className="w-full h-full object-cover"
                   />
                   
-                  {/* Overlay with personalization details */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-4">
-                    <div className="text-white space-y-1">
-                      {selectedModel.fields.filter(f => f.type !== "photo").slice(0, 3).map(field => (
-                        formData[field.id] && (
-                          <p key={field.id} className="text-sm opacity-90">
-                            {field.label}: <span className="font-medium">{formData[field.id]}</span>
-                          </p>
-                        )
-                      ))}
+                  
+                </div>
+                
+                {/* Notice sur la personnalisation */}
+                <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <div className="flex-shrink-0 mt-0.5">
+                      <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm text-blue-900 font-medium mb-1">
+                        Votre personnalisation est bien prise en compte
+                      </p>
+                      <p className="text-xs text-blue-700">
+                        L'image ci-dessus est un exemple de rendu. Votre cadre personnalisé sera créé avec les informations que vous avez saisies.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -496,7 +557,7 @@ const Customize = () => {
             <div>
               <p className="font-medium text-foreground text-sm">{selectedModel.shortName}</p>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-primary font-bold">9,99 €</span>
+                <span className="text-primary font-bold">9,95 €</span>
                 <span className="text-xs text-muted-foreground line-through">20€</span>
               </div>
             </div>
@@ -511,6 +572,25 @@ const Customize = () => {
           </Button>
         </div>
       </div>
+
+      {/* Alert Dialog pour la limitation à un produit */}
+      <AlertDialog open={showLimitDialog} onOpenChange={setShowLimitDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Limitation à un produit</AlertDialogTitle>
+            <AlertDialogDescription className="pt-2">
+              En raison de la forte demande et de notre promesse de livraison, 
+              la commande est limitée à un produit par client pour garantir 
+              la qualité et les délais de livraison.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => setShowLimitDialog(false)}>
+              Compris
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <Footer />
     </div>

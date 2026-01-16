@@ -16,27 +16,28 @@ const PIXEL_ID = "4142361916004324";
 export const initFacebookPixel = () => {
   if (typeof window === "undefined") return;
 
-  // Si le pixel est déjà initialisé, ne rien faire
-  if (window.fbq && window._fbq) {
-    return;
-  }
-
-  // Initialiser le pixel Facebook
+  // Initialiser le pixel Facebook même s'il existe déjà (au cas où il ne serait pas complètement chargé)
   (function(f: any, b: any, e: string, v: string, n: any, t: any, s: any) {
-    if (f.fbq) return;
-    n = f.fbq = function(...args: any[]) {
-      n.callMethod ? n.callMethod.apply(n, args) : n.queue.push(args);
-    };
-    if (!f._fbq) f._fbq = n;
-    n.push = n;
-    n.loaded = true;
-    n.version = "2.0";
-    n.queue = [];
-    t = b.createElement(e);
-    t.async = true;
-    t.src = v;
-    s = b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t, s);
+    // Créer la fonction fbq si elle n'existe pas
+    if (!f.fbq) {
+      n = f.fbq = function(...args: any[]) {
+        n.callMethod ? n.callMethod.apply(n, args) : n.queue.push(args);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = false;
+      n.version = "2.0";
+      n.queue = [];
+    }
+    
+    // Charger le script seulement s'il n'est pas déjà en cours de chargement
+    if (!document.querySelector('script[src="' + v + '"]')) {
+      t = b.createElement(e);
+      t.async = true;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    }
   })(
     window,
     document,
@@ -44,10 +45,38 @@ export const initFacebookPixel = () => {
     "https://connect.facebook.net/en_US/fbevents.js"
   );
 
-  // Initialiser le pixel avec l'ID
-  if (window.fbq) {
-    window.fbq("init", PIXEL_ID);
-    window.fbq("track", "PageView");
+  // Attendre que le pixel soit chargé avant d'initialiser
+  const initPixel = () => {
+    if (window.fbq && typeof window.fbq === "function") {
+      try {
+        window.fbq("init", PIXEL_ID);
+        // Ne pas envoyer PageView ici car il sera envoyé par le hook useFacebookTracking
+      } catch (error) {
+        console.error("Error initializing Facebook Pixel:", error);
+      }
+    }
+  };
+
+  // Si le pixel est déjà chargé, initialiser immédiatement
+  if (window.fbq && window.fbq.loaded) {
+    initPixel();
+  } else {
+    // Sinon, attendre que le script soit chargé
+    const checkLoaded = setInterval(() => {
+      if (window.fbq && (window.fbq.loaded || window._fbq)) {
+        clearInterval(checkLoaded);
+        initPixel();
+      }
+    }, 50);
+
+    // Timeout après 5 secondes
+    setTimeout(() => {
+      clearInterval(checkLoaded);
+      // Essayer quand même d'initialiser
+      if (window.fbq) {
+        initPixel();
+      }
+    }, 5000);
   }
 };
 

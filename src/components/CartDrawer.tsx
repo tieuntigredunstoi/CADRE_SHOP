@@ -59,7 +59,7 @@ const CartDrawer = () => {
 
   return (
     <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
-      <SheetContent className="w-full sm:max-w-md flex flex-col">
+      <SheetContent className="w-full max-w-full flex flex-col" side="bottom">
         <SheetHeader className="border-b border-border pb-4">
           <SheetTitle className="flex items-center gap-2">
             <ShoppingBag className="h-5 w-5" />
@@ -98,6 +98,7 @@ const CartDrawer = () => {
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
                           className="w-8 h-8 flex items-center justify-center hover:bg-secondary rounded-l-lg transition-colors"
+                          disabled={item.quantity <= 1}
                         >
                           <Minus className="h-3 w-3" />
                         </button>
@@ -106,7 +107,8 @@ const CartDrawer = () => {
                         </span>
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="w-8 h-8 flex items-center justify-center hover:bg-secondary rounded-r-lg transition-colors"
+                          className="w-8 h-8 flex items-center justify-center hover:bg-secondary rounded-r-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          disabled={item.quantity >= 1}
                         >
                           <Plus className="h-3 w-3" />
                         </button>

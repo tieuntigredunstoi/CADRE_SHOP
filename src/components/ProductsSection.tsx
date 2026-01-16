@@ -6,6 +6,7 @@ import productSpotify from "@/assets/product-spotify.webp";
 import productStreetSign from "@/assets/product-street-sign.webp";
 import productCoordinates from "@/assets/product-coordinates.webp";
 import productPerfectMatch from "@/assets/product-perfect-match.webp";
+import productMapPlaque from "@/assets/product-map-plaque.webp";
 
 const products = [
   {
@@ -13,7 +14,7 @@ const products = [
     slug: "the-night-we-met",
     image: productNightSky,
     title: "The Night We Met — Carte du ciel",
-    price: "9,99 €",
+    price: "9,95 €",
     originalPrice: "20,00 €",
     isBestSeller: true,
   },
@@ -22,7 +23,7 @@ const products = [
     slug: "our-song",
     image: productSpotify,
     title: "Our Song — Lecteur Spotify",
-    price: "9,99 €",
+    price: "9,95 €",
     originalPrice: "20,00 €",
     isBestSeller: false,
   },
@@ -31,7 +32,7 @@ const products = [
     slug: "street-sign",
     image: productStreetSign,
     title: "Street Sign — Noms croisés",
-    price: "9,99 €",
+    price: "9,95 €",
     originalPrice: "20,00 €",
     isBestSeller: false,
   },
@@ -40,7 +41,7 @@ const products = [
     slug: "coordinates",
     image: productCoordinates,
     title: "Coordinates — Lieu de rencontre",
-    price: "9,99 €",
+    price: "9,95 €",
     originalPrice: "20,00 €",
     isBestSeller: false,
   },
@@ -49,7 +50,16 @@ const products = [
     slug: "perfect-match",
     image: productPerfectMatch,
     title: "Perfect Match — Union des cœurs",
-    price: "9,99 €",
+    price: "9,95 €",
+    originalPrice: "20,00 €",
+    isBestSeller: false,
+  },
+  {
+    id: 6,
+    slug: "map-plaque",
+    image: productMapPlaque,
+    title: "Map Plaque — Where We Met",
+    price: "9,95 €",
     originalPrice: "20,00 €",
     isBestSeller: false,
   },

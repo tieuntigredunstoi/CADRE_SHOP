@@ -3,21 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LASH GLOW - Faux cils individuels professionnels</title>
-    <meta name="description" content="Des faux cils individuels de qualité professionnelle. Faciles à appliquer, naturels, réutilisables. Application 5 min, tenue 7 jours." />
-    <meta name="author" content="LASH GLOW" />
+    <title>Memory - Cadres personnalisés pour vos souvenirs</title>
+    <meta name="description" content="Créez des cadres personnalisés uniques pour immortaliser vos moments précieux. Cadres photo personnalisables avec cartes du ciel, coordonnées GPS, et bien plus." />
+    <meta name="author" content="Memory" />
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/favicon.png" />
 
-    <meta property="og:title" content="LASH GLOW - Faux cils individuels professionnels" />
-    <meta property="og:description" content="Des faux cils individuels de qualité professionnelle. Faciles à appliquer, naturels, réutilisables." />
+    <meta property="og:title" content="Memory - Cadres personnalisés pour vos souvenirs" />
+    <meta property="og:description" content="Créez des cadres personnalisés uniques pour immortaliser vos moments précieux. Cadres photo personnalisables avec cartes du ciel, coordonnées GPS, et bien plus." />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@LashGlow" />
+    <meta name="twitter:site" content="@Memory" />
     <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
 
     <!-- Facebook Pixel Code -->
@@ -30,8 +30,23 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '4142361916004324');
-      fbq('track', 'PageView');
+      // Initialiser le pixel après le chargement du script
+      (function initPixel(attempts) {
+        attempts = attempts || 0;
+        if(attempts > 50) return; // Arrêter après 5 secondes max
+        if(window.fbq && typeof window.fbq === 'function' && (window.fbq.loaded || window._fbq)) {
+          try {
+            fbq('init', '4142361916004324');
+            fbq('track', 'PageView');
+          } catch(e) {
+            // Réessayer après un court délai
+            setTimeout(function() { initPixel(attempts + 1); }, 100);
+          }
+        } else {
+          // Réessayer après un court délai
+          setTimeout(function() { initPixel(attempts + 1); }, 100);
+        }
+      })();
     </script>
     <!-- End Facebook Pixel Code -->
   </head>
