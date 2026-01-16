@@ -22,6 +22,16 @@ const CartDrawer = () => {
     // Récupérer le fbclid depuis localStorage
     const fbclid = getFbclid();
 
+    // Convertir le chemin de l'image en URL complète si nécessaire
+    let imageUrl = firstItem.image;
+    if (imageUrl && !imageUrl.startsWith("http://") && !imageUrl.startsWith("https://")) {
+      // Si c'est un chemin relatif, construire l'URL complète
+      const origin = window.location.origin;
+      // Enlever le slash initial s'il existe déjà dans l'origin
+      const imagePath = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
+      imageUrl = `${origin}${imagePath}`;
+    }
+
     // Construire l'URL de base
     const baseUrl = "https://www.bcdxmn8trk.com/JGGB6W/3XCLCFG/";
     const url = new URL(baseUrl);
@@ -29,7 +39,7 @@ const CartDrawer = () => {
     // Ajouter les paramètres
     url.searchParams.append("sub1", "MEMORY");
     url.searchParams.append("sub3", firstItem.name);
-    url.searchParams.append("sub4", firstItem.image);
+    url.searchParams.append("sub4", imageUrl);
 
     // Ajouter le fbclid si disponible
     if (fbclid) {
