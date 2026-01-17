@@ -134,34 +134,48 @@ const Footer = () => {
 
             {/* Liens légaux */}
             <div>
-              <h4 className="font-semibold mb-4 text-white">Liens légaux</h4>
+              <h4 className="font-semibold mb-4 text-white flex items-center gap-2">
+                <Shield className="h-4 w-4" />
+                Informations légales
+              </h4>
               <ul className="space-y-3 text-sm text-white/60">
                 <li>
-                  <Link to="/cgv" className="hover:text-white transition-colors">
-                    Conditions générales de vente
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/privacy" className="hover:text-white transition-colors">
-                    Politique de confidentialité
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/cgv" className="hover:text-white transition-colors">
+                  <Link to="/cgv" className="hover:text-white transition-colors flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
                     Mentions légales
                   </Link>
                 </li>
                 <li>
-                  <Link to="/shipping-policy" className="hover:text-white transition-colors">
+                  <Link to="/cgv" className="hover:text-white transition-colors flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                    Conditions générales de vente
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/privacy" className="hover:text-white transition-colors flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                    Politique de confidentialité
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/shipping-policy" className="hover:text-white transition-colors flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
                     Politique de livraison
                   </Link>
                 </li>
                 <li>
-                  <Link to="/return-policy" className="hover:text-white transition-colors">
+                  <Link to="/return-policy" className="hover:text-white transition-colors flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/40"></span>
                     Politique de retour
                   </Link>
                 </li>
               </ul>
+              <div className="mt-4 pt-4 border-t border-white/10">
+                <div className="flex items-center gap-2 text-xs text-white/50">
+                  <Shield className="h-3 w-3" />
+                  <span>Site sécurisé SSL 256 bits</span>
+                </div>
+              </div>
             </div>
 
             {/* Service client & Social */}
@@ -229,9 +243,27 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright Bar */}
+      {/* Copyright Bar avec liens légaux */}
       <div className="py-6 px-4 md:px-6 border-t border-white/10">
         <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 mb-3">
+            <Link to="/cgv" className="text-xs text-white/60 hover:text-white transition-colors">
+              Mentions légales
+            </Link>
+            <span className="hidden md:block text-white/40">•</span>
+            <Link to="/cgv" className="text-xs text-white/60 hover:text-white transition-colors">
+              Conditions générales de vente
+            </Link>
+            <span className="hidden md:block text-white/40">•</span>
+            <Link to="/privacy" className="text-xs text-white/60 hover:text-white transition-colors">
+              Politique de confidentialité
+            </Link>
+            <span className="hidden md:block text-white/40">•</span>
+            <div className="flex items-center gap-2">
+              <Shield className="h-3 w-3 text-white/60" />
+              <span className="text-xs text-white/60">Site sécurisé SSL</span>
+            </div>
+          </div>
           <p className="text-center text-sm text-white/40">
             © 2026 MEMORY SAS. Tous droits réservés.
           </p>

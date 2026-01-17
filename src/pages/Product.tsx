@@ -251,6 +251,50 @@ const Product = () => {
                 Memory | Cadre Souvenir Personnalisé
               </motion.h1>
 
+              {/* Prix et Garanties - Section Prominente */}
+              <motion.div 
+                className="space-y-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.45 }}
+              >
+                {/* Prix Principal */}
+                <div className="bg-primary/5 border-2 border-primary/20 rounded-2xl p-4 md:p-6 space-y-3">
+                  <div className="flex items-baseline gap-3 flex-wrap">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Prix total</p>
+                      <div className="flex items-baseline gap-3">
+                        <span className="text-4xl md:text-5xl font-bold text-primary">9,95 €</span>
+                        <span className="text-xl text-muted-foreground line-through">20,00 €</span>
+                      </div>
+                    </div>
+                    <Badge className="bg-primary text-primary-foreground text-sm px-3 py-1 h-fit">
+                      -50%
+                    </Badge>
+                  </div>
+                  
+                  {/* Badges de Garantie */}
+                  <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-primary/10">
+                    <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200">
+                      <Shield className="h-3 w-3 mr-1" />
+                      Pas de frais cachés
+                    </Badge>
+                    <Badge variant="secondary" className="bg-blue-50 text-blue-700 border-blue-200">
+                      <Truck className="h-3 w-3 mr-1" />
+                      Livraison GRATUITE
+                    </Badge>
+                    <Badge variant="secondary" className="bg-rose-50 text-rose-700 border-rose-200">
+                      <Heart className="h-3 w-3 mr-1" />
+                      Livré avant la Saint-Valentin ou remboursé
+                    </Badge>
+                    <Badge variant="secondary" className="bg-purple-50 text-purple-700 border-purple-200">
+                      <RefreshCw className="h-3 w-3 mr-1" />
+                      Satisfait ou remboursé 30 jours
+                    </Badge>
+                  </div>
+                </div>
+              </motion.div>
+
               {/* Live Visitors */}
               <motion.div 
                 className="flex items-center gap-2"
@@ -603,38 +647,93 @@ const Product = () => {
                 </motion.div>
               </div>
 
-              {/* Payment Icons */}
-              <div className="flex items-center justify-center gap-2 py-1">
-                <div className="h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
-                  <img src={logoVisa} alt="Visa" className="h-5 w-auto" />
+              {/* Paiement Sécurisé - Section Proéminente */}
+              <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-4 md:p-5 space-y-4">
+                <div className="flex items-center justify-center gap-2">
+                  <Shield className="h-5 w-5 text-green-600" />
+                  <span className="font-semibold text-green-900">Paiement 100% sécurisé</span>
+                  <Badge variant="secondary" className="bg-green-600 text-white border-0">
+                    SSL sécurisé
+                  </Badge>
                 </div>
-                <div className="h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
-                  <img src={logoMastercard} alt="Mastercard" className="h-5 w-auto" />
+                
+                {/* Logos de paiement agrandis */}
+                <div className="flex items-center justify-center gap-3 flex-wrap">
+                  <div className="h-10 px-3 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+                    <img src={logoVisa} alt="Visa" className="h-7 w-auto" />
+                  </div>
+                  <div className="h-10 px-3 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+                    <img src={logoMastercard} alt="Mastercard" className="h-7 w-auto" />
+                  </div>
+                  <div className="h-10 px-3 bg-white border-2 border-gray-300 rounded-lg flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+                    <img src={logoAmex} alt="American Express" className="h-7 w-auto" />
+                  </div>
                 </div>
-                <div className="h-7 px-2 bg-white border border-gray-200 rounded flex items-center justify-center">
-                  <img src={logoAmex} alt="American Express" className="h-5 w-auto" />
-                </div>
+                
+                <p className="text-xs text-center text-green-700">
+                  Vos données sont protégées par un chiffrement SSL 256 bits
+                </p>
               </div>
 
-              {/* Trust Badges */}
-              <div className="grid grid-cols-3 gap-4 py-4 border-t border-b border-gray-100">
-                <div className="flex flex-col items-center text-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
-                    <Truck className="h-5 w-5 text-primary" />
-                  </div>
-                  <span className="text-xs font-medium text-foreground">Livraison offerte</span>
+              {/* Section Garanties Détaillée - Plus visible */}
+              <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-5 md:p-6 border-2 border-primary/20 space-y-4">
+                <div className="flex items-center gap-2 mb-4">
+                  <Shield className="h-6 w-6 text-primary" />
+                  <h3 className="text-lg font-semibold text-foreground">Nos Garanties</h3>
                 </div>
-                <div className="flex flex-col items-center text-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
-                    <Calendar className="h-5 w-5 text-primary" />
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Garantie Saint-Valentin */}
+                  <div className="bg-background rounded-xl p-4 border border-primary/20">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0">
+                        <Heart className="h-5 w-5 text-rose-600" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-foreground mb-1">Livraison garantie</p>
+                        <p className="text-sm text-muted-foreground">Livré avant la Saint-Valentin ou remboursé à 100%</p>
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-xs font-medium text-foreground">Garanti 30 jours</span>
-                </div>
-                <div className="flex flex-col items-center text-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-secondary flex items-center justify-center">
-                    <RotateCcw className="h-5 w-5 text-primary" />
+
+                  {/* Satisfaction */}
+                  <div className="bg-background rounded-xl p-4 border border-primary/20">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center flex-shrink-0">
+                        <RefreshCw className="h-5 w-5 text-purple-600" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-foreground mb-1">30 jours satisfait ou remboursé</p>
+                        <p className="text-sm text-muted-foreground">Retour gratuit si vous n'êtes pas satisfait</p>
+                      </div>
+                    </div>
                   </div>
-                  <span className="text-xs font-medium text-foreground">Retour facile</span>
+
+                  {/* Livraison gratuite */}
+                  <div className="bg-background rounded-xl p-4 border border-primary/20">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                        <Truck className="h-5 w-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-foreground mb-1">Livraison GRATUITE</p>
+                        <p className="text-sm text-muted-foreground">Partout en France métropolitaine</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Paiement sécurisé */}
+                  <div className="bg-background rounded-xl p-4 border border-primary/20">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                        <Shield className="h-5 w-5 text-green-600" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-foreground mb-1">Paiement sécurisé</p>
+                        <p className="text-sm text-muted-foreground">Pas de frais cachés, tout est inclus</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
 

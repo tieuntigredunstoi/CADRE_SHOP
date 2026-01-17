@@ -36,6 +36,13 @@ const Header = () => {
                 {link.label}
               </Link>
             ))}
+            {/* Mentions légales dans le header */}
+            <Link 
+              to="/cgv" 
+              className="text-xs font-medium text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+            >
+              Mentions légales
+            </Link>
           </nav>
 
           {/* Actions */}
